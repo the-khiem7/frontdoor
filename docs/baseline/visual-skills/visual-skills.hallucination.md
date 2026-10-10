@@ -3,8 +3,8 @@ baseline_schema: "2.0"
 pack: "visual-skills"
 document: "hallucination"
 status: "active"
-updated: "2026-10-10"
-code_ref: "uncommitted"
+updated: "2026-10-11"
+code_ref: "2e60fdc"
 ---
 
 # Visual Skills: Decisions and Open Questions
@@ -164,7 +164,9 @@ Decision: keep each skill at the repository root as `<name>/` holding `SKILL.md`
 
 What breaks if ignored: the user asked for the npx-installable format; a folder under `.claude/skills/` serves only a person copying it by hand into another repository.
 
-Not verified: whether `npx skills add` also discovers skills under `.claude/skills/`, and whether any host other than Codex reads `agents/openai.yaml`; the file is a display and policy hint, and a skill works without it.
+Observed 2026-10-11 against the pushed repository: `npx skills add <repository> --list` found all three skills, and `--skill illustration-render -a claude-code -y` into an empty repository installed all seven files of that skill, scripts and assets included, under `.claude/skills/illustration-render/`.
+
+Not verified: installing the other two skills, other agents, whether `npx skills add` also discovers skills under `.claude/skills/`, and whether any host other than Codex reads `agents/openai.yaml`; the file is a display and policy hint, and a skill works without it.
 
 Rejected: keeping `.claude/skills/` - it was the first layout (VS-D2) and the user replaced it.
 

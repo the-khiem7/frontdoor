@@ -4,7 +4,7 @@ pack: "visual-skills"
 document: "sourcecode"
 status: "active"
 updated: "2026-10-10"
-code_ref: "uncommitted"
+code_ref: "2e60fdc"
 ---
 
 # Visual Skills: Topology and Execution Flow

@@ -17,8 +17,8 @@ Each skill carries its own scripts and references. Install one folder and it wor
 Install every skill, or one by name:
 
 ```bash
-npx skills add https://github.com/<owner>/doorway.git
-npx skills add https://github.com/<owner>/doorway.git --skill landing-pager
+npx skills add https://github.com/the-khiem7/doorway.git
+npx skills add https://github.com/the-khiem7/doorway.git --skill landing-pager
 ```
 
 Then ask in a plain sentence, for example "make the README nicer to read" or "add a GitHub Pages landing page".

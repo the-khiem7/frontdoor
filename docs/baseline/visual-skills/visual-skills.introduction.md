@@ -3,8 +3,8 @@ baseline_schema: "2.0"
 pack: "visual-skills"
 document: "introduction"
 status: "active"
-updated: "2026-10-10"
-code_ref: "uncommitted"
+updated: "2026-10-11"
+code_ref: "2e60fdc"
 ---
 
 # Visual Skills: Scope, Current Truth, Target
@@ -23,7 +23,7 @@ Out of scope: writing the project's own documentation, committing or pushing, en
 
 ## Current truth
 
-All three skills sit at the repository root as `<name>/` and are untracked (VS-D13). Each passed `quick_validate` from the skill-creator plugin before it moved from `.claude/skills/`; the move changed no `SKILL.md`, and `quick_validate` was not re-run at the new path.
+All three skills sit at the repository root as `<name>/` and are committed (VS-D13). Each passed `quick_validate` from the skill-creator plugin before it moved from `.claude/skills/`; the move changed no `SKILL.md`, and `quick_validate` was not re-run at the new path.
 
 | Skill | Files |
 |---|---|
@@ -38,7 +38,7 @@ Observed running, 2026-10-10, on Windows with Edge:
 - `lighthouse.py` returned the four category scores for two landing pages, mobile and desktop.
 - A trial on two real repositories, each run with and without the skills, is recorded in the roadmap under Phase 2. The reviewer preferred the with-skill output for both the landing page and the README illustrations.
 
-Not observed: `npx skills add` run against this layout, the skills selected by a host from a plain request, any run on macOS or Linux, any page on its live GitHub Pages URL.
+Not observed: installing `readme-visualization` or `landing-pager` with `npx skills add`, the skills selected by a host from a plain request, any run on macOS or Linux, any page on its live GitHub Pages URL.
 
 ## Target
 
