@@ -3,8 +3,8 @@ baseline_schema: "2.0"
 pack: "visual-skills"
 document: "sourcecode"
 status: "active"
-updated: "2026-10-10"
-code_ref: "2e60fdc"
+updated: "2026-10-11"
+code_ref: "uncommitted"
 ---
 
 # Visual Skills: Topology and Execution Flow
@@ -12,17 +12,17 @@ code_ref: "2e60fdc"
 ## Folders
 
 ```text
-readme-visualization/
+doorway-readme/
   SKILL.md
   agents/      openai.yaml
   references/  github-readme.md  audit-and-plan.md
-illustration-render/
+doorway-illustrate/
   SKILL.md
   agents/      openai.yaml
   scripts/     render.py
   assets/      starter.css  starter.html  shared.js
   references/  source-page.md
-landing-pager/
+doorway-landing/
   SKILL.md
   agents/      openai.yaml
   scripts/     shoot.py  lighthouse.py
@@ -43,9 +43,9 @@ docs/baseline/visual-skills/
 
 | Skill | Flow |
 |---|---|
-| `readme-visualization` | audit README, brand and repository rules -> ask what is open -> propose the plan -> hand image building to `illustration-render` -> rewrite the README -> verify -> report |
-| `illustration-render` | find the brand -> set up the source folder from the starter -> write one `.item` per image -> `render.py` -> look at every image -> report |
-| `landing-pager` | existing-landing check -> ask placement -> learn brand and rules -> two or three rough directions -> build `index.html` -> preview image -> `shoot.py` and `lighthouse.py` -> report |
+| `doorway-readme` | audit README, brand and repository rules -> ask what is open -> propose the plan -> hand image building to `doorway-illustrate` -> rewrite the README -> verify -> report |
+| `doorway-illustrate` | find the brand -> set up the source folder from the starter -> write one `.item` per image -> `render.py` -> look at every image -> report |
+| `doorway-landing` | existing-landing check -> ask placement -> learn brand and rules -> two or three rough directions -> build `index.html` -> preview image -> `shoot.py` and `lighthouse.py` -> report |
 
 ## Scripts
 

@@ -4,7 +4,7 @@ pack: "visual-skills"
 document: "introduction"
 status: "active"
 updated: "2026-10-11"
-code_ref: "2e60fdc"
+code_ref: "uncommitted"
 ---
 
 # Visual Skills: Scope, Current Truth, Target
@@ -15,9 +15,9 @@ Three Claude skills that raise how a repository presents itself, plus the script
 
 | Skill | Job |
 |---|---|
-| `readme-visualization` | audit a README, plan which sections become pictures, rewrite the page with light/dark image pairs |
-| `illustration-render` | turn hand-built HTML pages into rounded, bordered WebP images in a light and a dark theme |
-| `landing-pager` | design and build a single-file `index.html` for GitHub Pages, after checking that no landing page exists |
+| `doorway-readme` | audit a README, plan which sections become pictures, rewrite the page with light/dark image pairs |
+| `doorway-illustrate` | turn hand-built HTML pages into rounded, bordered WebP images in a light and a dark theme |
+| `doorway-landing` | design and build a single-file `index.html` for GitHub Pages, after checking that no landing page exists |
 
 Out of scope: writing the project's own documentation, committing or pushing, enabling GitHub Pages (a repository setting the skills only describe), and any build step on the page being produced.
 
@@ -27,9 +27,9 @@ All three skills sit at the repository root as `<name>/` and are committed (VS-D
 
 | Skill | Files |
 |---|---|
-| `readme-visualization` | `SKILL.md`; `agents/openai.yaml`; `references/github-readme.md`, `references/audit-and-plan.md` |
-| `illustration-render` | `SKILL.md`; `agents/openai.yaml`; `scripts/render.py`; `assets/starter.css`, `assets/starter.html`, `assets/shared.js`; `references/source-page.md` |
-| `landing-pager` | `SKILL.md`; `agents/openai.yaml`; `scripts/shoot.py`, `scripts/lighthouse.py`; `references/existing-landing.md`, `references/pages-setup.md`, `references/page-craft.md`, `references/verify.md` |
+| `doorway-readme` | `SKILL.md`; `agents/openai.yaml`; `references/github-readme.md`, `references/audit-and-plan.md` |
+| `doorway-illustrate` | `SKILL.md`; `agents/openai.yaml`; `scripts/render.py`; `assets/starter.css`, `assets/starter.html`, `assets/shared.js`; `references/source-page.md` |
+| `doorway-landing` | `SKILL.md`; `agents/openai.yaml`; `scripts/shoot.py`, `scripts/lighthouse.py`; `references/existing-landing.md`, `references/pages-setup.md`, `references/page-craft.md`, `references/verify.md` |
 
 Observed running, 2026-10-10, on Windows with Edge:
 
@@ -38,7 +38,7 @@ Observed running, 2026-10-10, on Windows with Edge:
 - `lighthouse.py` returned the four category scores for two landing pages, mobile and desktop.
 - A trial on two real repositories, each run with and without the skills, is recorded in the roadmap under Phase 2. The reviewer preferred the with-skill output for both the landing page and the README illustrations.
 
-Not observed: installing `readme-visualization` or `landing-pager` with `npx skills add`, the skills selected by a host from a plain request, any run on macOS or Linux, any page on its live GitHub Pages URL.
+Not observed: installing `doorway-readme` or `doorway-landing` with `npx skills add`, the skills selected by a host from a plain request, any run on macOS or Linux, any page on its live GitHub Pages URL.
 
 ## Target
 

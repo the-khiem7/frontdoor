@@ -1,5 +1,5 @@
 ---
-name: illustration-render
+name: doorway-illustrate
 description: Turn hand-built HTML pages into crisp, rounded, bordered WebP illustrations in a light and a dark theme, ready for a README, a docs page or a landing page. Use whenever the user wants diagrams, workflow figures, feature cards, navigation buttons, social preview images or any "picture of a page" produced from HTML, wants light/dark image pairs, wants PNG screenshots converted to small WebP files, or asks to render, re-shoot or regenerate illustrations from an existing assets/source folder, even if they never say "WebP" or "render".
 ---
 
@@ -31,5 +31,5 @@ The look belongs to the brand being illustrated. This skill fixes the contract b
 - A page opened as a plain file has no `?theme=` and no relative-path server, so fonts and `../logo.png` can fail. Always render through the script, which serves the folder over HTTP.
 - Web fonts load from the network. Run the render online, or the fallback font silently ends up in every image. A brand that uses system fonts has the opposite problem: the fonts must be installed on the machine that renders, and a different machine will render different images.
 - Do not stop to ask when nobody can answer (an automated run, a test): take the recommended default, write each question with the answer you assumed to a `questions.md` beside the output, and go on.
-- Text inside an image cannot be selected or searched. Every illustration that carries information needs an `alt` text that says the same thing in words; the readme-visualization skill covers how.
+- Text inside an image cannot be selected or searched. Every illustration that carries information needs an `alt` text that says the same thing in words; the doorway-readme skill covers how.
 - Do not commit the intermediate PNGs. Only the `.webp` files and the HTML sources belong in the repo.

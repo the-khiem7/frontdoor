@@ -4,7 +4,7 @@ pack: "visual-skills"
 document: "roadmap"
 status: "active"
 updated: "2026-10-11"
-code_ref: "2e60fdc"
+code_ref: "uncommitted"
 ---
 
 # Visual Skills Roadmap
@@ -16,12 +16,13 @@ Reasoning for every row below lives in `visual-skills.hallucination.md` under th
 | Area | Basis | Status | Evidence |
 |---|---|---|---|
 | Three skills and their split | VS-D1, VS-D2 | implemented | `quick_validate` reported each valid before the move in the next row |
-| Layout for `npx skills add` | VS-D13 | implemented, install checked for one skill | folders moved from `.claude/skills/` to the repository root, `agents/openai.yaml` added to each; no `SKILL.md` changed; `npx skills add --list` found all three and a single-skill install delivered every file of `illustration-render` |
+| Layout for `npx skills add` | VS-D13 | implemented, install checked for one skill | folders moved from `.claude/skills/` to the repository root, `agents/openai.yaml` added to each; no `SKILL.md` changed; `npx skills add --list` found all three and a single-skill install delivered every file of `doorway-illustrate` |
 | Illustration pipeline | VS-D3, VS-D4, VS-D5 | implemented | `render.py` output pixel-identical to a hand-made set for two source pages, light and dark |
 | Existing-landing check | VS-D6 | implemented, trial did not separate the two runs | both runs on an app repository stopped without writing a file |
 | Landing page floor | VS-D7 | implemented, one rule broken in the trial and fixed | see VS-D12 |
 | Verification scripts | VS-D8 | implemented | `shoot.py` and `lighthouse.py` run on two real pages and one broken page |
 | Unattended runs | VS-D9 | implemented | `questions.md` written by every trial run |
+| Skill names carry the brand | VS-D14 | implemented | folders, `name` frontmatter, `openai.yaml` and README renamed; `npx skills add --list` not re-run under the new names |
 | Host selection | VS-Q1 | unobserved | no run started from a plain request |
 | Automated tests | VS-Q2 | not started | none |
 | Other operating systems | VS-Q3 | unobserved | Windows and Edge only |
@@ -38,7 +39,7 @@ Acceptance criteria:
 
 | Item | Result |
 |---|---|
-| Skills created | `readme-visualization`, `illustration-render`, `landing-pager` |
+| Skills created | `doorway-readme`, `doorway-illustrate`, `doorway-landing` |
 | Scripts | `render.py`, `shoot.py` (`check`, `og`), `lighthouse.py` |
 | Validation | `quick_validate` passes for all three |
 | Script runs | `render.py` against two source pages, light and dark, byte-compared as decoded pixels: no difference |
@@ -95,7 +96,7 @@ Acceptance criteria:
 
 ## Next action
 
-1. Run `npx skills add <repository> --skill <name>` into a scratch repository for `readme-visualization` and `landing-pager`, and record whether each folder installs whole, scripts and references included (VS-D13).
+1. Run `npx skills add <repository> --skill <name>` into a scratch repository for `doorway-readme` and `doorway-landing`, and record whether each folder installs whole, scripts and references included (VS-D13).
 2. Ask for a README upgrade and for a landing page in a plain sentence, in a repository that has the skills, and record whether each skill is selected (VS-Q1).
 3. If a skill is not selected, run the description optimizer from the skill-creator plugin on it.
 4. Decide whether the three scripts need automated tests (VS-Q2) before anyone depends on them.

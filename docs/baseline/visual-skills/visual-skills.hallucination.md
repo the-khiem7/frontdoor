@@ -4,7 +4,7 @@ pack: "visual-skills"
 document: "hallucination"
 status: "active"
 updated: "2026-10-11"
-code_ref: "2e60fdc"
+code_ref: "uncommitted"
 ---
 
 # Visual Skills: Decisions and Open Questions
@@ -20,7 +20,7 @@ One row per entry. A row states what the entry is about and nothing more. An ans
 | VS-D3 | how an illustration is produced: HTML source, WebP pair, finishing step | current | VS-D4, VS-D5 |
 | VS-D4 | which browser takes the screenshots | current | VS-D3, VS-D8 |
 | VS-D5 | whether the skills fix a visual style | current | VS-D3 |
-| VS-D6 | what `landing-pager` does when a landing page may already exist | current | VS-D9 |
+| VS-D6 | what `doorway-landing` does when a landing page may already exist | current | VS-D9 |
 | VS-D7 | the quality floor every generated landing page must meet | current | VS-D8, VS-D12 |
 | VS-D8 | how a landing page is verified, with scripts shipped in the skill | current | VS-D4, VS-D7 |
 | VS-D9 | what a skill does when nobody can answer its questions | current | VS-D6 |
@@ -28,6 +28,7 @@ One row per entry. A row states what the entry is about and nothing more. An ans
 | VS-D11 | a review page that showed raw markup instead of results | current, lesson | VS-D12 |
 | VS-D12 | a generated page that broke a rule it had read about | current, lesson | VS-D7 |
 | VS-D13 | where the skills live: repository root, installable one folder at a time | current | VS-D2, VS-Q1 |
+| VS-D14 | the skill names: brand prefix and short verbs | current | VS-D13, VS-Q1 |
 | VS-Q1 | whether the skill descriptions make a host select the skills correctly | open | none |
 | VS-Q2 | whether the skills need automated tests | open | none |
 | VS-Q3 | whether the scripts work on macOS and Linux | open | VS-D8 |
@@ -78,7 +79,7 @@ Rejected: requiring `playwright install` - a multi-hundred-megabyte download the
 
 ## VS-D5: the skills fix a contract, not a style
 
-Decision: `illustration-render` ships a starter whose colors and fonts are placeholders and states the contract a source page must meet (a unique id per `.item`, 2x zoom, theming through `html[data-theme]`, a border-color token) - brand evidence comes from the target repository, and a skill asks the user for a direction only when the repository has none.
+Decision: `doorway-illustrate` ships a starter whose colors and fonts are placeholders and states the contract a source page must meet (a unique id per `.item`, 2x zoom, theming through `html[data-theme]`, a border-color token) - brand evidence comes from the target repository, and a skill asks the user for a direction only when the repository has none.
 
 What breaks if ignored: every repository ends up with the same palette, and a fixed palette is replaced in full on first use.
 
@@ -88,7 +89,7 @@ Rejected: strict structure for the landing page - the user wanted the agent free
 
 ## VS-D6: stop when a landing page may exist, and ask before writing
 
-Decision: `landing-pager` runs a read-only check (Pages deploy workflow, docs-site generator folder, `docs/index.*`, `CNAME`, a root `index.html` with real content, the homepage field when `gh` is available), stops with the evidence if anything counts, and asks where `index.html` goes before writing - an overwritten page is a live site lost.
+Decision: `doorway-landing` runs a read-only check (Pages deploy workflow, docs-site generator folder, `docs/index.*`, `CNAME`, a root `index.html` with real content, the homepage field when `gh` is available), stops with the evidence if anything counts, and asks where `index.html` goes before writing - an overwritten page is a live site lost.
 
 What breaks if ignored: the skill replaces an application's own `index.html` or adds a page that the deploy never serves.
 
@@ -114,7 +115,7 @@ Rejected: matching fallback-font metrics with invented `size-adjust` numbers - w
 
 ## VS-D8: verification scripts ship inside the skill
 
-Decision: `landing-pager` carries `shoot.py` (three widths, light and dark, reduced motion, broken links and images, metadata, preview size, optional axe-core) and `lighthouse.py` (serves the folder, starts Edge or Chrome with a debugging port, runs Lighthouse through `npx`, prints the four scores and the audits that lost points) - Lighthouse run alone audits only the scheme the page starts in, and its own launch of Edge failed in a trial run.
+Decision: `doorway-landing` carries `shoot.py` (three widths, light and dark, reduced motion, broken links and images, metadata, preview size, optional axe-core) and `lighthouse.py` (serves the folder, starts Edge or Chrome with a debugging port, runs Lighthouse through `npx`, prints the four scores and the audits that lost points) - Lighthouse run alone audits only the scheme the page starts in, and its own launch of Edge failed in a trial run.
 
 What breaks if ignored: a dark-theme contrast failure ships unseen (it was found in the trial only by injecting axe-core under the dark scheme); the documented Lighthouse command fails on Windows.
 
@@ -156,7 +157,7 @@ What disproved it: a heading read "Eleven you call", a count of skills. A search
 
 Why it looked reasonable: the agent searched for counts in body text and treated headings as labels.
 
-Fix: `landing-pager` step 3 now says to read the repository's contributor rules and tests before writing words, and `page-craft.md` names headings as covered. The fix was not re-run.
+Fix: `doorway-landing` step 3 now says to read the repository's contributor rules and tests before writing words, and `page-craft.md` names headings as covered. The fix was not re-run.
 
 ## VS-D13: skills at the repository root, one installable folder each
 
@@ -164,13 +165,27 @@ Decision: keep each skill at the repository root as `<name>/` holding `SKILL.md`
 
 What breaks if ignored: the user asked for the npx-installable format; a folder under `.claude/skills/` serves only a person copying it by hand into another repository.
 
-Observed 2026-10-11 against the pushed repository: `npx skills add <repository> --list` found all three skills, and `--skill illustration-render -a claude-code -y` into an empty repository installed all seven files of that skill, scripts and assets included, under `.claude/skills/illustration-render/`.
+Observed 2026-10-11 against the pushed repository: `npx skills add <repository> --list` found all three skills, and `--skill doorway-illustrate -a claude-code -y` into an empty repository installed all seven files of that skill, scripts and assets included, under `.claude/skills/doorway-illustrate/`.
 
 Not verified: installing the other two skills, other agents, whether `npx skills add` also discovers skills under `.claude/skills/`, and whether any host other than Codex reads `agents/openai.yaml`; the file is a display and policy hint, and a skill works without it.
 
 Rejected: keeping `.claude/skills/` - it was the first layout (VS-D2) and the user replaced it.
 
 Rejected: a `skills/` parent folder - no reason was given to add a level, and the root layout is what the user named.
+
+## VS-D14: skill names carry the brand prefix
+
+Decision: name the skills `doorway-readme`, `doorway-illustrate` and `doorway-landing` - the user wanted the brand in every skill name, and a prefix groups the three when listed; the folder, the `name` frontmatter, `agents/openai.yaml` and the README commands use the same string.
+
+What breaks if ignored: a folder name that differs from the `name` frontmatter, or an install command that still names an old skill, makes `npx skills add <repository> --skill <name>` find nothing.
+
+Not verified: `npx skills add --list` and a single-skill install under the new names; whether the shorter names weaken host selection (VS-Q1).
+
+Rejected: the long names (`doorway-readme-visualization`, `doorway-illustration-render`, `doorway-landing-pager`) - the user chose short names.
+
+Rejected: a suffix (`landing-pager-doorway`) - the user chose the prefix form.
+
+Rejected: a brand other than `doorway` (STYL was offered) - the user named `doorway`.
 
 ## Open questions
 

@@ -1,6 +1,0 @@
-interface:
-  display_name: "Illustration Render"
-  short_description: "Render HTML pages into rounded, bordered WebP illustrations in light and dark themes"
-  default_prompt: "Use $illustration-render to turn my HTML illustration sources into light and dark WebP images that match this repository's brand."
-policy:
-  allow_implicit_invocation: true
