@@ -16,7 +16,7 @@ One row per entry. A row states what the entry is about and nothing more. An ans
 | Entry | About | Status | Related |
 |---|---|---|---|
 | FD-D1 | splitting the work into three skills | current | FD-D2 |
-| FD-D2 | how self-contained each skill is (its placement was reversed by FD-D13) | current | FD-D1, FD-D13 |
+| FD-D2 | how self-contained each skill is (its placement was reversed by FD-D13) | current | FD-D1, FD-D13, FD-D16 |
 | FD-D3 | how an illustration is produced: HTML source, WebP pair, finishing step | current | FD-D4, FD-D5 |
 | FD-D4 | which browser takes the screenshots | current | FD-D3, FD-D8 |
 | FD-D5 | whether the skills fix a visual style | current | FD-D3 |
@@ -29,6 +29,8 @@ One row per entry. A row states what the entry is about and nothing more. An ans
 | FD-D12 | a generated page that broke a rule it had read about | current, lesson | FD-D7 |
 | FD-D13 | where the skills live: repository root, installable one folder at a time | current | FD-D2, FD-Q1 |
 | FD-D14 | the repository and skill names: `frontdoor` prefix, short verbs | current | FD-D13, FD-Q1 |
+| FD-D15 | the README pictures; moved to the readme-design pack as RD-D1, RD-D2, RD-D3 | moved | FD-D16, RD-D1 |
+| FD-D16 | how `frontdoor-readme` depends on `frontdoor-illustrate` | current | FD-D2, RD-D3, FD-Q1 |
 | FD-Q1 | whether the skill descriptions make a host select the skills correctly | open | none |
 | FD-Q2 | whether the skills need automated tests | open | none |
 | FD-Q3 | whether the scripts work on macOS and Linux | open | FD-D8 |
@@ -192,6 +194,24 @@ Rejected: a company brand such as STYL as the prefix - the user wanted the repos
 Rejected: `doorpaint` - a search for it also returns paint for physical doors.
 
 Rejected: `storefront`, `easel`, `mural`, `atelier`, `gesso`, `varnish`, `palette`, `fresco`, `curb-appeal`, `facade`, `porch`, `lobby`, `repo-polish` - offered, not chosen.
+
+## FD-D15: the README pictures, moved to the readme-design pack
+
+Moved to the `readme-design` pack as RD-D1 (how the pictures are produced and where they live), RD-D2 (the look) and RD-D3 (a scene per skill, the flow inside `<details>`); the open points are RD-Q1 and RD-Q2. This number stays reserved and is not reused.
+
+## FD-D16: `frontdoor-readme` uses `frontdoor-illustrate` only when it is available
+
+Decision: step 4 of `frontdoor-readme` and its `description` hand the image build to `frontdoor-illustrate` when it is available, and tell the agent to say so and ask the user how to produce the images when it is not - a skill installed alone must still run (FD-D2), and the README and `AGENTS.md` both say siblings are optional help.
+
+What breaks if ignored: `frontdoor-readme` installed alone reaches step 4 after the user approved the plan with no renderer and no instruction; the `skills-map` figure in the README either contradicts the skill or the README text (RD-D3, pack readme-design).
+
+Observed: `quick_validate` reports the edited skill valid. The trigger phrases in `description` are unchanged; only its last clause was reworded (FD-Q1).
+
+Not verified: a run of `frontdoor-readme` without `frontdoor-illustrate` installed; the skill carries no renderer of its own, so what happens after the question is the user's call.
+
+Rejected: keep the hard hand-off, draw it as a solid arrow and reword the README - the README would then admit a skill that cannot run alone.
+
+Rejected: draw no arrows between skills and log the mismatch as an open question - the skill text was fixable in one clause.
 
 ## Open questions
 

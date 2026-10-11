@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>README scenes</title>
+<!-- Source of ../<id>.webp and ../<id>-dark.webp. Run from the repository root:
+     uvx --from playwright --with pillow python -I frontdoor-illustrate/scripts/render.py assets/source/scenes.html --root assets --out assets
+     Each .item is 1200 CSS px wide, so 2400 px in the image. Needs network for the web fonts.
+     Scenes are inline SVG. Colors come from the theme tokens; the light and dark pictures drawn inside a scene use fixed colors on purpose. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700&display=swap">
+<script src="shared.js"></script>
+<link rel="stylesheet" href="shared.css">
+<style>
+.item { height: 600px; }
+.scn { position: absolute; left: 0; top: 0; }
+.head { position: absolute; left: 48px; top: 34px; z-index: 2; }
+.hl { margin: 6px 0 0; font-size: 32px; font-weight: 600; line-height: 1.15; max-width: 600px; color: var(--ink); }
+.tag { position: absolute; z-index: 2; font: 500 19px "JetBrains Mono", ui-monospace, Consolas, monospace; padding: 5px 15px; border-radius: 999px; white-space: nowrap; }
+.tag.quiet { background: var(--card); color: var(--muted); border: 1.5px solid var(--cardline); }
+.tag.warm { background: var(--amber-soft); color: var(--amber-ink); }
+.tag.cool { background: var(--door-soft); color: var(--door); }
+.f-card { fill: var(--card); stroke: var(--cardline); stroke-width: 2.5; }
+.f-shadow { fill: var(--shadow); }
+.f-door { fill: var(--door-fill); }
+.f-amber { fill: var(--amber); }
+.f-soft { fill: var(--amber-soft); }
+.f-muted { fill: var(--muted); }
+.f-ink { fill: var(--ink); }
+.f-ground { fill: var(--ground); }
+.f-sage { fill: var(--sage); }
+.f-sky { fill: var(--sky); }
+.f-code { fill: var(--code); }
+.f-fg { fill: var(--door); }
+.s-door { stroke: var(--door); }
+.mono-t { font: 500 19px "JetBrains Mono", ui-monospace, Consolas, monospace; white-space: pre; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position: absolute" aria-hidden="true">
+  <defs>
+    <path id="spark" d="M0 -14L3.5 -3.5L14 0L3.5 3.5L0 14L-3.5 3.5L-14 0L-3.5 -3.5Z"/>
+    <g id="plant">
+      <path d="M-17 0L17 0L11 -34L-11 -34Z" style="fill: var(--door-fill)"/>
+      <ellipse cx="0" cy="-62" rx="9" ry="30" style="fill: var(--sage)"/>
+      <ellipse cx="-4" cy="-52" rx="8" ry="26" transform="rotate(-38 -4 -34)" style="fill: var(--sage)"/>
+      <ellipse cx="4" cy="-52" rx="8" ry="26" transform="rotate(38 4 -34)" style="fill: var(--sage)"/>
+    </g>
+  </defs>
+</svg>
+<div class="sheet">
+
+<div class="item" id="scene-readme">
+  <div class="head"><div class="nm">frontdoor-readme</div><p class="hl display">A wall of text becomes picture pairs.</p></div>
+  <svg class="scn" width="1200" height="600" viewBox="0 0 1200 600" aria-hidden="true">
+    <defs>
+      <linearGradient id="fan-r" x1="0" x2="1" y1="0" y2="0">
+        <stop offset="0" style="stop-color: var(--amber); stop-opacity: 0.5"/>
+        <stop offset="1" style="stop-color: var(--amber); stop-opacity: 0"/>
+      </linearGradient>
+      <clipPath id="open-r"><path d="M510 500V250A130 130 0 0 1 770 250V500Z"/></clipPath>
+      <clipPath id="pair-r"><rect x="820" y="226" width="290" height="132" rx="12"/></clipPath>
+    </defs>
+    <circle cx="640" cy="320" r="215" class="f-soft"/>
+    <rect x="0" y="505" width="1200" height="95" class="f-ground"/>
+    <polygon points="770,260 1170,110 1170,505 770,505" fill="url(#fan-r)"/>
+
+    <ellipse cx="225" cy="508" rx="170" ry="12" class="f-shadow"/>
+    <g transform="rotate(-7 245 350)"><rect x="120" y="190" width="250" height="320" rx="14" class="f-card"/></g>
+    <g transform="rotate(4 225 340)"><rect x="100" y="175" width="250" height="330" rx="14" class="f-card"/></g>
+    <g transform="rotate(-2 217 322)">
+      <rect x="82" y="150" width="270" height="345" rx="14" class="f-card"/>
+      <rect x="104" y="172" width="150" height="16" rx="8" class="f-muted" opacity="0.7"/>
+      <g id="lines-r"></g>
+      <rect x="104" y="396" width="226" height="78" rx="9" class="f-code"/>
+      <text class="mono-t" x="118" y="421" style="fill: #efe8da">+----+   +----+</text>
+      <text class="mono-t" x="118" y="443" style="fill: #efe8da">| a  |--&gt;| b  |</text>
+      <text class="mono-t" x="118" y="465" style="fill: #efe8da">+----+   +----+</text>
+    </g>
+
+    <g transform="rotate(-14 410 300)"><rect x="384" y="266" width="52" height="68" rx="7" class="f-card"/><rect x="394" y="282" width="32" height="5" rx="2.5" class="f-muted" opacity="0.5"/><rect x="394" y="294" width="26" height="5" rx="2.5" class="f-muted" opacity="0.5"/><rect x="394" y="306" width="30" height="5" rx="2.5" class="f-muted" opacity="0.5"/></g>
+    <g transform="rotate(9 452 384)"><rect x="430" y="354" width="44" height="58" rx="6" class="f-card"/><rect x="438" y="368" width="28" height="5" rx="2.5" class="f-muted" opacity="0.5"/><rect x="438" y="380" width="22" height="5" rx="2.5" class="f-muted" opacity="0.5"/></g>
+    <path d="M356 318C386 306 408 300 430 296" fill="none" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 12" style="stroke: var(--amber)"/>
+    <path d="M370 372C400 372 420 378 436 384" fill="none" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 12" style="stroke: var(--amber)"/>
+
+    <path d="M510 500V250A130 130 0 0 1 770 250V500Z" class="f-amber"/>
+    <g clip-path="url(#open-r)">
+      <g transform="translate(510 0) scale(0.7 1) translate(-510 0)">
+        <path d="M510 500V250A130 130 0 0 1 770 250V500Z" class="f-door"/>
+        <path d="M538 478V256A102 102 0 0 1 742 256V478Z" fill="none" stroke-width="5" style="stroke: var(--door-panel)"/>
+      </g>
+    </g>
+    <circle cx="674" cy="392" r="10" class="f-amber"/>
+    <path d="M510 500V250A130 130 0 0 1 770 250V500" fill="none" stroke-width="12" stroke-linejoin="round" class="s-door"/>
+    <rect x="488" y="500" width="304" height="10" rx="3" class="f-door" opacity="0.35"/>
+
+    <use href="#plant" x="1150" y="505"/>
+    <use href="#spark" transform="translate(790 150)" class="f-amber"/>
+    <use href="#spark" transform="translate(806 378) scale(0.6)" class="f-amber"/>
+    <use href="#spark" transform="translate(1160 124) scale(1.2)" class="f-amber"/>
+    <use href="#spark" transform="translate(556 118) scale(0.7)" class="f-amber"/>
+
+    <g transform="rotate(3 965 310)">
+      <rect x="806" y="130" width="330" height="380" rx="18" class="f-shadow"/>
+      <rect x="800" y="120" width="330" height="380" rx="18" class="f-card"/>
+      <rect x="820" y="140" width="290" height="70" rx="10" class="f-door"/>
+      <path d="M842 198V172A14 14 0 0 1 870 172V198Z" class="f-amber"/>
+      <rect x="884" y="158" width="110" height="14" rx="7" style="fill: var(--on)" opacity="0.9"/>
+      <rect x="884" y="180" width="76" height="8" rx="4" style="fill: var(--on)" opacity="0.5"/>
+      <rect x="1056" y="158" width="44" height="22" rx="11" style="fill: var(--on)" opacity="0.25"/>
+      <circle cx="1089" cy="169" r="8" class="f-amber"/>
+      <g clip-path="url(#pair-r)">
+        <rect x="820" y="226" width="145" height="132" fill="#faf5ea"/>
+        <rect x="965" y="226" width="145" height="132" fill="#11151d"/>
+        <rect x="820" y="340" width="145" height="18" fill="#efe3c8"/>
+        <rect x="965" y="340" width="145" height="18" fill="#171d28"/>
+        <circle cx="850" cy="256" r="13" fill="#e9a23b"/>
+        <circle cx="1075" cy="256" r="13" fill="#efe8da"/>
+        <circle cx="1081" cy="252" r="11" fill="#11151d"/>
+        <path d="M874 346V316A18 18 0 0 1 910 316V346Z" fill="#2b4c6f"/>
+        <rect x="900" y="316" width="7" height="30" fill="#e9a23b"/>
+        <path d="M1019 346V316A18 18 0 0 1 1055 316V346Z" fill="#263650" stroke="#7fa6d4" stroke-width="3"/>
+        <rect x="1045" y="316" width="7" height="30" fill="#f4b95a"/>
+      </g>
+      <rect x="963" y="226" width="4" height="132" class="f-card" style="stroke: none"/>
+      <rect x="820" y="226" width="290" height="132" rx="12" fill="none" stroke-width="2" style="stroke: var(--cardline)"/>
+      <rect x="820" y="374" width="88" height="58" rx="9" class="f-sky"/>
+      <rect x="921" y="374" width="88" height="58" rx="9" class="f-sky"/>
+      <rect x="1022" y="374" width="88" height="58" rx="9" class="f-sky"/>
+      <rect x="838" y="408" width="12" height="12" rx="2" class="f-fg"/><rect x="856" y="396" width="12" height="24" rx="2" class="f-fg"/><rect x="874" y="386" width="12" height="34" rx="2" class="f-fg"/>
+      <circle cx="943" cy="403" r="8" class="f-fg"/><circle cx="987" cy="403" r="8" class="f-fg"/><rect x="951" y="401" width="28" height="4" class="f-fg"/>
+      <rect x="1038" y="392" width="56" height="22" rx="11" class="f-amber"/>
+      <rect x="820" y="448" width="230" height="8" rx="4" class="f-muted" opacity="0.4"/>
+      <rect x="820" y="466" width="170" height="8" rx="4" class="f-muted" opacity="0.4"/>
+    </g>
+  </svg>
+  <div class="tag quiet" style="left: 86px; top: 534px">a wall of text</div>
+  <div class="tag warm" style="left: 566px; top: 534px">audited plan</div>
+  <div class="tag warm" style="left: 808px; top: 534px">picture pairs</div>
+</div>
+
+<div class="item" id="scene-illustrate">
+  <div class="head"><div class="nm">frontdoor-illustrate</div><p class="hl display">One HTML block, one light and one dark picture.</p></div>
+  <svg class="scn" width="1200" height="600" viewBox="0 0 1200 600" aria-hidden="true">
+    <defs>
+      <linearGradient id="beam-a" x1="0" x2="1" y1="0" y2="0">
+        <stop offset="0" style="stop-color: var(--amber); stop-opacity: 0.15"/>
+        <stop offset="1" style="stop-color: var(--amber); stop-opacity: 0.55"/>
+      </linearGradient>
+      <linearGradient id="beam-b" x1="0" x2="1" y1="0" y2="0">
+        <stop offset="0" style="stop-color: var(--amber); stop-opacity: 0.55"/>
+        <stop offset="1" style="stop-color: var(--amber); stop-opacity: 0.1"/>
+      </linearGradient>
+      <clipPath id="frame-l"><rect x="800" y="150" width="250" height="170" rx="22"/></clipPath>
+      <clipPath id="frame-d"><rect x="890" y="308" width="250" height="170" rx="22"/></clipPath>
+    </defs>
+    <circle cx="600" cy="330" r="205" class="f-soft"/>
+    <rect x="0" y="505" width="1200" height="95" class="f-ground"/>
+    <polygon points="410,286 446,270 446,400 410,384" fill="url(#beam-a)"/>
+    <polygon points="750,270 806,214 806,430 750,404" fill="url(#beam-b)"/>
+
+    <ellipse cx="235" cy="508" rx="190" ry="12" class="f-shadow"/>
+    <rect x="60" y="170" width="350" height="325" rx="18" class="f-code"/>
+    <path d="M60 206H410V188A18 18 0 0 0 392 170H78A18 18 0 0 0 60 188Z" style="fill: #ffffff" opacity="0.08"/>
+    <circle cx="88" cy="188" r="6.5" class="f-amber"/><circle cx="110" cy="188" r="6.5" class="f-sage"/><circle cx="132" cy="188" r="6.5" style="fill: var(--sky-2)"/>
+    <text class="mono-t" x="88" y="250"><tspan style="fill: var(--amber)">&lt;div</tspan><tspan style="fill: var(--sky-2)"> class=</tspan><tspan style="fill: #8fc29c">"item"</tspan></text>
+    <text class="mono-t" x="88" y="282"><tspan style="fill: var(--sky-2)">     id=</tspan><tspan style="fill: #8fc29c">"hero"</tspan><tspan style="fill: var(--amber)">&gt;</tspan></text>
+    <text class="mono-t" x="88" y="314"><tspan style="fill: var(--amber)">  &lt;h1&gt;</tspan><tspan style="fill: #efe8da">frontdoor</tspan><tspan style="fill: var(--amber)">&lt;/h1&gt;</tspan></text>
+    <text class="mono-t" x="88" y="346"><tspan style="fill: var(--amber)">  &lt;svg&gt;</tspan><tspan style="fill: #efe8da">...</tspan><tspan style="fill: var(--amber)">&lt;/svg&gt;</tspan></text>
+    <text class="mono-t" x="88" y="378"><tspan style="fill: var(--amber)">&lt;/div&gt;</tspan></text>
+    <rect x="88" y="392" width="12" height="24" rx="2" class="f-amber"/>
+
+    <ellipse cx="595" cy="508" rx="170" ry="11" class="f-shadow"/>
+    <rect x="446" y="228" width="300" height="214" rx="36" class="f-door"/>
+    <rect x="462" y="240" width="268" height="9" rx="4.5" style="fill: #ffffff" opacity="0.1"/>
+    <rect x="500" y="200" width="92" height="36" rx="11" class="f-door"/>
+    <rect x="652" y="206" width="48" height="22" rx="8" class="f-amber"/>
+    <rect x="466" y="256" width="44" height="26" rx="7" class="f-soft"/>
+    <g transform="translate(596 338)">
+      <circle r="100" class="f-code"/>
+      <circle r="86" style="fill: var(--door-panel)"/>
+      <circle r="70" class="f-code"/>
+      <circle r="50" style="fill: var(--door-panel)"/>
+      <circle r="38" class="f-amber"/>
+      <path d="M-22 -10A25 25 0 0 1 -6 -25" fill="none" stroke-width="6" stroke-linecap="round" style="stroke: #ffffff" opacity="0.7"/>
+    </g>
+
+    <g clip-path="url(#frame-l)">
+      <rect x="800" y="150" width="250" height="170" fill="#faf5ea"/>
+      <rect x="800" y="286" width="250" height="34" fill="#efe3c8"/>
+      <circle cx="840" cy="192" r="17" fill="#e9a23b"/>
+      <path d="M903 296V242A32 32 0 0 1 967 242V296Z" fill="#2b4c6f"/>
+      <rect x="954" y="242" width="9" height="54" fill="#e9a23b"/>
+    </g>
+    <rect x="800" y="150" width="250" height="170" rx="22" fill="none" stroke-width="5" stroke="#dccfb3"/>
+    <rect x="895" y="316" width="250" height="170" rx="22" class="f-shadow"/>
+    <g clip-path="url(#frame-d)">
+      <rect x="890" y="308" width="250" height="170" fill="#11151d"/>
+      <rect x="890" y="444" width="250" height="34" fill="#171d28"/>
+      <circle cx="1100" cy="350" r="17" fill="#efe8da"/>
+      <circle cx="1108" cy="345" r="15" fill="#11151d"/>
+      <path d="M963 454V400A32 32 0 0 1 1027 400V454Z" fill="#263650" stroke="#7fa6d4" stroke-width="4"/>
+      <rect x="1014" y="400" width="9" height="54" fill="#f4b95a"/>
+    </g>
+    <rect x="890" y="308" width="250" height="170" rx="22" fill="none" stroke-width="5" stroke="#2c3647"/>
+    <use href="#spark" transform="translate(776 150)" class="f-amber"/>
+    <use href="#spark" transform="translate(1160 260) scale(0.8)" class="f-amber"/>
+    <use href="#spark" transform="translate(772 470) scale(0.6)" class="f-amber"/>
+    <use href="#plant" x="1160" y="505"/>
+  </svg>
+  <div class="tag quiet" style="left: 110px; top: 534px">HTML block</div>
+  <div class="tag cool" style="left: 538px; top: 534px">render.py</div>
+  <div class="tag warm" style="left: 810px; top: 112px">light</div>
+  <div class="tag warm" style="left: 1040px; top: 486px">dark</div>
+</div>
+
+<div class="item" id="scene-landing">
+  <div class="head"><div class="nm">frontdoor-landing</div><p class="hl display">A front door for a repository with no landing page.</p></div>
+  <svg class="scn" width="1200" height="600" viewBox="0 0 1200 600" aria-hidden="true">
+    <defs>
+      <linearGradient id="path-l" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0" style="stop-color: var(--amber); stop-opacity: 0.55"/>
+        <stop offset="1" style="stop-color: var(--amber); stop-opacity: 0.05"/>
+      </linearGradient>
+      <clipPath id="open-l"><path d="M340 505V398A60 60 0 0 1 460 398V505Z"/></clipPath>
+      <clipPath id="og-l"><rect x="1004" y="438" width="170" height="104" rx="12"/></clipPath>
+    </defs>
+    <circle cx="400" cy="330" r="225" class="f-soft"/>
+    <rect x="0" y="505" width="1200" height="95" class="f-ground"/>
+    <polygon points="340,505 460,505 520,600 280,600" fill="url(#path-l)"/>
+
+    <ellipse cx="400" cy="508" rx="220" ry="12" class="f-shadow"/>
+    <rect x="230" y="250" width="340" height="255" class="f-card"/>
+    <rect x="486" y="160" width="34" height="80" class="f-door"/>
+    <polygon points="205,258 400,140 595,258" class="f-door"/>
+    <polygon points="400,140 595,258 560,258 400,158" fill="#ffffff" opacity="0.1"/>
+    <rect x="258" y="300" width="64" height="82" rx="10" class="f-soft"/>
+    <rect x="258" y="300" width="64" height="82" rx="10" fill="none" stroke-width="5" class="s-door"/>
+    <path d="M290 300V382M258 341H322" stroke-width="4" class="s-door"/>
+    <rect x="478" y="300" width="64" height="82" rx="10" class="f-soft"/>
+    <rect x="478" y="300" width="64" height="82" rx="10" fill="none" stroke-width="5" class="s-door"/>
+    <path d="M510 300V382M478 341H542" stroke-width="4" class="s-door"/>
+
+    <path d="M340 505V398A60 60 0 0 1 460 398V505Z" class="f-amber"/>
+    <g clip-path="url(#open-l)">
+      <g transform="translate(340 0) scale(0.66 1) translate(-340 0)">
+        <path d="M340 505V398A60 60 0 0 1 460 398V505Z" class="f-door"/>
+        <path d="M356 490V402A44 44 0 0 1 444 402V490Z" fill="none" stroke-width="4" style="stroke: var(--door-panel)"/>
+      </g>
+    </g>
+    <circle cx="411" cy="450" r="6" class="f-amber"/>
+    <path d="M340 505V398A60 60 0 0 1 460 398V505" fill="none" stroke-width="9" stroke-linejoin="round" class="s-door"/>
+    <rect x="338" y="514" width="124" height="26" rx="7" class="f-fg"/>
+    <text class="mono-t" x="400" y="533" text-anchor="middle" style="fill: var(--on); font-size: 17px">index.html</text>
+    <use href="#plant" x="262" y="505"/>
+    <use href="#plant" x="538" y="505"/>
+
+    <rect x="112" y="350" width="12" height="155" rx="3" class="f-door"/>
+    <g transform="rotate(-3 120 380)">
+      <rect x="28" y="330" width="184" height="92" rx="12" class="f-soft" stroke-width="3.5" style="stroke: var(--amber)"/>
+      <text x="120" y="366" text-anchor="middle" style="font: 700 20px 'DM Sans', system-ui, sans-serif; fill: var(--ink)">Found a site?</text>
+      <text x="120" y="398" text-anchor="middle" style="font: 700 20px 'DM Sans', system-ui, sans-serif; fill: var(--amber-ink)">Stop and ask.</text>
+    </g>
+
+    <path d="M590 452C614 452 626 430 642 418" fill="none" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 12" style="stroke: var(--amber)"/>
+    <use href="#spark" transform="translate(604 372) scale(0.7)" class="f-amber"/>
+
+    <rect x="656" y="180" width="490" height="300" rx="20" class="f-shadow"/>
+    <rect x="650" y="170" width="490" height="300" rx="20" class="f-card"/>
+    <path d="M650 210H1140V190A20 20 0 0 0 1120 170H670A20 20 0 0 0 650 190Z" class="f-sky"/>
+    <circle cx="678" cy="190" r="6.5" class="f-amber"/><circle cx="700" cy="190" r="6.5" class="f-sage"/><circle cx="722" cy="190" r="6.5" style="fill: var(--sky-2)"/>
+    <rect x="752" y="180" width="270" height="20" rx="10" style="fill: var(--card)" opacity="0.8"/>
+    <rect x="1070" y="180" width="44" height="20" rx="10" style="fill: var(--card)" opacity="0.8"/>
+    <circle cx="1102" cy="190" r="7" class="f-amber"/>
+    <rect x="680" y="250" width="250" height="20" rx="10" class="f-ink" opacity="0.85"/>
+    <rect x="680" y="282" width="190" height="20" rx="10" class="f-ink" opacity="0.85"/>
+    <rect x="680" y="322" width="270" height="8" rx="4" class="f-muted" opacity="0.4"/>
+    <rect x="680" y="340" width="214" height="8" rx="4" class="f-muted" opacity="0.4"/>
+    <rect x="680" y="380" width="132" height="40" rx="20" class="f-amber"/>
+    <rect x="824" y="381.5" width="104" height="37" rx="18.5" fill="none" stroke-width="3" class="s-door"/>
+    <circle cx="1040" cy="346" r="78" class="f-soft"/>
+    <path d="M1004 420V366A36 36 0 0 1 1076 366V420Z" class="f-door"/>
+    <rect x="1062" y="366" width="8" height="54" class="f-amber"/>
+    <rect x="976" y="420" width="128" height="6" rx="3" class="f-muted" opacity="0.35"/>
+
+    <g transform="rotate(6 1089 490)">
+      <rect x="1008" y="448" width="170" height="104" rx="12" class="f-shadow"/>
+      <rect x="1004" y="438" width="170" height="104" rx="12" class="f-card"/>
+      <g clip-path="url(#og-l)">
+        <rect x="1004" y="438" width="170" height="70" class="f-door"/>
+        <path d="M1076 508V472A14 14 0 0 1 1104 472V508Z" class="f-amber"/>
+        <rect x="1018" y="518" width="100" height="8" rx="4" class="f-muted" opacity="0.5"/>
+        <rect x="1018" y="530" width="70" height="6" rx="3" class="f-muted" opacity="0.4"/>
+      </g>
+    </g>
+    <use href="#spark" transform="translate(1168 420) scale(0.8)" class="f-amber"/>
+  </svg>
+  <div class="tag warm" style="left: 664px; top: 506px">one index.html</div>
+  <div class="tag cool" style="left: 930px; top: 556px">Open Graph preview</div>
+</div>
+
+</div>
+<script>
+function lines(id, x, y, w, n, gap, h, seed) {
+  const g = document.getElementById(id), NS = "http://www.w3.org/2000/svg";
+  for (let i = 0; i < n; i++) {
+    const r = Math.abs(Math.sin(seed + i * 7.13));
+    const ww = i === n - 1 ? w * 0.45 : w * (0.62 + 0.38 * r);
+    const e = document.createElementNS(NS, "rect");
+    e.setAttribute("x", x); e.setAttribute("y", y + i * gap);
+    e.setAttribute("width", ww.toFixed(1)); e.setAttribute("height", h); e.setAttribute("rx", h / 2);
+    e.setAttribute("class", "f-muted"); e.setAttribute("opacity", "0.45");
+    g.appendChild(e);
+  }
+}
+lines("lines-r", 104, 204, 226, 13, 14, 7, 1.7);
+</script>
+</body>
+</html>

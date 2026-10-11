@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>README illustrations</title>
+<!-- Source of ../<id>.webp and ../<id>-dark.webp. Run from the repository root:
+     uvx --from playwright --with pillow python -I frontdoor-illustrate/scripts/render.py assets/source/readme.html --root assets --out assets
+     Each .item is 1200 CSS px wide, so 2400 px in the image. Needs network for the web fonts. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700&display=swap">
+<script src="shared.js"></script>
+<link rel="stylesheet" href="shared.css">
+<style>
+/* hero */
+#hero { height: 480px; }
+#hero .door { position: absolute; left: 40px; top: 20px; width: 540px; height: 440px; }
+#hero .floor { position: absolute; left: 24px; right: 24px; top: 438px; height: 3px; border-radius: 2px; background: var(--muted); opacity: 0.4; }
+#hero .word { position: absolute; left: 580px; right: 48px; top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: center; gap: 18px; }
+#hero h1 { margin: 0; font-weight: 700; font-size: 112px; line-height: 1; letter-spacing: -0.02em; color: var(--ink); }
+#hero h1 i { font-style: normal; color: var(--amber); }
+#hero .sub { font-size: 29px; line-height: 1.3; color: var(--muted); max-width: 560px; }
+#hero .chips { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+
+/* skills-map */
+#skills-map { height: 630px; }
+#skills-map .map { position: absolute; inset: 0; padding: 36px 35px 0; display: flex; flex-direction: column; }
+#skills-map .row { display: flex; align-items: stretch; height: 500px; }
+#skills-map .skill { width: 310px; flex: none; padding: 52px 28px 28px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+#skills-map .skill .nm { margin-top: 20px; }
+#skills-map .io { width: 100%; margin-top: 22px; text-align: left; }
+#skills-map .io p { margin-top: 5px; font-size: 20px; line-height: 1.35; color: var(--ink); }
+#skills-map .io.in { min-height: 110px; }
+#skills-map .io.in p { color: var(--muted); }
+#skills-map .link { width: 100px; flex: none; align-self: center; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+#skills-map .link .mono { font-size: 17px; font-weight: 500; line-height: 1.2; text-align: center; color: var(--amber-ink); }
+#skills-map .foot { margin-top: 30px; display: flex; align-items: center; gap: 16px; font-size: 21px; color: var(--muted); }
+#skills-map .foot::before { content: ""; flex: none; width: 36px; height: 3px; background: var(--amber); border-radius: 2px; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position: absolute" aria-hidden="true">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" style="fill: var(--door)"/></marker>
+    <marker id="aa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" style="fill: var(--amber)"/></marker>
+  </defs>
+</svg>
+<div class="sheet">
+
+<div class="item" id="hero">
+  <svg class="door" viewBox="0 0 540 440" aria-hidden="true">
+    <defs>
+      <linearGradient id="rays" x1="0" x2="1" y1="0" y2="0">
+        <stop offset="0" style="stop-color: var(--amber); stop-opacity: 0.5"/>
+        <stop offset="1" style="stop-color: var(--amber); stop-opacity: 0"/>
+      </linearGradient>
+    </defs>
+    <clipPath id="opening"><path d="M54 420V142A108 108 0 0 1 270 142V420Z"/></clipPath>
+    <polygon points="270,150 540,30 540,420 270,420" fill="url(#rays)"/>
+    <path d="M54 420V142A108 108 0 0 1 270 142V420Z" style="fill: var(--amber)"/>
+    <g clip-path="url(#opening)">
+      <g transform="translate(54 0) scale(0.78 1) translate(-54 0)">
+        <path d="M54 420V142A108 108 0 0 1 270 142V420Z" style="fill: var(--door-fill)"/>
+        <path d="M82 400V150A80 80 0 0 1 242 150V400Z" fill="none" style="stroke: var(--door-panel); stroke-width: 4"/>
+      </g>
+    </g>
+    <circle cx="200" cy="300" r="8" style="fill: var(--amber)"/>
+    <path d="M54 420V142A108 108 0 0 1 270 142V420" fill="none" style="stroke: var(--door); stroke-width: 10; stroke-linejoin: round"/>
+  </svg>
+  <div class="floor"></div>
+  <div class="word">
+    <h1 class="display">frontdoor<i>.</i></h1>
+    <p class="sub">Claude skills that raise how a repository presents itself.</p>
+    <div class="chips"><span class="chip">README</span><span class="chip">illustrations</span><span class="chip">landing page</span></div>
+  </div>
+</div>
+
+<div class="item" id="skills-map">
+  <div class="map">
+    <div class="row">
+      <div class="arch skill">
+        <div class="glow"><svg viewBox="0 0 64 64"><rect x="12" y="8" width="40" height="48" rx="6"/><rect class="al" x="19" y="15" width="26" height="14" rx="3" style="fill: var(--amber-soft)"/><path d="M19 38h26M19 46h16"/></svg></div>
+        <div class="nm">frontdoor-readme</div>
+        <div class="io in"><span class="eyebrow">in</span><p>A wall of text, ASCII diagrams or Mermaid</p></div>
+        <div class="io"><span class="eyebrow">out</span><p>An audited plan, then light and dark picture pairs</p></div>
+      </div>
+      <div class="link"><span class="mono">optional<br>help</span><i class="dash"></i></div>
+      <div class="arch skill">
+        <div class="glow"><svg viewBox="0 0 64 64"><rect x="8" y="12" width="48" height="40" rx="6"/><circle class="a" cx="22" cy="26" r="5"/><path d="M10 46L26 32l10 10 8-8 10 12"/></svg></div>
+        <div class="nm">frontdoor-illustrate</div>
+        <div class="io in"><span class="eyebrow">in</span><p>Pictures that match a brand, regenerated from text</p></div>
+        <div class="io"><span class="eyebrow">out</span><p>Rounded, bordered WebP, one light and one dark per HTML block</p></div>
+      </div>
+      <div class="link"><span class="mono">optional<br>help</span><i class="dash l"></i></div>
+      <div class="arch skill">
+        <div class="glow"><svg viewBox="0 0 64 64"><rect x="6" y="10" width="52" height="44" rx="6"/><path d="M6 22h52"/><path class="al" d="M26 52V40a6 6 0 0 1 12 0v12" style="fill: var(--amber-soft)"/></svg></div>
+        <div class="nm">frontdoor-landing</div>
+        <div class="io in"><span class="eyebrow">in</span><p>A repository with no landing page</p></div>
+        <div class="io"><span class="eyebrow">out</span><p>One index.html with an Open Graph preview</p></div>
+      </div>
+    </div>
+    <div class="foot">Each skill carries its own scripts and references. Install one folder and it works alone.</div>
+  </div>
+</div>
+
+<div class="item" id="readme-flow" style="height: 528px">
+  <svg class="wires" width="1200" height="528" viewBox="0 0 1200 528" aria-hidden="true">
+    <path class="w" d="M290 132H326"/><path class="w" d="M580 132H616"/><path class="w" d="M870 132H906"/>
+    <path class="w" d="M1035 224V264H165V298"/>
+    <path class="w" d="M290 396H326"/><path class="w" d="M580 396H616"/><path class="w" d="M870 396H906"/>
+  </svg>
+  <div class="card step" style="left: 40px; top: 40px; width: 250px; height: 184px">
+    <div class="hd"><span class="badge">1</span><span class="tt">Audit</span></div>
+    <p class="ds">The README, the banner, the docs and the repository's own rules.</p>
+  </div>
+  <div class="card step" style="left: 330px; top: 40px; width: 250px; height: 184px">
+    <div class="hd"><span class="badge">2</span><span class="tt">Ask</span></div>
+    <p class="ds">Labelled questions. Nobody to answer: take the default, write questions.md.</p>
+  </div>
+  <div class="card step" style="left: 620px; top: 40px; width: 250px; height: 184px">
+    <div class="hd"><span class="badge">3</span><span class="tt">Plan</span></div>
+    <p class="ds">The new section order, which sections get images, which files are added.</p>
+  </div>
+  <div class="card step gate" style="left: 910px; top: 40px; width: 250px; height: 184px">
+    <div class="hd"><span class="badge gate"><svg viewBox="0 0 36 36"><path d="M9 31V16a9 9 0 0 1 18 0v15z"/><circle cx="23" cy="24" r="1.5"/></svg></span><span class="tt">Wait for approval</span></div>
+    <p class="ds">The redesign touches the page every visitor sees.</p>
+  </div>
+  <div class="card step" style="left: 40px; top: 304px; width: 250px; height: 184px">
+    <div class="hd"><span class="badge">4</span><span class="tt">Build</span></div>
+    <p class="ds">Images from frontdoor-illustrate when it is available; otherwise ask how.</p>
+  </div>
+  <div class="card step" style="left: 330px; top: 304px; width: 250px; height: 184px">
+    <div class="hd"><span class="badge">5</span><span class="tt">Rewrite</span></div>
+    <p class="ds">The new order, picture pairs and alt text. Reference moves below.</p>
+  </div>
+  <div class="card step" style="left: 620px; top: 304px; width: 250px; height: 184px">
+    <div class="hd"><span class="badge">6</span><span class="tt">Verify</span></div>
+    <p class="ds">Tests, image paths, anchors. No image carries a fact the README lacks.</p>
+  </div>
+  <div class="card step" style="left: 910px; top: 304px; width: 250px; height: 184px">
+    <div class="hd"><span class="badge">7</span><span class="tt">Record</span></div>
+    <p class="ds">Left in the working tree, never committed. Offers to log the decision.</p>
+  </div>
+</div>
+
+<div class="item" id="illustrate-flow" style="height: 520px">
+  <svg class="wires" width="1200" height="520" viewBox="0 0 1200 520" aria-hidden="true">
+    <path class="w" d="M390 120H421"/><path class="w" d="M775 120H806"/>
+    <path class="w" d="M985 200V240H215V274"/>
+    <path class="w" d="M390 360H421"/><path class="w" d="M775 360H806"/>
+    <path class="wa wd" d="M600 440V475H215V446"/>
+  </svg>
+  <div class="lbl" style="left: 407px; top: 463px">fix the source, render again</div>
+  <div class="card step" style="left: 40px; top: 40px; width: 350px; height: 160px">
+    <div class="hd"><span class="badge">1</span><span class="tt">Find the brand</span></div>
+    <p class="ds">Logo, banner, CSS, docs and README tone. No evidence at all: ask for a direction.</p>
+  </div>
+  <div class="card step" style="left: 425px; top: 40px; width: 350px; height: 160px">
+    <div class="hd"><span class="badge">2</span><span class="tt">Pick a folder</span></div>
+    <p class="ds">Copy the starter into a folder no linter, docs site or Docker context covers.</p>
+  </div>
+  <div class="card step" style="left: 810px; top: 40px; width: 350px; height: 160px">
+    <div class="hd"><span class="badge">3</span><span class="tt">Write the items</span></div>
+    <p class="ds">One block per image, 1200 px wide, with a unique id. The id is the file name.</p>
+  </div>
+  <div class="card step" style="left: 40px; top: 280px; width: 350px; height: 160px">
+    <div class="hd"><span class="badge">4</span><span class="tt">Render</span></div>
+    <p class="ds">render.py writes a light and a dark WebP. It warns when content is clipped or a file passes 300 KB.</p>
+  </div>
+  <div class="card step" style="left: 425px; top: 280px; width: 350px; height: 160px">
+    <div class="hd"><span class="badge">5</span><span class="tt">Look</span></div>
+    <p class="ds">Open every image in both themes. Judge the reading, the text size and the contrast.</p>
+  </div>
+  <div class="card step" style="left: 810px; top: 280px; width: 350px; height: 160px">
+    <div class="hd"><span class="badge">6</span><span class="tt">Report</span></div>
+    <p class="ds">The files written with their sizes, and what was not checked.</p>
+  </div>
+</div>
+
+<div class="item" id="landing-flow" style="height: 720px">
+  <svg class="wires" width="1200" height="720" viewBox="0 0 1200 720" aria-hidden="true">
+    <path class="wa" d="M430 120H374"/><path class="w" d="M770 120H826"/>
+    <path class="w" d="M1000 200V240H200V274"/>
+    <path class="w" d="M370 360H426"/><path class="w" d="M770 360H826"/>
+    <path class="w" d="M1000 440V480H200V514"/>
+    <path class="w" d="M370 600H426"/><path class="w" d="M770 600H826"/>
+  </svg>
+  <div class="lbl" style="left: 400px; top: 85px">found</div>
+  <div class="lbl" style="left: 800px; top: 85px">none</div>
+  <div class="card step gate" style="left: 30px; top: 40px; width: 340px; height: 160px">
+    <div class="hd"><span class="badge gate"><svg viewBox="0 0 36 36"><path d="M9 31V16a9 9 0 0 1 18 0v15z"/><circle cx="23" cy="24" r="1.5"/></svg></span><span class="tt">Stop and ask</span></div>
+    <p class="ds">Show the evidence, then ask: do nothing, build elsewhere or replace.</p>
+  </div>
+  <div class="card step" style="left: 430px; top: 40px; width: 340px; height: 160px">
+    <div class="hd"><span class="badge">1</span><span class="tt">Check first</span></div>
+    <p class="ds">Is a Pages workflow, a docs site, a CNAME or a real index.html already there?</p>
+  </div>
+  <div class="card step" style="left: 830px; top: 40px; width: 340px; height: 160px">
+    <div class="hd"><span class="badge">2</span><span class="tt">Place it</span></div>
+    <p class="ds">The root if it is free, docs/ if not. Say which Pages setting to switch on.</p>
+  </div>
+  <div class="card step" style="left: 30px; top: 280px; width: 340px; height: 160px">
+    <div class="hd"><span class="badge">3</span><span class="tt">Learn the project</span></div>
+    <p class="ds">The README, the brand and the repository's writing rules. Labelled questions for the rest.</p>
+  </div>
+  <div class="card step" style="left: 430px; top: 280px; width: 340px; height: 160px">
+    <div class="hd"><span class="badge">4</span><span class="tt">Try directions</span></div>
+    <p class="ds">Two or three rough pages. You pick one or mix them.</p>
+  </div>
+  <div class="card step" style="left: 830px; top: 280px; width: 340px; height: 160px">
+    <div class="hd"><span class="badge">5</span><span class="tt">Build</span></div>
+    <p class="ds">One index.html with inline CSS and JS, and the repository's images.</p>
+  </div>
+  <div class="card step" style="left: 30px; top: 520px; width: 340px; height: 160px">
+    <div class="hd"><span class="badge">6</span><span class="tt">Preview image</span></div>
+    <p class="ds">A 1200x630 PNG for the Open Graph and Twitter tags.</p>
+  </div>
+  <div class="card step" style="left: 430px; top: 520px; width: 340px; height: 160px">
+    <div class="hd"><span class="badge">7</span><span class="tt">Verify</span></div>
+    <p class="ds">390, 820 and 1280 px in light and dark, axe, then Lighthouse on mobile and desktop.</p>
+  </div>
+  <div class="card step" style="left: 830px; top: 520px; width: 340px; height: 160px">
+    <div class="hd"><span class="badge">8</span><span class="tt">Report</span></div>
+    <p class="ds">Files written, the Pages setting to switch on, what was not observed. No commit.</p>
+  </div>
+</div>
+
+</div>
+</body>
+</html>

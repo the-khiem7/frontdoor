@@ -6,6 +6,7 @@ This repo is the source of three skills. `npx skills add <repo> --skill <name>` 
 |---|---|---|
 | `<skill>/SKILL.md`, `<skill>/agents/openai.yaml`, `<skill>/scripts/*`, `<skill>/assets/*`, `<skill>/references/*` | yes | the running agent |
 | `AGENTS.md`, `README.md`, `docs/baseline/` | no | whoever works in this repo |
+| `assets/` at the repository root: the README pictures, with their HTML sources in `assets/source/` | no | whoever reads or regenerates the README |
 
 Each skill folder sits at the repository root. Do not move one under `.claude/skills/` or add a parent folder.
 
@@ -22,7 +23,7 @@ Each skill folder sits at the repository root. Do not move one under `.claude/sk
 
 ## Where reasoning goes
 
-`docs/baseline/frontdoor/` is the decision log: scope, current truth, decisions with rejected alternatives, open questions, and the roadmap. Record the full argument there, not in a `SKILL.md`. Run `packtool check` on the pack after editing it if you have the tool.
+`docs/baseline/frontdoor/` is the decision log for the skills, and `docs/baseline/readme-design/` is the one for this repository's README pictures: scope, current truth, decisions with rejected alternatives, open questions, and the roadmap. Record the full argument there, not in a `SKILL.md`. Run `packtool check` on a pack after editing it if you have the tool.
 
 ## Changing a script
 

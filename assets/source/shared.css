@@ -1,0 +1,65 @@
+/* Shared look for the README illustrations: a doorway with warm light, in a paper theme and a night theme.
+   Contract with render.py:
+     - one or more .item blocks, each with a unique id, inside .sheet
+     - every .item zoomed 2x, so a 1200 CSS px item becomes a 2400 px image
+     - theming through html[data-theme="dark"], set by shared.js from ?theme=dark
+     - --cardline, the border color render.py draws around the finished image
+   Amber is for shapes and strokes. Small text on the paper theme uses --amber-ink, because --amber alone is too pale to read there.
+   Fonts load from Google Fonts at render time; render online or the fallback faces end up in the images. */
+
+:root {
+  --paper: #faf5ea; --card: #fffdf8; --ink: #1e2430; --muted: #5a6270;
+  --amber: #e9a23b; --amber-soft: #fbe7c2; --amber-ink: #8a4f06;
+  --door: #2b4c6f; --door-fill: #2b4c6f; --door-panel: #54779f; --door-soft: #dce6f1;
+  --cardline: #dccfb3; --shadow: rgba(30, 36, 48, 0.10); --on: #fffdf8;
+  --ground: #efe3c8; --sage: #6f9f7a; --sage-soft: #cfe3d3; --sky: #d3e2f0; --sky-2: #9fbfdc; --code: #26324a;
+}
+html[data-theme="dark"] {
+  --paper: #11151d; --card: #1a202b; --ink: #efe8da; --muted: #a7afbd;
+  --amber: #f4b95a; --amber-soft: #3a2c16; --amber-ink: #f4b95a;
+  --door: #7fa6d4; --door-fill: #263650; --door-panel: #4a6e9a; --door-soft: #1f2c3f;
+  --cardline: #2c3647; --shadow: rgba(0, 0, 0, 0.40); --on: #11151d;
+  --ground: #171d28; --sage: #86b595; --sage-soft: #1f3128; --sky: #24364f; --sky-2: #4b6d93; --code: #0b0e14;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: #888; }
+.sheet { width: max-content; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+.item {
+  zoom: 2; position: relative; overflow: hidden; width: 1200px;
+  font-family: "DM Sans", system-ui, "Segoe UI", sans-serif; color: var(--ink); background: var(--paper);
+}
+.display { font-family: "Fraunces", Georgia, serif; font-optical-sizing: auto; }
+.mono { font-family: "JetBrains Mono", ui-monospace, Consolas, monospace; }
+p { margin: 0; }
+
+.card { background: var(--card); border: 1.5px solid var(--cardline); border-radius: 16px; box-shadow: 0 8px 20px var(--shadow); }
+.arch { background: var(--card); border: 1.5px solid var(--cardline); border-radius: 155px 155px 20px 20px; box-shadow: 0 10px 24px var(--shadow); }
+.eyebrow { font: 700 17px "JetBrains Mono", ui-monospace, Consolas, monospace; letter-spacing: 0.1em; text-transform: uppercase; color: var(--amber-ink); }
+.chip { font: 500 19px "JetBrains Mono", ui-monospace, Consolas, monospace; padding: 4px 14px; border-radius: 999px; background: var(--door-soft); color: var(--door); white-space: nowrap; }
+.nm { font: 700 20px "JetBrains Mono", ui-monospace, Consolas, monospace; color: var(--door); }
+.ds { font-size: 19px; line-height: 1.4; color: var(--muted); }
+.glow { flex: none; width: 96px; height: 96px; border-radius: 50%; background: var(--amber-soft); display: grid; place-items: center; }
+.glow svg { width: 60px; height: 60px; fill: none; stroke: var(--door); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+.glow svg .a { stroke: var(--amber); fill: var(--amber); }
+.glow svg .al { stroke: var(--amber); }
+
+/* flow figures: absolutely placed .step cards under an svg of .w connectors; #ah and #aa are the arrowhead markers */
+.step { position: absolute; padding: 18px 20px; border-radius: 16px; }
+.step .hd { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.step .tt { font-size: 22px; font-weight: 700; line-height: 1.2; color: var(--ink); }
+.badge { flex: none; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--amber); color: #1e2430; font: 700 18px "JetBrains Mono", ui-monospace, Consolas, monospace; }
+.badge svg { width: 26px; height: 26px; fill: none; stroke: var(--amber-ink); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+.badge.gate { background: transparent; border: 3px solid var(--amber); }
+.step.gate { border: 2.5px dashed var(--amber); background: var(--amber-soft); box-shadow: none; }
+.step.gate .ds { color: var(--ink); }
+.wires { position: absolute; left: 0; top: 0; pointer-events: none; }
+.w { fill: none; stroke: var(--door); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#ah); }
+.wa { fill: none; stroke: var(--amber); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#aa); }
+.wd { stroke-dasharray: 9 8; }
+.lbl { position: absolute; transform: translateX(-50%); padding: 0 8px; font: 500 17px "JetBrains Mono", ui-monospace, Consolas, monospace; color: var(--amber-ink); background: var(--paper); white-space: nowrap; }
+
+/* dashed connector with an arrowhead; add .l to point left */
+.dash { position: relative; width: 100%; height: 0; border-top: 3px dashed var(--amber); }
+.dash::after { content: ""; position: absolute; right: -3px; top: -9px; border-left: 13px solid var(--amber); border-top: 7.5px solid transparent; border-bottom: 7.5px solid transparent; }
+.dash.l::after { left: -3px; right: auto; border-left: 0; border-right: 13px solid var(--amber); }

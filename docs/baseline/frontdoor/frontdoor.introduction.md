@@ -23,13 +23,15 @@ Out of scope: writing the project's own documentation, committing or pushing, en
 
 ## Current truth
 
-All three skills sit at the repository root as `<name>/` and are committed (FD-D13). Each passed `quick_validate` from the skill-creator plugin before it moved from `.claude/skills/`; the move changed no `SKILL.md`, and `quick_validate` was not re-run at the new path.
+All three skills sit at the repository root as `<name>/` and are committed (FD-D13). Each passed `quick_validate` from the skill-creator plugin before it moved from `.claude/skills/`; the move changed no `SKILL.md`, and `quick_validate` was not re-run at the new path. `frontdoor-readme/SKILL.md` step 4 and `description` were reworded afterwards (FD-D16); `quick_validate` passes on that skill.
 
 | Skill | Files |
 |---|---|
 | `frontdoor-readme` | `SKILL.md`; `agents/openai.yaml`; `references/github-readme.md`, `references/audit-and-plan.md` |
 | `frontdoor-illustrate` | `SKILL.md`; `agents/openai.yaml`; `scripts/render.py`; `assets/starter.css`, `assets/starter.html`, `assets/shared.js`; `references/source-page.md` |
 | `frontdoor-landing` | `SKILL.md`; `agents/openai.yaml`; `scripts/shoot.py`, `scripts/lighthouse.py`; `references/existing-landing.md`, `references/pages-setup.md`, `references/page-craft.md`, `references/verify.md` |
+
+The pictures in this repository's own README are tracked in the `readme-design` pack (FD-D15 moved there).
 
 Observed running, 2026-10-10, on Windows with Edge:
 

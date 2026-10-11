@@ -9,7 +9,7 @@ code_ref: "uncommitted"
 
 # Frontdoor Roadmap
 
-Reasoning for every row below lives in `frontdoor.hallucination.md` under the entry named in its Basis column. Do not restate it here.
+Reasoning for every row below lives in `frontdoor.hallucination.md` under the entry named in its Basis column. Do not restate it here. The pictures of this repository's README are tracked in the `readme-design` pack.
 
 ## Status by area
 
@@ -23,6 +23,7 @@ Reasoning for every row below lives in `frontdoor.hallucination.md` under the en
 | Verification scripts | FD-D8 | implemented | `shoot.py` and `lighthouse.py` run on two real pages and one broken page |
 | Unattended runs | FD-D9 | implemented | `questions.md` written by every trial run |
 | Repository and skill names | FD-D14 | implemented, install checked for all three | `npx skills add --list` found all three on the published repository and a global install of all three succeeded for Claude Code and Gemini CLI |
+| Optional hand-off to the render skill | FD-D16 | implemented, fallback not run | `quick_validate` passes on the edited `frontdoor-readme` |
 | Host selection | FD-Q1 | unobserved | no run started from a plain request |
 | Automated tests | FD-Q2 | not started | none |
 | Other operating systems | FD-Q3 | unobserved | Windows and Edge only |

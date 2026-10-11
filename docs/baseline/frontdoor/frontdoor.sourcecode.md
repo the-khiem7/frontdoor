@@ -27,7 +27,9 @@ frontdoor-landing/
   agents/      openai.yaml
   scripts/     shoot.py  lighthouse.py
   references/  existing-landing.md  pages-setup.md  page-craft.md  verify.md
+assets/         the README pictures and their HTML sources (pack readme-design)
 docs/baseline/frontdoor/
+docs/baseline/readme-design/
 ```
 
 ## What loads when
