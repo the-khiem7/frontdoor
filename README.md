@@ -4,12 +4,12 @@
 
 ## Skills
 
-<picture><source media="(prefers-color-scheme: dark)" srcset="assets/skills-map-dark.webp"><img src="assets/skills-map.webp" alt="Map of the skills, each an arched card. frontdoor-readme: in, a wall of text, ASCII diagrams or Mermaid; out, an audited plan, then light and dark picture pairs. frontdoor-illustrate: in, pictures that match a brand, regenerated from text; out, rounded, bordered WebP, one light and one dark per HTML block. frontdoor-landing: in, a repository with no landing page; out, one index.html with an Open Graph preview. Dashed arrows labelled optional help run from frontdoor-readme and from frontdoor-landing to frontdoor-illustrate. Each skill carries its own scripts and references; install one folder and it works alone." width="100%"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/skills-map-dark.webp"><img src="assets/skills-map.webp" alt="Map of the skills, each an arched card. frontdoor-readme: in, no README, or a wall of text, ASCII diagrams or Mermaid; out, a complete README with a hero banner and light and dark pictures. frontdoor-illustrate: in, pictures with a look of their own, regenerated from text; out, rounded, bordered WebP, one light and one dark per HTML block. frontdoor-landing: in, a repository with no landing page; out, one index.html with an Open Graph preview. Dashed arrows labelled optional help run from frontdoor-readme and from frontdoor-landing to frontdoor-illustrate. Each skill carries its own scripts and references; install one folder and it works alone." width="100%"></picture>
 
 | Skill | Use it when | Result |
 |---|---|---|
-| `frontdoor-readme` | the README is a wall of text, ASCII diagrams or Mermaid | an audited plan, then a README that uses `<picture>` light/dark image pairs |
-| `frontdoor-illustrate` | you need pictures that match a brand and regenerate from text | rounded, bordered WebP files, one light and one dark per HTML block |
+| `frontdoor-readme` | the README is missing, or a wall of text, ASCII diagrams or Mermaid | a complete README with a hero banner and `<picture>` light/dark image pairs, in a look drawn from your repository |
+| `frontdoor-illustrate` | you need pictures with a look of their own that regenerate from text | rounded, bordered WebP files, one light and one dark per HTML block |
 | `frontdoor-landing` | the repository has no landing page and should have one | a single `index.html` with Open Graph preview, checked at three widths in both themes |
 
 Each skill carries its own scripts and references. Install one folder and it works alone. Skills name each other only as optional help.
@@ -25,7 +25,7 @@ It plans before it builds: nothing is rewritten until the plan is approved.
 <details>
 <summary>Step by step</summary>
 
-<picture><source media="(prefers-color-scheme: dark)" srcset="assets/readme-flow-dark.webp"><img src="assets/readme-flow.webp" alt="Flow of frontdoor-readme, in order. 1 Audit: the README, the banner, the docs and the repository's own rules. 2 Ask: labelled questions; with nobody to answer, take the default and write questions.md. 3 Plan: the new section order, which sections get images, which files are added. Then wait for approval, because the redesign touches the page every visitor sees. 4 Build: images from frontdoor-illustrate when it is available, otherwise ask how. 5 Rewrite: the new order, picture pairs and alt text, with reference material moved below. 6 Verify: tests, image paths and anchors, and that no image carries a fact the README lacks. 7 Record: the work is left in the working tree and never committed, and the skill offers to log the decision." width="100%"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/readme-flow-dark.webp"><img src="assets/readme-flow.webp" alt="Flow of frontdoor-readme, in order. 1 Classify: read the code, the docs and any README, and decide greenfield or brownfield. 2 Facts and questions: a fact list with a source for each line, and labelled questions for the rest. 3 Signature and hero: a look drawn from this project, and a hero banner in every run. 4 Plan: the section order, scenes and diagrams, the hero and the files to add. Then wait for approval, because a README is the page every visitor sees. 5 Build: images from frontdoor-illustrate when it is available, otherwise ask how. 6 Write: the complete README, every sentence and command traced to the repository. 7 Verify: tests when there are any, image paths, anchors, and the trace of each statement. 8 Record: the work is left in the working tree and never committed, and the skill offers to log the decision." width="100%"></picture>
 
 </details>
 
@@ -38,7 +38,7 @@ Every image is an HTML block, so a later edit is a text edit plus one command.
 <details>
 <summary>Step by step</summary>
 
-<picture><source media="(prefers-color-scheme: dark)" srcset="assets/illustrate-flow-dark.webp"><img src="assets/illustrate-flow.webp" alt="Flow of frontdoor-illustrate, in order. 1 Find the brand: logo, banner, CSS, docs and README tone; with no evidence at all, ask for a direction. 2 Pick a folder: copy the starter into a folder that no linter, docs site or Docker context covers. 3 Write the items: one block per image, 1200 px wide, with a unique id that becomes the file name. 4 Render: render.py writes a light and a dark WebP and warns when content is clipped or a file passes 300 KB. 5 Look: open every image in both themes and judge the reading, the text size and the contrast. A dashed arrow from Look back to Render reads: fix the source, render again. 6 Report: the files written with their sizes, and what was not checked." width="100%"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/illustrate-flow-dark.webp"><img src="assets/illustrate-flow.webp" alt="Flow of frontdoor-illustrate, in order. 1 Find the brand: logo, CSS and docs; a signature already there is continued. 2 Find the signature: subject, metaphor, shapes and typeface, with rough directions for a new repository. 3 Pick a folder: copy the starter where no linter or docs site looks. 4 Write the items: one block per image with a unique id that becomes the file name. 5 Render: render.py writes a light and a dark WebP and warns on clipping, size and fonts. 6 Look: every image in both themes, with contrast computed. A dashed arrow from Look back to Render reads: fix, render again. 7 Report: the files, their sizes, the signature, and what was not checked." width="100%"></picture>
 
 </details>
 
@@ -51,7 +51,7 @@ It looks for an existing landing page first and stops with its evidence when one
 <details>
 <summary>Step by step</summary>
 
-<picture><source media="(prefers-color-scheme: dark)" srcset="assets/landing-flow-dark.webp"><img src="assets/landing-flow.webp" alt="Flow of frontdoor-landing, in order. 1 Check first: is a Pages workflow, a docs site, a CNAME or a real index.html already there? If one is found, the flow goes to Stop and ask: show the evidence, then ask whether to do nothing, build elsewhere or replace. If none is found, it continues. 2 Place it: the root if it is free, docs/ if not, and say which Pages setting to switch on. 3 Learn the project: the README, the brand and the repository's writing rules, with labelled questions for the rest. 4 Try directions: two or three rough pages; you pick one or mix them. 5 Build: one index.html with inline CSS and JS and the repository's images. 6 Preview image: a 1200x630 PNG for the Open Graph and Twitter tags. 7 Verify: 390, 820 and 1280 px in light and dark, axe, then Lighthouse on mobile and desktop. 8 Report: the files written, the Pages setting to switch on, what was not observed, and no commit." width="100%"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/landing-flow-dark.webp"><img src="assets/landing-flow.webp" alt="Flow of frontdoor-landing, in order. 1 Check first: is a Pages workflow, a docs site, a CNAME or a real index.html already there? If one is found, the flow goes to Stop and ask: show the evidence, then ask whether to do nothing, build elsewhere or replace. If none is found, it continues. 2 Place it: the root if it is free, docs/ if not, and say which Pages setting to switch on. 3 Learn the project: the README, brand, signature and writing rules, with labelled questions for the rest. 4 Try directions: two or three rough pages; you pick one or mix them. 5 Build: one index.html with inline CSS and JS and the repository's images. 6 Preview image: a 1200x630 PNG for Open Graph and Twitter, recomposed from the hero. 7 Verify: 390, 820 and 1280 px in light and dark, axe, then Lighthouse on mobile and desktop. 8 Report: the files written, the Pages setting to switch on, what was not observed, and no commit." width="100%"></picture>
 
 </details>
 
@@ -76,7 +76,8 @@ Then ask in a plain sentence, for example "make the README nicer to read" or "ad
 
 - The skills write files and stop. They never commit or push.
 - `frontdoor-landing` stops and shows its evidence when it finds an existing landing page, and asks where `index.html` should go before writing.
-- No look is fixed. The brand comes from the target repository; the starter colours and fonts are placeholders.
+- No look is shipped. Each repository gets its own signature: a vector shape language, a typeface and a way of presenting, derived from what the project is. Two repositories should not come out as one design with different text.
+- `frontdoor-readme` writes the complete README, and every sentence and command traces to the repository or to your answer. Every run ends with a hero banner.
 - Where nobody can answer a question, a skill takes the recommended default and writes the question and the assumed answer to `questions.md`.
 
 ## Status

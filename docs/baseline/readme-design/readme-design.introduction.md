@@ -26,7 +26,7 @@ Every picture is a pair, `assets/<id>.webp` and `assets/<id>-dark.webp`, regener
 | `scene-readme`, `scene-illustrate`, `scene-landing` | `scenes.html` | first picture under each skill in "How each skill runs" (RD-D3) |
 | `readme-flow`, `illustrate-flow`, `landing-flow` | `readme.html` | inside `<details>` "Step by step" under each scene |
 
-README order: hero and a bold lead sentence; Skills (map, table, one sentence); How each skill runs (scene, one sentence, flow in `<details>`, three times); Install; Requirements; Behaviour to know; Status inside `<details>`. The look is an arched doorway in a paper and a night theme (RD-D2).
+README order: hero and a bold lead sentence; Skills (map, table, one sentence); How each skill runs (scene, one sentence, flow in `<details>`, three times); Install; Requirements; Behaviour to know; Status inside `<details>`. The look is an arched doorway in a paper and a night theme (RD-D2); it is one example of a signature, not a template for other repositories (FD-D17, pack frontdoor). The four pictures that restate the skills were redrawn on 2026-10-12 to match the reworked skills.
 
 Observed running, 2026-10-11, on Windows with Edge:
 

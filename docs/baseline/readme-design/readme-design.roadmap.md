@@ -56,6 +56,21 @@ Acceptance criteria:
 | README | rewritten with the scenes; all sixteen image paths exist; `<details>` tags balance; no non-ASCII character; no skill count in text |
 | Not observed | the README on github.com (RD-Q1) |
 
+## Phase 3: pictures kept in step with the skills
+
+Acceptance criteria:
+
+- `skills-map`, `readme-flow`, `illustrate-flow` and `landing-flow` match the current `SKILL.md` steps
+- the README text and alt texts say the same as the pictures
+
+### Checkpoint: complete
+
+| Item | Result |
+|---|---|
+| Redrawn | `skills-map` card text, `readme-flow` (eight steps and the approval gate), `illustrate-flow` (seven steps and the loop), two card texts in `landing-flow`; `render.py` exit 0, no WARN |
+| README | table rows, alt texts and the behaviour notes updated |
+| Not observed | the README on github.com (RD-Q1) |
+
 ## Risks
 
 | Risk | Detail |
