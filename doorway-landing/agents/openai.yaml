@@ -1,6 +1,0 @@
-interface:
-  display_name: "Doorway Landing"
-  short_description: "Build a single-file GitHub Pages landing page after checking none exists"
-  default_prompt: "Use $doorway-landing to check whether this repository has a landing page and, if not, build a single-file index.html for GitHub Pages."
-policy:
-  allow_implicit_invocation: true

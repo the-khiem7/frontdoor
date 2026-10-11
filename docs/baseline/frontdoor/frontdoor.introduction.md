@@ -1,13 +1,13 @@
 ---
 baseline_schema: "2.0"
-pack: "visual-skills"
+pack: "frontdoor"
 document: "introduction"
 status: "active"
 updated: "2026-10-11"
 code_ref: "uncommitted"
 ---
 
-# Visual Skills: Scope, Current Truth, Target
+# Frontdoor: Scope, Current Truth, Target
 
 ## Scope
 
@@ -15,21 +15,21 @@ Three Claude skills that raise how a repository presents itself, plus the script
 
 | Skill | Job |
 |---|---|
-| `doorway-readme` | audit a README, plan which sections become pictures, rewrite the page with light/dark image pairs |
-| `doorway-illustrate` | turn hand-built HTML pages into rounded, bordered WebP images in a light and a dark theme |
-| `doorway-landing` | design and build a single-file `index.html` for GitHub Pages, after checking that no landing page exists |
+| `frontdoor-readme` | audit a README, plan which sections become pictures, rewrite the page with light/dark image pairs |
+| `frontdoor-illustrate` | turn hand-built HTML pages into rounded, bordered WebP images in a light and a dark theme |
+| `frontdoor-landing` | design and build a single-file `index.html` for GitHub Pages, after checking that no landing page exists |
 
 Out of scope: writing the project's own documentation, committing or pushing, enabling GitHub Pages (a repository setting the skills only describe), and any build step on the page being produced.
 
 ## Current truth
 
-All three skills sit at the repository root as `<name>/` and are committed (VS-D13). Each passed `quick_validate` from the skill-creator plugin before it moved from `.claude/skills/`; the move changed no `SKILL.md`, and `quick_validate` was not re-run at the new path.
+All three skills sit at the repository root as `<name>/` and are committed (FD-D13). Each passed `quick_validate` from the skill-creator plugin before it moved from `.claude/skills/`; the move changed no `SKILL.md`, and `quick_validate` was not re-run at the new path.
 
 | Skill | Files |
 |---|---|
-| `doorway-readme` | `SKILL.md`; `agents/openai.yaml`; `references/github-readme.md`, `references/audit-and-plan.md` |
-| `doorway-illustrate` | `SKILL.md`; `agents/openai.yaml`; `scripts/render.py`; `assets/starter.css`, `assets/starter.html`, `assets/shared.js`; `references/source-page.md` |
-| `doorway-landing` | `SKILL.md`; `agents/openai.yaml`; `scripts/shoot.py`, `scripts/lighthouse.py`; `references/existing-landing.md`, `references/pages-setup.md`, `references/page-craft.md`, `references/verify.md` |
+| `frontdoor-readme` | `SKILL.md`; `agents/openai.yaml`; `references/github-readme.md`, `references/audit-and-plan.md` |
+| `frontdoor-illustrate` | `SKILL.md`; `agents/openai.yaml`; `scripts/render.py`; `assets/starter.css`, `assets/starter.html`, `assets/shared.js`; `references/source-page.md` |
+| `frontdoor-landing` | `SKILL.md`; `agents/openai.yaml`; `scripts/shoot.py`, `scripts/lighthouse.py`; `references/existing-landing.md`, `references/pages-setup.md`, `references/page-craft.md`, `references/verify.md` |
 
 Observed running, 2026-10-10, on Windows with Edge:
 
@@ -38,7 +38,7 @@ Observed running, 2026-10-10, on Windows with Edge:
 - `lighthouse.py` returned the four category scores for two landing pages, mobile and desktop.
 - A trial on two real repositories, each run with and without the skills, is recorded in the roadmap under Phase 2. The reviewer preferred the with-skill output for both the landing page and the README illustrations.
 
-Not observed: installing `doorway-readme` or `doorway-landing` with `npx skills add`, the skills selected by a host from a plain request, any run on macOS or Linux, any page on its live GitHub Pages URL.
+Not observed: installing `frontdoor-readme` or `frontdoor-landing` with `npx skills add`, the skills selected by a host from a plain request, any run on macOS or Linux, any page on its live GitHub Pages URL.
 
 ## Target
 

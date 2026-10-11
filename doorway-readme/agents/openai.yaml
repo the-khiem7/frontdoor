@@ -1,6 +1,0 @@
-interface:
-  display_name: "Doorway Readme"
-  short_description: "Audit a README and rebuild it around light and dark illustrations"
-  default_prompt: "Use $doorway-readme to audit this README, plan which sections become pictures, and rewrite it with light and dark image pairs."
-policy:
-  allow_implicit_invocation: true

@@ -1,31 +1,31 @@
 ---
 baseline_schema: "2.0"
-pack: "visual-skills"
+pack: "frontdoor"
 document: "roadmap"
 status: "active"
 updated: "2026-10-11"
 code_ref: "uncommitted"
 ---
 
-# Visual Skills Roadmap
+# Frontdoor Roadmap
 
-Reasoning for every row below lives in `visual-skills.hallucination.md` under the entry named in its Basis column. Do not restate it here.
+Reasoning for every row below lives in `frontdoor.hallucination.md` under the entry named in its Basis column. Do not restate it here.
 
 ## Status by area
 
 | Area | Basis | Status | Evidence |
 |---|---|---|---|
-| Three skills and their split | VS-D1, VS-D2 | implemented | `quick_validate` reported each valid before the move in the next row |
-| Layout for `npx skills add` | VS-D13 | implemented, install checked for one skill | folders moved from `.claude/skills/` to the repository root, `agents/openai.yaml` added to each; no `SKILL.md` changed; `npx skills add --list` found all three and a single-skill install delivered every file of `doorway-illustrate` |
-| Illustration pipeline | VS-D3, VS-D4, VS-D5 | implemented | `render.py` output pixel-identical to a hand-made set for two source pages, light and dark |
-| Existing-landing check | VS-D6 | implemented, trial did not separate the two runs | both runs on an app repository stopped without writing a file |
-| Landing page floor | VS-D7 | implemented, one rule broken in the trial and fixed | see VS-D12 |
-| Verification scripts | VS-D8 | implemented | `shoot.py` and `lighthouse.py` run on two real pages and one broken page |
-| Unattended runs | VS-D9 | implemented | `questions.md` written by every trial run |
-| Skill names carry the brand | VS-D14 | implemented | folders, `name` frontmatter, `openai.yaml` and README renamed; `npx skills add --list` not re-run under the new names |
-| Host selection | VS-Q1 | unobserved | no run started from a plain request |
-| Automated tests | VS-Q2 | not started | none |
-| Other operating systems | VS-Q3 | unobserved | Windows and Edge only |
+| Three skills and their split | FD-D1, FD-D2 | implemented | `quick_validate` reported each valid before the move in the next row |
+| Layout for `npx skills add` | FD-D13 | implemented, install checked for one skill | folders moved from `.claude/skills/` to the repository root, `agents/openai.yaml` added to each; no `SKILL.md` changed; `npx skills add --list` found all three and a single-skill install delivered every file of the illustration skill |
+| Illustration pipeline | FD-D3, FD-D4, FD-D5 | implemented | `render.py` output pixel-identical to a hand-made set for two source pages, light and dark |
+| Existing-landing check | FD-D6 | implemented, trial did not separate the two runs | both runs on an app repository stopped without writing a file |
+| Landing page floor | FD-D7 | implemented, one rule broken in the trial and fixed | see FD-D12 |
+| Verification scripts | FD-D8 | implemented | `shoot.py` and `lighthouse.py` run on two real pages and one broken page |
+| Unattended runs | FD-D9 | implemented | `questions.md` written by every trial run |
+| Repository and skill names | FD-D14 | implemented, install checked for all three | `npx skills add --list` found all three on the published repository and a global install of all three succeeded for Claude Code and Gemini CLI |
+| Host selection | FD-Q1 | unobserved | no run started from a plain request |
+| Automated tests | FD-Q2 | not started | none |
+| Other operating systems | FD-Q3 | unobserved | Windows and Edge only |
 
 ## Phase 1: build the three skills
 
@@ -39,7 +39,7 @@ Acceptance criteria:
 
 | Item | Result |
 |---|---|
-| Skills created | `doorway-readme`, `doorway-illustrate`, `doorway-landing` |
+| Skills created | `frontdoor-readme`, `frontdoor-illustrate`, `frontdoor-landing` |
 | Scripts | `render.py`, `shoot.py` (`check`, `og`), `lighthouse.py` |
 | Validation | `quick_validate` passes for all three |
 | Script runs | `render.py` against two source pages, light and dark, byte-compared as decoded pixels: no difference |
@@ -60,12 +60,12 @@ Acceptance criteria:
 | Landing page for a skills repository with none | 10 of 11 | 11 of 11 |
 | Landing page for an app repository that has a docs site | 5 of 5, stopped | 5 of 5, stopped |
 
-- The single missed assertion was a skill count in a heading, recorded in VS-D12.
+- The single missed assertion was a skill count in a heading, recorded in FD-D12.
 - A person compared the outputs side by side and preferred the with-skill result for both the landing page and the README illustrations, 2026-10-10.
 - The pass rates do not separate the two sides; the comparison by a person is the evidence for the skills.
 - Elapsed time and token counts are not comparable: both without-skills runs were interrupted and resumed, so their figures cover only the resumed part.
 - The two with-skill runs also produced findings that changed the skills, listed in Phase 3.
-- The review page built by the plugin was unusable; see VS-D11.
+- The review page built by the plugin was unusable; see FD-D11.
 
 ## Phase 3: revise the skills from the trial findings
 
@@ -88,16 +88,15 @@ Acceptance criteria:
 
 | Risk | Detail |
 |---|---|
-| Descriptions may not trigger | VS-Q1 |
-| A script regresses unnoticed | VS-Q2 |
-| Another operating system fails at the first script | VS-Q3 |
-| Lighthouse performance scores vary by 10 points or more between identical runs | VS-D8 |
-| A generated page breaks a repository's own writing rules | VS-D12 |
+| Descriptions may not trigger | FD-Q1 |
+| A script regresses unnoticed | FD-Q2 |
+| Another operating system fails at the first script | FD-Q3 |
+| Lighthouse performance scores vary by 10 points or more between identical runs | FD-D8 |
+| A generated page breaks a repository's own writing rules | FD-D12 |
 
 ## Next action
 
-1. Run `npx skills add <repository> --skill <name>` into a scratch repository for `doorway-readme` and `doorway-landing`, and record whether each folder installs whole, scripts and references included (VS-D13).
-2. Ask for a README upgrade and for a landing page in a plain sentence, in a repository that has the skills, and record whether each skill is selected (VS-Q1).
-3. If a skill is not selected, run the description optimizer from the skill-creator plugin on it.
-4. Decide whether the three scripts need automated tests (VS-Q2) before anyone depends on them.
-5. Nothing in this pack waits on another decision.
+1. Ask for a README upgrade and for a landing page in a plain sentence, in a repository that has the skills, and record whether each skill is selected (FD-Q1).
+2. If a skill is not selected, run the description optimizer from the skill-creator plugin on it.
+3. Decide whether the three scripts need automated tests (FD-Q2) before anyone depends on them.
+4. Nothing in this pack waits on another decision.

@@ -22,7 +22,7 @@ Each skill folder sits at the repository root. Do not move one under `.claude/sk
 
 ## Where reasoning goes
 
-`docs/baseline/visual-skills/` is the decision log: scope, current truth, decisions with rejected alternatives, open questions, and the roadmap. Record the full argument there, not in a `SKILL.md`. Run `packtool check` on the pack after editing it if you have the tool.
+`docs/baseline/frontdoor/` is the decision log: scope, current truth, decisions with rejected alternatives, open questions, and the roadmap. Record the full argument there, not in a `SKILL.md`. Run `packtool check` on the pack after editing it if you have the tool.
 
 ## Changing a script
 
