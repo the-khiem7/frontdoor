@@ -1,6 +1,6 @@
 interface:
   display_name: "Frontdoor Landing"
-  short_description: "Build a single-file GitHub Pages landing page after checking none exists"
-  default_prompt: "Use $frontdoor-landing to check whether this repository has a landing page and, if not, build a single-file index.html for GitHub Pages."
+  short_description: "Build a single-file GitHub Pages landing page in this project's own signature, after checking none exists"
+  default_prompt: "Use $frontdoor-landing to check whether this repository has a landing page and, if not, build a single-file index.html for GitHub Pages in the repository's own look."
 policy:
   allow_implicit_invocation: true

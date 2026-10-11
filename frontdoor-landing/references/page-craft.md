@@ -41,7 +41,7 @@ Scroll-triggered reveals use `IntersectionObserver` and a CSS class. Respect `@m
 
 ## Fonts
 
-Take the project's fonts if it has them. Request only the weights used.
+Take the project's fonts if it has them; otherwise the typeface comes from the signature (`signature.md`), chosen for this project and not left on a system default. Request only the weights used.
 
 A normal `<link rel="stylesheet">` to Google Fonts blocks first paint; measured, that cost about 7 Lighthouse performance points. Load it without blocking:
 
@@ -56,6 +56,7 @@ with `display=swap` in the URL. The fallback stack should resemble the real font
 
 ## What to avoid
 
+- A template with the words swapped. Run the swap test from `signature.md` on the finished page: put another project's name and text into it, and if it still fits, it is generic.
 - Stock photography, fake testimonials, invented numbers, counters that count up to a made-up figure.
 - A hero that needs a video to make sense.
 - Anything that needs a build step: the page must work when the file is opened from the folder.

@@ -10,6 +10,13 @@ and each .item is screenshotted. Output: <id>.webp for light, <id>-dark.webp for
 
 A browser is taken from the machine (Edge, then Chrome) so nothing has to be downloaded; pass
 --browser chromium to use Playwright's own build after `playwright install chromium`.
+
+The box check covers only the .item itself, not a card or node inside it, and skips anything inside an
+element marked data-bleed (a shape that is meant to run off the edge). Look at every image.
+
+Besides the images it prints the fonts and the page grounds it found, and a WARN (counted toward
+exit 1) when a requested font did not load, so a fallback face is in the images, or when the
+stylesheet still carries the starter's --starter-placeholder marker.
 """
 import argparse
 import functools
@@ -68,14 +75,43 @@ def parse_color(value, fallback):
 
 OVERFLOW_JS = """(item) => {
   const box = item.getBoundingClientRect(), bad = [];
+  const name = (el) => el.id || (typeof el.className === 'string' ? el.className : el.getAttribute('class')) || el.tagName;
   for (const el of item.querySelectorAll('*')) {
+    if (el.closest('[data-bleed]')) continue;
     const r = el.getBoundingClientRect();
     if (r.width === 0 || r.height === 0) continue;
     if (r.right > box.right + 1 || r.bottom > box.bottom + 1 || r.left < box.left - 1 || r.top < box.top - 1)
-      bad.push((el.id || el.className || el.tagName).toString().slice(0, 40));
+      bad.push(String(name(el)).slice(0, 40));
   }
   return bad.slice(0, 5);
 }"""
+
+
+FONT_JS = """() => {
+  const generic = new Set(['serif', 'sans-serif', 'monospace', 'cursive', 'fantasy', 'system-ui', 'ui-serif',
+    'ui-sans-serif', 'ui-monospace', 'ui-rounded', 'emoji', 'math', 'fangsong']);
+  const wanted = new Set();
+  for (const el of document.querySelectorAll('.item, .item *, svg text, svg tspan')) {
+    if (!Array.from(el.childNodes).some(n => n.nodeType === 3 && n.textContent.trim())) continue;
+    wanted.add(getComputedStyle(el).fontFamily.split(',')[0].trim().replace(/^["']|["']$/g, ''));
+  }
+  const probe = document.createElement('span');
+  probe.textContent = 'mmmmmmmmmmlliWWW@#';
+  probe.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font-size:72px';
+  document.body.appendChild(probe);
+  const width = (f) => { probe.style.fontFamily = f; return probe.getBoundingClientRect().width; };
+  const used = [], missing = [], plain = [];
+  for (const f of wanted) {
+    if (generic.has(f.toLowerCase())) { plain.push(f); continue; }
+    const q = '"' + f + '"';
+    const here = width(q + ', monospace') !== width('monospace') || width(q + ', serif') !== width('serif');
+    (here ? used : missing).push(f);
+  }
+  probe.remove();
+  return { used, missing, plain };
+}"""
+
+PLACEHOLDER_JS = "() => getComputedStyle(document.documentElement).getPropertyValue('--starter-placeholder').trim()"
 
 
 def launch(p, choice):
@@ -124,6 +160,8 @@ def main():
     port = server.server_address[1]
 
     problems = 0
+    fonts_checked = False
+    fonts_used, grounds = [], {}
     with sync_playwright() as p, tempfile.TemporaryDirectory() as tmp:
         browser = launch(p, a.browser)
         for theme in themes:
@@ -134,6 +172,19 @@ def main():
             ids = page.eval_on_selector_all(".item", "els => els.map(e => e.id)")
             if not ids or any(not i for i in ids):
                 sys.exit("render.py: every .item needs a unique id; it becomes the file name.")
+            if not fonts_checked:
+                fonts_checked = True
+                info = page.evaluate(FONT_JS)
+                fonts_used = info["used"] + info["plain"]
+                if info["missing"]:
+                    problems += 1
+                    print(f"WARN fonts requested but not loaded, so a fallback face is in the images: {', '.join(info['missing'])}. "
+                          "Render online, install the font, or load it from a font host.")
+                if page.evaluate(PLACEHOLDER_JS):
+                    problems += 1
+                    print("WARN starter placeholder tokens are still in use: replace them with the repository's own "
+                          "and delete --starter-placeholder from the stylesheet.")
+            grounds[theme] = page.eval_on_selector(".item", "e => getComputedStyle(e).backgroundColor")
             for item_id in ids:
                 if wanted is not None and item_id not in wanted:
                     continue
@@ -156,6 +207,8 @@ def main():
             page.close()
         browser.close()
     server.shutdown()
+    print("fonts: " + (", ".join(fonts_used) if fonts_used else "none found"))
+    print("grounds: " + ", ".join(f"{t} {c}" for t, c in grounds.items()))
     sys.exit(1 if problems else 0)
 
 

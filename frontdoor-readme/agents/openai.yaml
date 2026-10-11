@@ -1,6 +1,6 @@
 interface:
   display_name: "Frontdoor Readme"
-  short_description: "Audit a README and rebuild it around light and dark illustrations"
-  default_prompt: "Use $frontdoor-readme to audit this README, plan which sections become pictures, and rewrite it with light and dark image pairs."
+  short_description: "Write a complete README with a hero banner and illustrations made for this repository"
+  default_prompt: "Use $frontdoor-readme to write or rewrite this README in full, with a hero banner and light and dark illustrations that belong to this repository alone."
 policy:
   allow_implicit_invocation: true

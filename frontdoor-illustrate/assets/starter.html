@@ -5,24 +5,15 @@
 <title>starter</title>
 <!-- Source of ../<id>.webp and ../<id>-dark.webp. Render with:
      uvx --from playwright --with pillow python -I <skill-dir>/scripts/render.py <this file> --root <assets dir> --out <assets dir>
-     Each .item below is 1200 CSS px wide, so 2400 px in the image. -->
+     Each .item below is 1200 CSS px wide, so 2400 px in the image.
+     Signature note: write the six lines of the signature (concept, shape language, typeface, palette logic, presentation, what it is not) here before drawing. -->
 <script src="shared.js"></script>
 <link rel="stylesheet" href="shared.css">
-<style>
-#flow { height: 300px; }
-.row { position: absolute; inset: 0; padding: 44px 48px; display: flex; align-items: center; }
-.step { flex: 1; padding: 16px 18px 18px; min-height: 150px; }
-.step .ds { margin-top: 6px; }
-</style>
 </head>
 <body>
 <div class="sheet">
-<div class="item" id="flow">
-  <div class="row">
-    <div class="card step"><div class="nm">first</div><div class="ds">What happens first, in one short sentence.</div></div><i class="ar"></i>
-    <div class="card step"><div class="nm">second</div><div class="ds">What follows.</div></div><i class="ar"></i>
-    <div class="card on step"><div class="nm">result</div><div class="ds">What the reader ends up with.</div></div>
-  </div>
+<div class="item" id="example" style="height: 300px">
+  <!-- draw the picture here: HTML, CSS and inline SVG are all fine -->
 </div>
 </div>
 </body>
