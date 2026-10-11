@@ -15,18 +15,18 @@ code_ref: "uncommitted"
 frontdoor-readme/
   SKILL.md
   agents/      openai.yaml
-  references/  github-readme.md  audit-and-plan.md
+  references/  github-readme.md  audit-and-plan.md  readme-content.md  signature.md
 frontdoor-illustrate/
   SKILL.md
   agents/      openai.yaml
-  scripts/     render.py
+  scripts/     render.py  contrast.py
   assets/      starter.css  starter.html  shared.js
-  references/  source-page.md
+  references/  source-page.md  scene-craft.md  signature.md
 frontdoor-landing/
   SKILL.md
   agents/      openai.yaml
   scripts/     shoot.py  lighthouse.py
-  references/  existing-landing.md  pages-setup.md  page-craft.md  verify.md
+  references/  existing-landing.md  pages-setup.md  page-craft.md  verify.md  signature.md
 assets/         the README pictures and their HTML sources (pack readme-design)
 docs/baseline/frontdoor/
 docs/baseline/readme-design/
@@ -45,20 +45,21 @@ docs/baseline/readme-design/
 
 | Skill | Flow |
 |---|---|
-| `frontdoor-readme` | audit README, brand and repository rules -> ask what is open -> propose the plan -> hand image building to `frontdoor-illustrate` -> rewrite the README -> verify -> report |
-| `frontdoor-illustrate` | find the brand -> set up the source folder from the starter -> write one `.item` per image -> `render.py` -> look at every image -> report |
+| `frontdoor-readme` | classify greenfield or brownfield -> fact list and questions -> signature and hero -> propose the plan, wait for approval -> image building by `frontdoor-illustrate` when available -> write the complete README -> verify -> record |
+| `frontdoor-illustrate` | find the brand -> find the signature (rough directions for a new repository) -> set up the source folder from the starter -> write one `.item` per image -> `render.py` -> look at every image, compute contrast -> report |
 | `frontdoor-landing` | existing-landing check -> ask placement -> learn brand and rules -> two or three rough directions -> build `index.html` -> preview image -> `shoot.py` and `lighthouse.py` -> report |
 
 ## Scripts
 
 | Script | Input | Output |
 |---|---|---|
-| `render.py` | a source page, a root to serve, an output folder | `<id>.webp` and `<id>-dark.webp` per `.item`; exit 1 on a clipped item or a file over the size budget |
+| `render.py` | a source page, a root to serve, an output folder | `<id>.webp` and `<id>-dark.webp` per `.item`, the fonts and grounds found; exit 1 on a clipped item, a file over the size budget, a requested font that did not load, or a stylesheet that still carries the starter marker |
+| `contrast.py` | color pairs | the WCAG ratio of each pair and PASS, LARGE-ONLY or FAIL; exit 1 under 4.5 |
 | `shoot.py check` | a folder to serve, a page | full-page PNGs per width and scheme, FAIL and WARN lines, exit 1 on any FAIL |
 | `shoot.py og` | a page | a 1200x630 PNG |
 | `lighthouse.py` | a folder to serve, a page, a preset | the four category scores and the audits that lost points |
 
-All three run as `uvx --from playwright --with pillow python -I <script> ...` (`render.py`), `uvx --from playwright python -I <script> ...` (`shoot.py`) or `uvx python -I <script> ...` (`lighthouse.py`), and take the browser from the machine.
+They run as `uvx --from playwright --with pillow python -I <script> ...` (`render.py`), `uvx --from playwright python -I <script> ...` (`shoot.py`) or `uvx python -I <script> ...` (`lighthouse.py`, `contrast.py`), and take the browser from the machine.
 
 ## Source page contract
 
@@ -68,3 +69,4 @@ All three run as `uvx --from playwright --with pillow python -I <script> ...` (`
 | `.item` is 1200 CSS px wide with `zoom: 2` | the image is 2400 px, twice the density of a README column |
 | theming only through `html[data-theme="dark"]`, set from `?theme=` | `render.py` opens the page once per theme |
 | `--cardline` defined in both themes | the finishing step draws it as the border |
+| the `--starter-placeholder` line deleted from the stylesheet | while it is served, `render.py` warns that the starter's values are in use |

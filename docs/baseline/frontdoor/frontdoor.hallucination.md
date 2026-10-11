@@ -31,6 +31,13 @@ One row per entry. A row states what the entry is about and nothing more. An ans
 | FD-D14 | the repository and skill names: `frontdoor` prefix, short verbs | current | FD-D13, FD-Q1 |
 | FD-D15 | the README pictures; moved to the readme-design pack as RD-D1, RD-D2, RD-D3 | moved | FD-D16, RD-D1 |
 | FD-D16 | how `frontdoor-readme` depends on `frontdoor-illustrate` | current | FD-D2, RD-D3, FD-Q1 |
+| FD-D17 | that the skills ship no reusable look and each repository gets its own signature | current | FD-D5, RD-D2 |
+| FD-D18 | that every run ends with a hero banner, in a greenfield and in a brownfield repository | current | FD-D17 |
+| FD-D19 | that `frontdoor-readme` writes the complete README, with every statement traced to the repository | current | FD-D18 |
+| FD-D20 | how a README chooses between a scene, a diagram and `<details>` | current | RD-D3, FD-D17 |
+| FD-D21 | the three tiers of skill rules and what `render.py` reports about fonts and the starter | current | FD-D3, FD-D17 |
+| FD-D22 | that `signature.md` is shipped as three byte-identical copies | current | FD-D2, FD-D17 |
+| FD-D23 | examples in `signature.md` that anchored a trial agent toward a copy | current, lesson | FD-D17, FD-D22 |
 | FD-Q1 | whether the skill descriptions make a host select the skills correctly | open | none |
 | FD-Q2 | whether the skills need automated tests | open | none |
 | FD-Q3 | whether the scripts work on macOS and Linux | open | FD-D8 |
@@ -212,6 +219,76 @@ Not verified: a run of `frontdoor-readme` without `frontdoor-illustrate` install
 Rejected: keep the hard hand-off, draw it as a solid arrow and reword the README - the README would then admit a skill that cannot run alone.
 
 Rejected: draw no arrows between skills and log the mismatch as an open question - the skill text was fixable in one clause.
+
+## FD-D17: no reusable look is shipped; each repository gets its own signature
+
+Decision: ship no reusable look: the starter of `frontdoor-illustrate` carries only the renderer contract and theme tokens marked `STARTER-PLACEHOLDER`, and `references/signature.md` makes the agent derive, per repository, a signature of vector shape language, typeface and presentation - several projects that use the skills must not end up with one design and different text. This hardens FD-D5.
+
+What breaks if ignored: a starter with components (cards, chips, arrows, rings, lanes) is the look every repository starts from and keeps; this repository's own look (an arched doorway, amber, Fraunces, DM Sans, JetBrains Mono; RD-D2) copied as a template does the same.
+
+Rejected: a gallery of ready styles to pick from - the choice ranges over a fixed set, so outputs converge.
+
+Rejected: a detailed design rulebook - it limits the creativity this family exists for.
+
+Rejected: keeping the starter components as optional - an agent uses what is on the shelf.
+
+## FD-D18: every run ends with a hero banner
+
+Decision: end every `frontdoor-readme` run with a hero banner, in a greenfield and in a brownfield repository; a greenfield repository is one with no README or only a draft and no brand evidence (banner, logo, CSS, docs site), and there the signature is invented from the subject, while an existing banner in a brownfield repository is assessed against the repository's signature, kept when it fits, and replaced only by a proposal the user approves when it does not (low resolution, no dark version, off-brand) - a README with no front picture leaves the first 30 seconds to plain text.
+
+What breaks if ignored: a README without a hero reads like every other one; always making a new hero overwrites a brand someone chose.
+
+Rejected: a hero only for greenfield repositories - the user wants it in every run.
+
+Rejected: always a new hero whatever exists - it would replace a banner that already fits.
+
+## FD-D19: `frontdoor-readme` writes the complete README
+
+Decision: have `frontdoor-readme` write the complete README, not a skeleton, tracing every sentence and command to code, configuration, existing docs or an answer from the user, and asking about what it cannot trace instead of guessing - the target of the workflow is a finished page. This widens the scope in the introduction, which had left the project's own documentation out.
+
+What breaks if ignored: an invented feature or an install command written from memory reaches the page every visitor reads first; a skeleton leaves the user the part that makes the page worth reading.
+
+Rejected: a skeleton README with placeholders - the user wants the finished page.
+
+Rejected: stopping until the user writes the README - it defeats the greenfield case.
+
+## FD-D20: a scene first, a diagram where it fits, `<details>` for the secondary
+
+Decision: prefer a vector scene when the reader should feel or grasp an idea, use a diagram when relations or order must be exact, use both when each helps (the scene as the main figure, the diagram inside `<details>`), and put secondary material (step-by-step flows, secondary tables, trees, status) under `<details><summary>` but never the install commands - the user found step boxes heavy and wants pictures that reach the reader (RD-D3).
+
+What breaks if ignored: a reader meets a wall of step boxes first; a hidden install command costs the one action most visitors came for.
+
+Rejected: a fixed table of content type to figure type (the old `audit-and-plan.md` table) - it pushes every repository toward the same figures.
+
+Rejected: diagrams only - they carry the order but not the feeling.
+
+## FD-D21: three tiers of rules, and `render.py` reports fallback fonts and a leftover starter
+
+Decision: write each rule of the skills at one of three tiers - the renderer contract (hard), a quality floor of legibility, measured contrast, truthful pictures and no skill counts (hard, each with its reason), and design (free, drawn from the repository) - and have `render.py` print a WARN, counted toward exit 1, when a font family was requested but not loaded and when a served stylesheet still holds `STARTER-PLACEHOLDER`, because the agent cannot see either from the image.
+
+What breaks if ignored: a fallback face lands in every image with no signal, which defeats a typeface chosen to be distinctive (RD-D1); a rule with no tier is applied as a design rule and narrows the result.
+
+Rejected: one flat list of rules - an agent cannot tell a hard constraint from a taste.
+
+Rejected: a lint of the colors and shapes against a style guide - it would be a rulebook by another name (FD-D17).
+
+## FD-D22: `signature.md` is shipped as three byte-identical copies
+
+Decision: put the same `references/signature.md` in `frontdoor-illustrate`, `frontdoor-readme` and `frontdoor-landing`, and compare the copies with `cmp` - a skill installed alone must still carry the method (FD-D2).
+
+What breaks if ignored: a copy edited alone makes the skills teach different methods, and nothing else compares them.
+
+Rejected: one copy in `frontdoor-illustrate` with the other two pointing to it - a lone `frontdoor-readme` or `frontdoor-landing` would have no method.
+
+## FD-D23: examples in `signature.md` anchored the agents they were meant to free
+
+What was believed: a table of worked signatures for ordinary subjects (an infrastructure audit tool, a children's reading app) shows the method without being copied, because the file says never to choose from it.
+
+What disproved it: in the two-repository trial, the agent working on a children's story app wrote that its first direction came close to the "cut-paper collage" row for a children's reading app and had to steer away on purpose, and the agent working on an infrastructure audit tool had to avoid the "survey-map blueprint" row for the same reason. The `pebble` run also chose Fraunces, the display face of this repository's own look.
+
+Why it looked reasonable: the rows were labelled as illustrations of the method, and the file forbids copying.
+
+Fix: the rows now use unusual subjects (subtitle parser, secret rotator, tiny-language compiler, ferry timetable, photo renamer, fuzzer), the file says a project of the same kind as an example must still derive its own, and the defaults list names the display faces agents reach for first (Fraunces, Playfair Display, Space Grotesk, Inter). The second trial that would confirm this was not run.
 
 ## Open questions
 

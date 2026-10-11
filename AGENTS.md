@@ -13,7 +13,9 @@ Each skill folder sits at the repository root. Do not move one under `.claude/sk
 ## Rules
 
 - A skill must run alone. It may rely on anything inside its own folder (`scripts/`, `assets/`, `references/`). It may name a sibling skill as optional help, never as a prerequisite, and never reads a path outside its folder.
-- Fix no visual style. Starter colours and fonts are placeholders; the brand comes from the repository the skill runs in.
+- Ship no reusable look. A starter carries only the renderer contract; each repository gets its own signature of vector shape language, typeface and presentation, and this repository's own look is an example of one, not a template.
+- A hero banner ends every `frontdoor-readme` run, in a greenfield and in a brownfield repository.
+- The `references/signature.md` copies in the three skills stay byte-identical: run `cmp` on `frontdoor-illustrate/references/signature.md` against each of the other two.
 - No step may need administrator rights. Scripts use the installed Edge or Chrome, run through `uvx ... python -I`, and write only where told.
 - Skills write files and stop. They never commit or push, and neither do you unless asked.
 - ASCII hyphen only, no en dash or em dash, in every file.
