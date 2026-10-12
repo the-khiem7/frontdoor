@@ -3,7 +3,7 @@ baseline_schema: "2.0"
 pack: "frontdoor"
 document: "introduction"
 status: "active"
-updated: "2026-10-11"
+updated: "2026-10-12"
 code_ref: "uncommitted"
 ---
 
@@ -27,9 +27,9 @@ All three skills sit at the repository root as `<name>/` and are committed (FD-D
 
 | Skill | Files |
 |---|---|
-| `frontdoor-readme` | `SKILL.md`; `agents/openai.yaml`; `references/github-readme.md`, `references/audit-and-plan.md`, `references/readme-content.md`, `references/signature.md` |
-| `frontdoor-illustrate` | `SKILL.md`; `agents/openai.yaml`; `scripts/render.py`, `scripts/contrast.py`; `assets/starter.css`, `assets/starter.html`, `assets/shared.js`; `references/source-page.md`, `references/scene-craft.md`, `references/signature.md` |
-| `frontdoor-landing` | `SKILL.md`; `agents/openai.yaml`; `scripts/shoot.py`, `scripts/lighthouse.py`; `references/existing-landing.md`, `references/pages-setup.md`, `references/page-craft.md`, `references/verify.md`, `references/signature.md` |
+| `frontdoor-readme` | `SKILL.md`; `agents/openai.yaml`; `scripts/board.py`; `references/github-readme.md`, `references/audit-and-plan.md`, `references/readme-content.md`, `references/signature.md` |
+| `frontdoor-illustrate` | `SKILL.md`; `agents/openai.yaml`; `scripts/render.py`, `scripts/contrast.py`, `scripts/board.py`; `assets/starter.css`, `assets/starter.html`, `assets/shared.js`; `references/source-page.md`, `references/scene-craft.md`, `references/signature.md` |
+| `frontdoor-landing` | `SKILL.md`; `agents/openai.yaml`; `scripts/shoot.py`, `scripts/lighthouse.py`, `scripts/board.py`; `references/existing-landing.md`, `references/pages-setup.md`, `references/page-craft.md`, `references/verify.md`, `references/signature.md` |
 
 The pictures in this repository's own README are tracked in the `readme-design` pack (FD-D15 moved there).
 
@@ -40,6 +40,7 @@ Observed running, 2026-10-10, on Windows with Edge:
 - `lighthouse.py` returned the four category scores for two landing pages, mobile and desktop.
 - A trial on two real repositories, each run with and without the skills, is recorded in the roadmap under Phase 2. The reviewer preferred the with-skill output for both the landing page and the README illustrations.
 - 2026-10-12: two agents followed `frontdoor-readme` and `frontdoor-illustrate` on two invented greenfield repositories with unlike subjects; each produced a hero, a scene or flow, a README with a fact trace, and a different signature (roadmap Phase 5).
+- 2026-10-12: `board.py` put two rounds of rough directions for `ghist` on one local board, `.frontdoor/directions.html`, replacing the scratch folder outside the repository (FD-D24).
 
 Not observed: installing `frontdoor-readme` or `frontdoor-landing` with `npx skills add`, the skills selected by a host from a plain request, any run on macOS or Linux, any page on its live GitHub Pages URL.
 

@@ -3,7 +3,7 @@ baseline_schema: "2.0"
 pack: "frontdoor"
 document: "hallucination"
 status: "active"
-updated: "2026-10-11"
+updated: "2026-10-12"
 code_ref: "uncommitted"
 ---
 
@@ -38,6 +38,7 @@ One row per entry. A row states what the entry is about and nothing more. An ans
 | FD-D21 | the three tiers of skill rules and what `render.py` reports about fonts and the starter | current | FD-D3, FD-D17 |
 | FD-D22 | that `signature.md` is shipped as three byte-identical copies | current | FD-D2, FD-D17 |
 | FD-D23 | examples in `signature.md` that anchored a trial agent toward a copy | current, lesson | FD-D17, FD-D22 |
+| FD-D24 | where rough design directions are shown: one local board per repository, every round on it | current | FD-D2, FD-D9, FD-D22, FD-Q3 |
 | FD-Q1 | whether the skill descriptions make a host select the skills correctly | open | none |
 | FD-Q2 | whether the skills need automated tests | open | none |
 | FD-Q3 | whether the scripts work on macOS and Linux | open | FD-D8 |
@@ -289,6 +290,28 @@ What disproved it: in the two-repository trial, the agent working on a children'
 Why it looked reasonable: the rows were labelled as illustrations of the method, and the file forbids copying.
 
 Fix: the rows now use unusual subjects (subtitle parser, secret rotator, tiny-language compiler, ferry timetable, photo renamer, fuzzer), the file says a project of the same kind as an example must still derive its own, and the defaults list names the display faces agents reach for first (Fraunces, Playfair Display, Space Grotesk, Inter). The second trial that would confirm this was not run.
+
+## FD-D24: rough directions go on one local board per repository, every round on it
+
+Decision: show every round of rough directions on one local page, `.frontdoor/directions.html` in the repository being worked on, built by `scripts/board.py` (standard library only) from `.frontdoor/directions.json`; each round is appended and the newest is shown first, the round's sources and renders live under `.frontdoor/round-<N>/`, and the script adds `.frontdoor/` to `.gitignore` - the sketches are scratch, a design can take many rounds, and the user opens one file with a double click. The method is the "Show the directions" section of `signature.md`; `board.py` ships as three byte-identical copies, one per skill, compared with `cmp` like `signature.md` (FD-D22).
+
+What breaks if ignored: a hosted page per round (a published Claude artifact was used in the first run on the `ghist` repository) piles scratch pages up in the user's account and may expose unreleased work; a list of scratch paths makes the user open each sketch by hand; one board per round makes rounds impossible to compare.
+
+Observed 2026-10-12 on Windows with Edge, against a throwaway repository and against `ghist` with two rounds of three directions: a round is appended and the ids continue across rounds; `choose` records the pick; a missing image file, a path outside the folder, an unknown direction id and an id used twice each stop with exit 1 and write nothing; `.frontdoor/` is added to `.gitignore` and `git status` no longer lists it; the board showed no horizontal overflow at 1200 px light and 400 px dark; the page linking its images was 4.9 KB and `--inline` made 210 KB for the same four images.
+
+Not verified: the `open` and `xdg-open` calls on macOS and Linux (FD-Q3); the window opened on Windows was not observed, only that `os.startfile` returned; the board in Firefox or Safari; a full run of any skill that follows the new text.
+
+Rejected: a published Claude artifact per round - one page per round accumulates in the user's gallery for scratch work.
+
+Rejected: a scratch folder outside the repository (the previous wording of the three `SKILL.md` files) - the user wants the board kept with the repository that runs the skills, ignored by git.
+
+Rejected: a new board file per round - older rounds drop out of view and cannot be compared.
+
+Rejected: images embedded by default - the file grows by every image of every round; `--inline` exists for the one file that must be sent.
+
+Rejected: the rule in prose only, with no script - every run would rewrite the page and the layouts would differ.
+
+Rejected: `board.py` in `frontdoor-illustrate` only - a `frontdoor-readme` or `frontdoor-landing` installed alone would have no board (FD-D2).
 
 ## Open questions
 

@@ -3,7 +3,7 @@ baseline_schema: "2.0"
 pack: "frontdoor"
 document: "roadmap"
 status: "active"
-updated: "2026-10-11"
+updated: "2026-10-12"
 code_ref: "uncommitted"
 ---
 
@@ -28,6 +28,7 @@ Reasoning for every row below lives in `frontdoor.hallucination.md` under the en
 | Hero banner in every run | FD-D18 | implemented, greenfield trialled, brownfield not | see Phase 5 |
 | Complete README with traced facts | FD-D19 | implemented, trialled twice | see Phase 5 |
 | Scene first, diagram where it fits, `<details>` | FD-D20 | implemented | `frontdoor-readme` guidance rewritten; this repository's README follows it |
+| Local board for rough directions | FD-D24 | implemented, Windows only, no skill run end to end | see Phase 6 |
 | Host selection | FD-Q1 | unobserved, descriptions changed since | no run started from a plain request |
 | Automated tests | FD-Q2 | not started | none |
 | Other operating systems | FD-Q3 | unobserved | Windows and Edge only |
@@ -114,10 +115,28 @@ Acceptance criteria:
 | Not run | a second trial after the fixes; a brownfield run with an existing banner; the new steps of `frontdoor-landing` |
 | Not observed | skills chosen from a plain request after the description changes (FD-Q1); the README on github.com |
 
+## Phase 6: a local board for rough directions
+
+Acceptance criteria:
+
+- every round of rough directions lands on one local page per repository, not on a hosted page
+- `board.py` is identical in the three skills and runs with the standard library only
+- a bad input stops the script before it records anything
+
+### Checkpoint: complete, no skill run end to end
+
+| Item | Result |
+|---|---|
+| Script | `board.py` added to the three skills (`add`, `build`, `choose`, `--inline`, `--no-open`); copies compared with `cmp` |
+| Text | "Show the directions" section added to `signature.md` (still three identical copies); the scratch-folder wording in the three `SKILL.md` files replaced by `.frontdoor/` and the board; `AGENTS.md` carries the rule |
+| Runs | throwaway repository: two rounds, ids continued, a choice recorded, five bad inputs stopped with exit 1, `.gitignore` written; `ghist`: two rounds of three directions, board checked at 1200 px light and 400 px dark |
+| Not run | a skill following the new text from a plain request; macOS and Linux; the board in Firefox and Safari |
+
 ## Risks
 
 | Risk | Detail |
 |---|---|
+| The three copies of `board.py` drift apart | FD-D24 |
 | Descriptions may not trigger | FD-Q1 |
 | A script regresses unnoticed | FD-Q2 |
 | Another operating system fails at the first script | FD-Q3 |
@@ -132,4 +151,5 @@ Acceptance criteria:
 2. Ask for a README upgrade and for a landing page in a plain sentence, in a repository that has the skills, and record whether each skill is selected (FD-Q1); the descriptions changed in Phase 5.
 3. If a skill is not selected, run the description optimizer from the skill-creator plugin on it.
 4. Decide whether the scripts need automated tests (FD-Q2) before anyone depends on them.
-5. Commit only when asked.
+5. After the new text is installed from GitHub, ask for a hero in a plain sentence in a repository that has the skills and record whether the run builds a round under `.frontdoor/`, adds it to the board and opens it (FD-D24); run `board.py` once on macOS or Linux (FD-Q3).
+6. Commit only when asked.
