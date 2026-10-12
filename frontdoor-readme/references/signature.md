@@ -34,8 +34,20 @@ Each pairs a subject with a signature derived from it. They differ on purpose. A
 | A tool that renames photographs | star chart: dot-and-line figures on a deep ground, italic serif names, numbered plates, pictures as sheets from an atlas |
 | A fuzzing tool | linocut: heavy carved black lines, rough edges, one ink and one paper, a blunt slab display face, pictures as prints on a wall |
 
+## Show the directions
+
+Two or three rough directions go on one local board, never onto a hosted page and never as a list of file paths. The board is `.frontdoor/directions.html` in the repository being worked on, a page the user opens with a double click. Every round goes onto the same board, newest first, so a design that takes many rounds stays in one place and the user can compare rounds.
+
+1. Build each round under `.frontdoor/round-<N>/`: the rough sources, any font specimen and the renders (for a landing page, one folder per direction and its `shoot.py` screenshots). Render with `--root .frontdoor/round-<N> --out .frontdoor/round-<N>/out`.
+2. Describe the round in a JSON file kept outside `.frontdoor/`, in your session's scratch area: a title, a note on what the round answers and, per direction, a title, the concept in one or two sentences, strengths, risks, the flaws you already know, and the images (a label and a path relative to `.frontdoor/`, one per theme) or a link to the local page. State the risks of a direction you like as plainly as those of one you do not. The exact shape is in the docstring of `scripts/board.py`.
+3. Run `uvx python -I <skill-dir>/scripts/board.py add .frontdoor <round.json>`. It appends the round, rebuilds the board, opens it in the default browser and prints the path. It also adds `.frontdoor/` to the repository's `.gitignore` when the entry is missing, so the board and the sketches are never committed. Repeat the path in your message as a link and wait for the choice.
+4. When the user chooses or mixes, run `board.py choose .frontdoor <round> <ids> --note "<what was mixed>"`. After a hand edit of `.frontdoor/directions.json`, run `board.py build .frontdoor`. Add `--inline` to get one file that embeds its images, for sending, and `--no-open` where nothing can open a browser.
+
+Do not publish the board. The sketches are scratch, a hosted page (a published artifact, a gist, a preview link) leaves one page per round behind in the user's account, and unreleased work may be on it.
+
 ## Check before you report
 
 - State the signature in the six lines above and keep them in the source page.
+- Every round of directions is on the board, and neither the board nor the sketches are tracked by git.
 - Run the swap test and read the defaults list against the pictures.
 - Read the fonts that `render.py` printed: a requested font it warns about did not load, and a fallback face is in the images.
