@@ -3,7 +3,7 @@ baseline_schema: "2.0"
 pack: "frontdoor"
 document: "hallucination"
 status: "active"
-updated: "2026-10-12"
+updated: "2026-10-21"
 code_ref: "uncommitted"
 ---
 
@@ -39,6 +39,7 @@ One row per entry. A row states what the entry is about and nothing more. An ans
 | FD-D22 | that `signature.md` is shipped as three byte-identical copies | current | FD-D2, FD-D17 |
 | FD-D23 | examples in `signature.md` that anchored a trial agent toward a copy | current, lesson | FD-D17, FD-D22 |
 | FD-D24 | where rough design directions are shown: one local board per repository, every round on it | current | FD-D2, FD-D9, FD-D22, FD-Q3 |
+| FD-D25 | how a landing page uses motion, and what it does under reduced motion | current, lesson | FD-D7, FD-D8 |
 | FD-Q1 | whether the skill descriptions make a host select the skills correctly | open | none |
 | FD-Q2 | whether the skills need automated tests | open | none |
 | FD-Q3 | whether the scripts work on macOS and Linux | open | FD-D8 |
@@ -312,6 +313,28 @@ Rejected: images embedded by default - the file grows by every image of every ro
 Rejected: the rule in prose only, with no script - every run would rewrite the page and the layouts would differ.
 
 Rejected: `board.py` in `frontdoor-illustrate` only - a `frontdoor-readme` or `frontdoor-landing` installed alone would have no board (FD-D2).
+
+## FD-D25: motion carries the landing page; under reduced motion ambient motion stops and clicks still animate
+
+Decision: the hero of a landing page is an animated inline SVG figure of the product's own flow that the visitor drives (a start button, a clickable control inside the figure, a reset, an `aria-live` status line), each rough direction carries one, and the guidance lives in `frontdoor-landing/references/motion.md`. Under `prefers-reduced-motion: reduce` ambient motion (autoplay, loops, pulses, scroll reveals) is off and the first view is a meaningful state, while motion the visitor starts with a click still runs once at about a third of the duration; no control is hidden or becomes a no-op. `shoot.py check --click <selectors>` clicks each control with and without reduced motion and fails when the screen does not change. The `page-craft.md` sentence "with it, content is visible immediately and nothing moves" is replaced.
+
+Why: Windows Settings > Accessibility > Animation effects off makes Edge and Chrome report `reduce` to every page, and many users switch it off for speed, so "nothing moves" removes the page's main content for a large share of Windows visitors.
+
+Lesson, observed 2026-10-20 on the `commit-composer` landing page in Edge on Windows: five rough directions (rounds 5 and 6) were still sketches or reused the README images and did not convince the user; the user chose the one whose hero was a yard that runs on a click and said animation is the key. The first build followed the old rule: under reduce it hid Pause, drew only the end state, and Replay did nothing on the user's machine, which had animation effects off; `shoot.py check` passed it with 0 FAIL because nothing clicked anything. The fix made the run approve-driven (it waits at the plan for the visitor, as the product waits for approval) and let a click animate under reduce at 0.35 of the duration.
+
+What breaks if ignored: dead buttons and a hero frozen at its end state for every visitor with reduced motion, and no check that reports it; a hero that autoplays past a human step claims the product skips it.
+
+Verified 2026-10-21 with Edge: `shoot.py check` on the commit-composer page with `--click "#run,#reset"` printed ok for both controls in both modes, 0 FAIL; a copy whose `approve()` returns early under reduce printed `FAIL click #run (reduce motion): nothing on screen changed after the click`. Hovering and focusing before the first shot keeps a focus ring from passing a dead button, which an earlier version of the check did.
+
+Not verified: a full `frontdoor-landing` run that follows the new text; Firefox and Safari; macOS "Reduce motion" (FD-Q3). Under normal motion an ambient loop on screen can mask a dead control, so the reduced run is the one that counts.
+
+Rejected: stop all motion under reduce and hide the controls (the previous rule) - the page reads as broken and its buttons do nothing.
+
+Rejected: ignore the setting - ambient loops and large movement are what it exists to stop.
+
+Rejected: an autoplaying loop in the hero - it plays past the step where the product waits for a human, and nobody asked for it.
+
+Rejected: animated rendered images (GIF, video) - heavy, not themable, and not interactive.
 
 ## Open questions
 

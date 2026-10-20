@@ -3,7 +3,7 @@ baseline_schema: "2.0"
 pack: "frontdoor"
 document: "sourcecode"
 status: "active"
-updated: "2026-10-12"
+updated: "2026-10-21"
 code_ref: "uncommitted"
 ---
 
@@ -27,7 +27,7 @@ frontdoor-landing/
   SKILL.md
   agents/      openai.yaml
   scripts/     shoot.py  lighthouse.py  board.py
-  references/  existing-landing.md  pages-setup.md  page-craft.md  verify.md  signature.md
+  references/  existing-landing.md  pages-setup.md  page-craft.md  motion.md  verify.md  signature.md
 assets/         the README pictures and their HTML sources (pack readme-design)
 docs/baseline/frontdoor/
 docs/baseline/readme-design/
@@ -56,7 +56,7 @@ docs/baseline/readme-design/
 |---|---|---|
 | `render.py` | a source page, a root to serve, an output folder | `<id>.webp` and `<id>-dark.webp` per `.item`, the fonts and grounds found; exit 1 on a clipped item, a file over the size budget, a requested font that did not load, or a stylesheet that still carries the starter marker |
 | `contrast.py` | color pairs | the WCAG ratio of each pair and PASS, LARGE-ONLY or FAIL; exit 1 under 4.5 |
-| `shoot.py check` | a folder to serve, a page | full-page PNGs per width and scheme, FAIL and WARN lines, exit 1 on any FAIL |
+| `shoot.py check` | a folder to serve, a page, optional `--click` selectors | full-page PNGs per width and scheme, FAIL and WARN lines, with `--click` a FAIL for a control whose click changes nothing with or without reduced motion, exit 1 on any FAIL |
 | `shoot.py og` | a page | a 1200x630 PNG |
 | `lighthouse.py` | a folder to serve, a page, a preset | the four category scores and the audits that lost points |
 | `board.py add` / `build` / `choose` | the `.frontdoor` folder of the repository, a round file, or a round and direction ids | `directions.json` (every round) and `directions.html` (the board, newest round first); `.frontdoor/` added to `.gitignore`; the board opened in the default browser; exit 1 on a missing file, a path outside the folder, an unknown or repeated direction id |
