@@ -27,7 +27,7 @@ Start from `prefers-color-scheme` (a visitor with JS off gets the light theme un
 
 ## Motion
 
-Scroll-triggered reveals use `IntersectionObserver` and a CSS class. Respect `@media (prefers-reduced-motion: reduce)`: with it, content is visible immediately and nothing moves. Content must be visible if JS fails: add the hidden initial state only after the script has run (a `js` class on `html`), never in the base CSS.
+Motion carries a landing page: the hero is an animated figure of the product's own flow that the visitor drives. How to build it and how to treat reduced motion are in `motion.md`; read it before building. In short, under `prefers-reduced-motion: reduce` ambient motion (autoplay, loops, pulses, scroll reveals) is off and the page shows a meaningful state at once, while motion the visitor starts with a click still runs, shorter, so no control is ever a no-op. Scroll-triggered reveals use `IntersectionObserver` and a CSS class. Content must be visible if JS fails: add the hidden initial state only after the script has run (a `js` class on `html`), never in the base CSS.
 
 ## Interactivity
 
