@@ -14,7 +14,9 @@ uvx --from playwright python -I <skill-dir>/scripts/shoot.py check <root> --page
 
 For a rough draft, `--widths 1280 --schemes light` writes one screenshot.
 
-The `reduced-motion` PNG is taken after scrolling and must show every section; blank parts mean content depends on motion.
+The `reduced-motion` PNG is taken after scrolling and must show every section in a meaningful state; blank parts mean content depends on motion.
+
+Add `--click "<start>,<reset>"` with the selectors of every control that drives a figure, in the order a visitor presses them. Each is clicked once with reduced motion and once without, and a click that changes nothing on screen is a FAIL: the usual cause is a handler that returns early or jumps to an end state when motion is reduced, which Windows users with animation effects off all hit. Under normal motion an ambient loop on screen can mask a dead control, so the reduced run is the one that counts. Raise `--settle` (ms, default 3000) when a run takes longer before its next control is enabled.
 
 ## 2. Lighthouse
 

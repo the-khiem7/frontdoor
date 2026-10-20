@@ -2,7 +2,7 @@
 """Screenshot and check a static landing page, or render its social preview image.
 
     uvx --from playwright python -I shoot.py check <root> [--page index.html] [--widths 390,820,1280]
-        [--schemes light,dark] [--axe <axe.min.js>] [--out <dir>]
+        [--schemes light,dark] [--axe <axe.min.js>] [--click <sel,sel>] [--settle 3000] [--out <dir>]
     uvx --from playwright python -I shoot.py og <page.html> --out og.png [--root <dir>]
 
 `check` serves <root> over HTTP and opens the page at each width, in the light and the dark color
@@ -12,7 +12,11 @@ overflow or a page error, and WARN for missing metadata, an image without alt te
 that is not a file under <root> or is not 1200x630. With --axe it injects axe-core (the file
 axe.min.js that ships inside an npx lighthouse install) and reports contrast and accessibility
 violations in each scheme. It also takes one extra screenshot with reduced motion (after scrolling,
-so lazy images load), which must still show all content. Exit code 1 on FAIL. Use
+so lazy images load), which must still show all content. With --click "#run,#reset" it clicks each
+selector in order, once with reduced motion and once without, screenshots the viewport around the
+control before and after each click, and prints FAIL when a click changes nothing on screen or raises
+a page error: a control that only works when motion is allowed is dead for every visitor who turned
+animation off (on Windows, Settings > Accessibility > Animation effects). Exit code 1 on FAIL. Use
 --widths 1280 --schemes light for a quick look at a rough draft.
 
 `og` renders a page at 1200x630 to a PNG (social scrapers do not read WebP).
@@ -204,6 +208,47 @@ def check(a):
         page.screenshot(path=str(shot), full_page=True)
         print(f"shot {shot.name}  (reduced motion: every section must be visible; look at it)")
         ctx.close()
+        for motion in (["reduce", "no-preference"] if a.click else []):
+            ctx = browser.new_context(viewport={"width": widths[-1], "height": 900}, reduced_motion=motion)
+            page = ctx.new_page()
+            errors = []
+            page.on("pageerror", lambda e: errors.append(str(e)))
+            page.goto(base + a.page, wait_until="networkidle")
+            page.wait_for_timeout(a.settle)
+            for sel in [x.strip() for x in a.click.split(",") if x.strip()]:
+                tag = f"click {sel} ({motion} motion)"
+                target = page.locator(sel).first
+                if target.count() == 0:
+                    fails += 1
+                    print(f"FAIL {tag}: no element matches")
+                    continue
+                # hover and focus first, so the before shot already holds the focus ring and hover style
+                # the click itself adds; otherwise a dead button passes on its own outline
+                target.scroll_into_view_if_needed()
+                try:
+                    target.hover(timeout=a.settle * 3)
+                    target.focus()
+                except Exception:
+                    pass
+                page.wait_for_timeout(300)
+                before = page.screenshot()
+                try:
+                    target.click(timeout=a.settle * 3)
+                except Exception as e:
+                    fails += 1
+                    print(f"FAIL {tag}: could not click ({str(e).splitlines()[0]})")
+                    continue
+                page.wait_for_timeout(a.settle)
+                after = page.screenshot()
+                if before == after:
+                    fails += 1
+                    print(f"FAIL {tag}: nothing on screen changed after the click")
+                else:
+                    print(f"ok {tag}: the screen changed")
+            for e in errors:
+                fails += 1
+                print(f"FAIL click ({motion} motion): page error: {e}")
+            ctx.close()
         browser.close()
     server.shutdown()
     external = sum(1 for _ in checked_links if urlparse(_).scheme in ("http", "https"))
@@ -237,6 +282,8 @@ def main():
     c.add_argument("--widths", default="390,820,1280")
     c.add_argument("--schemes", default="light,dark")
     c.add_argument("--axe")
+    c.add_argument("--click", help="comma separated selectors to click in order, with and without reduced motion")
+    c.add_argument("--settle", type=int, default=3000, help="ms to wait after load and after each click")
     c.add_argument("--out", default="shots")
     c.add_argument("--browser")
     o = sub.add_parser("og")
