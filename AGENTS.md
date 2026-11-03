@@ -1,6 +1,6 @@
 # Working in this repository
 
-This repo is the source of three skills. `npx skills add <repo> --skill <name>` installs a single skill folder, and nothing else travels with it.
+This repo is the source of the frontdoor skills. `npx skills add <repo> --skill <name>` installs a single skill folder, and nothing else travels with it.
 
 | Path | Ships | Read by |
 |---|---|---|
@@ -13,9 +13,9 @@ Each skill folder sits at the repository root. Do not move one under `.claude/sk
 ## Rules
 
 - A skill must run alone. It may rely on anything inside its own folder (`scripts/`, `assets/`, `references/`). It may name a sibling skill as optional help, never as a prerequisite, and never reads a path outside its folder.
-- Ship no reusable look. A starter carries only the renderer contract; each repository gets its own signature of vector shape language, typeface and presentation, and this repository's own look is an example of one, not a template.
+- Ship no reusable look. A starter carries only the renderer contract; each repository gets its own signature of vector shape language, typeface and presentation, and this repository's own look is an example of one, not a template. The one exception is the page of `frontdoor-ui-gallery`, a working tool for the people building an app, which keeps one neutral look.
 - A hero banner ends every `frontdoor-readme` run, in a greenfield and in a brownfield repository.
-- The `references/signature.md` copies in the three skills stay byte-identical: run `cmp` on `frontdoor-illustrate/references/signature.md` against each of the other two. The `scripts/board.py` copies do the same, compared against `frontdoor-illustrate/scripts/board.py`.
+- The `references/signature.md` copies in `frontdoor-illustrate`, `frontdoor-readme` and `frontdoor-landing` stay byte-identical: run `cmp` on `frontdoor-illustrate/references/signature.md` against each of the other two. The `scripts/board.py` copies do the same, compared against `frontdoor-illustrate/scripts/board.py`.
 - Rough directions are shown on the local board `.frontdoor/directions.html` of the repository being worked on, every round on the same board, never on a hosted page. `.frontdoor/` is ignored by git and never committed.
 - No step may need administrator rights. Scripts use the installed Edge or Chrome, run through `uvx ... python -I`, and write only where told.
 - Skills write files and stop. They never commit or push, and neither do you unless asked.
@@ -30,4 +30,4 @@ Each skill folder sits at the repository root. Do not move one under `.claude/sk
 
 ## Changing a script
 
-Re-run it on a real page before reporting it done: `render.py` on a source page, `shoot.py check` and `lighthouse.py` on a landing page, `board.py` on a throwaway repository with two rounds, a missing file, an id used twice and `--inline`. No automated tests exist yet.
+Re-run it on a real page before reporting it done: `render.py` on a source page, `shoot.py check` and `lighthouse.py` on a landing page, `board.py` on a throwaway repository with two rounds, a missing file, an id used twice and `--inline`, and `frontdoor-ui-gallery/scripts/shoot.py render` and `check` on a repository that already has a `design/ui-gallery/gallery.json`. No automated tests exist yet.

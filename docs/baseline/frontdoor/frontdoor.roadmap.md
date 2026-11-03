@@ -3,7 +3,7 @@ baseline_schema: "2.0"
 pack: "frontdoor"
 document: "roadmap"
 status: "active"
-updated: "2026-10-12"
+updated: "2026-10-22"
 code_ref: "uncommitted"
 ---
 
@@ -32,6 +32,7 @@ Reasoning for every row below lives in `frontdoor.hallucination.md` under the en
 | Host selection | FD-Q1 | unobserved, descriptions changed since | no run started from a plain request |
 | Automated tests | FD-Q2 | not started | none |
 | Other operating systems | FD-Q3 | unobserved | Windows and Edge only |
+| UI gallery skill | UG-D1 to UG-D10, pack `ui-gallery` | implemented, run on three apps | roadmap of the `ui-gallery` pack |
 
 ## Phase 1: build the three skills
 
@@ -152,4 +153,4 @@ Acceptance criteria:
 3. If a skill is not selected, run the description optimizer from the skill-creator plugin on it.
 4. Decide whether the scripts need automated tests (FD-Q2) before anyone depends on them.
 5. After the new text is installed from GitHub, ask for a hero in a plain sentence in a repository that has the skills and record whether the run builds a round under `.frontdoor/`, adds it to the board and opens it (FD-D24); run `board.py` once on macOS or Linux (FD-Q3).
-6. Commit only when asked.
+6. Commit only when asked. The UI gallery skill's next actions are in the `ui-gallery` pack.

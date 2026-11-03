@@ -3,7 +3,7 @@ baseline_schema: "2.0"
 pack: "frontdoor"
 document: "hallucination"
 status: "active"
-updated: "2026-10-21"
+updated: "2026-10-22"
 code_ref: "uncommitted"
 ---
 
@@ -40,6 +40,11 @@ One row per entry. A row states what the entry is about and nothing more. An ans
 | FD-D23 | examples in `signature.md` that anchored a trial agent toward a copy | current, lesson | FD-D17, FD-D22 |
 | FD-D24 | where rough design directions are shown: one local board per repository, every round on it | current | FD-D2, FD-D9, FD-D22, FD-Q3 |
 | FD-D25 | how a landing page uses motion, and what it does under reduced motion | current, lesson | FD-D7, FD-D8 |
+| FD-D26 | the UI gallery skill; moved to the ui-gallery pack as UG-D1 | moved | UG-D1 |
+| FD-D27 | the gallery page's neutral look; moved to the ui-gallery pack as UG-D2 | moved | FD-D17, UG-D2 |
+| FD-D28 | where a gallery lives; moved to the ui-gallery pack as UG-D3 | moved | UG-D3 |
+| FD-D29 | the stack references; moved to the ui-gallery pack as UG-D4 | moved | UG-D4 |
+| FD-D30 | how a state is mocked and shot; moved to the ui-gallery pack as UG-D5 | moved | UG-D5 |
 | FD-Q1 | whether the skill descriptions make a host select the skills correctly | open | none |
 | FD-Q2 | whether the skills need automated tests | open | none |
 | FD-Q3 | whether the scripts work on macOS and Linux | open | FD-D8 |
@@ -335,6 +340,26 @@ Rejected: ignore the setting - ambient loops and large movement are what it exis
 Rejected: an autoplaying loop in the hero - it plays past the step where the product waits for a human, and nobody asked for it.
 
 Rejected: animated rendered images (GIF, video) - heavy, not themable, and not interactive.
+
+## FD-D26: a fourth skill, `frontdoor-ui-gallery`, moved to the ui-gallery pack
+
+Moved to the `ui-gallery` pack as UG-D1 (the skill and its origin in `docker-zero`). This number stays reserved and is not reused.
+
+## FD-D27: the gallery page's neutral look, moved to the ui-gallery pack
+
+Moved to the `ui-gallery` pack as UG-D2. This number stays reserved and is not reused.
+
+## FD-D28: where a gallery lives, moved to the ui-gallery pack
+
+Moved to the `ui-gallery` pack as UG-D3. This number stays reserved and is not reused.
+
+## FD-D29: the two pillars of stack references, moved to the ui-gallery pack
+
+Moved to the `ui-gallery` pack as UG-D4. This number stays reserved and is not reused.
+
+## FD-D30: how a state is mocked and shot, moved to the ui-gallery pack
+
+Moved to the `ui-gallery` pack as UG-D5. This number stays reserved and is not reused.
 
 ## Open questions
 

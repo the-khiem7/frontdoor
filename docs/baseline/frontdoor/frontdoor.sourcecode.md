@@ -3,7 +3,7 @@ baseline_schema: "2.0"
 pack: "frontdoor"
 document: "sourcecode"
 status: "active"
-updated: "2026-10-21"
+updated: "2026-10-22"
 code_ref: "uncommitted"
 ---
 
@@ -28,6 +28,12 @@ frontdoor-landing/
   agents/      openai.yaml
   scripts/     shoot.py  lighthouse.py  board.py
   references/  existing-landing.md  pages-setup.md  page-craft.md  motion.md  verify.md  signature.md
+frontdoor-ui-gallery/
+  SKILL.md
+  agents/      openai.yaml
+  scripts/     shoot.py  real.ps1
+  assets/      gallery.html  mock-kit.ts  fixtures.ts  vite.gallery.ts
+  references/  states.md  manifest.md  real-capture.md  stacks/ (index.md  wails3.md  tauri2.md  svelte.md  vue.md)
 assets/         the README pictures and their HTML sources (pack readme-design)
 docs/baseline/frontdoor/
 docs/baseline/readme-design/
@@ -49,6 +55,7 @@ docs/baseline/readme-design/
 | `frontdoor-readme` | classify greenfield or brownfield -> fact list and questions -> signature and hero (rough directions on the local board) -> propose the plan, wait for approval -> image building by `frontdoor-illustrate` when available -> write the complete README -> verify -> record |
 | `frontdoor-illustrate` | find the brand -> find the signature (rough directions for a new repository, on the local board) -> set up the source folder from the starter -> write one `.item` per image -> `render.py` -> look at every image, compute contrast -> report |
 | `frontdoor-landing` | existing-landing check -> ask placement -> learn brand and rules -> two or three rough directions on the local board -> build `index.html` -> preview image -> `shoot.py` and `lighthouse.py` -> report |
+| `frontdoor-ui-gallery` | read the rules and the stack (one backend and one frontend reference) -> find the seam, install, generate bindings -> list the states in `gallery.json` -> typed mocks and a gallery dev config -> `shoot.py render` -> look, confirm observations in the DOM -> `real.ps1` on the built app -> type check, build, `shoot.py check` -> report |
 
 ## Scripts
 
@@ -59,6 +66,9 @@ docs/baseline/readme-design/
 | `shoot.py check` | a folder to serve, a page, optional `--click` selectors | full-page PNGs per width and scheme, FAIL and WARN lines, with `--click` a FAIL for a control whose click changes nothing with or without reduced motion, exit 1 on any FAIL |
 | `shoot.py og` | a page | a 1200x630 PNG |
 | `lighthouse.py` | a folder to serve, a page, a preset | the four category scores and the audits that lost points |
+| `frontdoor-ui-gallery/scripts/shoot.py render` | a `gallery.json` and a running gallery dev server | `shots/<id>-<theme>.webp` and `gallery-data.js` beside it; exit 1 on a page error, a missing or ambiguous action target, or a crop that finds less than it names |
+| `frontdoor-ui-gallery/scripts/shoot.py check` | a gallery folder | screenshots at 390 and 1440 px in both schemes, outside the repository; FAIL on a page error, a missing or broken image, horizontal overflow |
+| `real.ps1` | an open window's title, an output path, a pattern to hide | a PNG of the window with matching text painted over (Windows) |
 | `board.py add` / `build` / `choose` | the `.frontdoor` folder of the repository, a round file, or a round and direction ids | `directions.json` (every round) and `directions.html` (the board, newest round first); `.frontdoor/` added to `.gitignore`; the board opened in the default browser; exit 1 on a missing file, a path outside the folder, an unknown or repeated direction id |
 
 They run as `uvx --from playwright --with pillow python -I <script> ...` (`render.py`), `uvx --from playwright python -I <script> ...` (`shoot.py`) or `uvx python -I <script> ...` (`lighthouse.py`, `contrast.py`, `board.py`), and take the browser from the machine. `board.py` is the same file in all three skills and uses only the standard library; it does not start a browser itself beyond handing the page to the operating system.
