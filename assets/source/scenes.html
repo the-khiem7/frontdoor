@@ -300,6 +300,51 @@
   <div class="tag cool" style="left: 930px; top: 556px">Open Graph preview</div>
 </div>
 
+<div class="item" id="scene-ui-gallery">
+  <div class="head"><div class="nm">frontdoor-ui-gallery</div><p class="hl display">Every screen of an app, hung side by side in one gallery.</p></div>
+  <svg class="scn" width="1200" height="600" viewBox="0 0 1200 600" aria-hidden="true">
+    <defs>
+      <linearGradient id="beam-g" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0" style="stop-color: var(--amber); stop-opacity: 0.45"/>
+        <stop offset="1" style="stop-color: var(--amber); stop-opacity: 0"/>
+      </linearGradient>
+    </defs>
+    <circle cx="790" cy="320" r="270" class="f-soft"/>
+    <rect x="0" y="505" width="1200" height="95" class="f-ground"/>
+
+    <rect x="54" y="216" width="266" height="214" rx="16" class="f-shadow" transform="translate(6 10)"/>
+    <rect x="54" y="216" width="266" height="214" rx="16" class="f-code" stroke-width="2.5" style="stroke: var(--cardline)"/>
+    <circle cx="80" cy="240" r="6" class="f-amber"/><circle cx="100" cy="240" r="6" class="f-sage"/><circle cx="120" cy="240" r="6" style="fill: var(--sky-2)"/>
+    <text class="mono-t" x="78" y="290" style="fill: #9fbfdc; font-size: 18px">?state=running</text>
+    <text class="mono-t" x="78" y="326" style="fill: #f4b95a; font-size: 18px">?state=stopped</text>
+    <text class="mono-t" x="78" y="362" style="fill: #ff99a4; font-size: 18px">?state=failed</text>
+    <text class="mono-t" x="78" y="398" style="fill: #86b595; font-size: 18px">?state=confirm</text>
+
+    <path d="M326 322C352 322 360 300 380 290" fill="none" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 12" style="stroke: var(--amber)"/>
+    <use href="#spark" transform="translate(352 262) scale(0.7)" class="f-amber"/>
+
+    <rect x="396" y="150" width="770" height="8" rx="4" class="f-door"/>
+    <g id="pairs"></g>
+
+    <g transform="rotate(-4 520 420)">
+      <rect x="470" y="396" width="98" height="44" rx="8" class="f-sage"/>
+      <text x="519" y="425" text-anchor="middle" style="font: 700 19px 'DM Sans', system-ui, sans-serif; fill: #11151d">Keep</text>
+    </g>
+    <g transform="rotate(5 776 420)">
+      <rect x="724" y="398" width="108" height="44" rx="8" class="f-amber"/>
+      <text x="778" y="427" text-anchor="middle" style="font: 700 19px 'DM Sans', system-ui, sans-serif; fill: #1e2430">Revise</text>
+    </g>
+
+    <circle cx="1060" cy="300" r="46" fill="none" stroke-width="9" class="s-door"/>
+    <circle cx="1060" cy="300" r="46" class="f-card" opacity="0.25"/>
+    <path d="M1094 334L1136 376" stroke-width="13" stroke-linecap="round" class="s-door"/>
+    <use href="#spark" transform="translate(1180 176) scale(0.8)" class="f-amber"/>
+  </svg>
+  <div class="tag cool" style="left: 70px; top: 452px">mocked backend</div>
+  <div class="tag warm" style="left: 520px; top: 470px">light and dark, every state</div>
+  <div class="tag quiet" style="left: 978px; top: 410px">observed</div>
+</div>
+
 </div>
 <script>
 function lines(id, x, y, w, n, gap, h, seed) {
@@ -315,6 +360,42 @@ function lines(id, x, y, w, n, gap, h, seed) {
   }
 }
 lines("lines-r", 104, 204, 226, 13, 14, 7, 1.7);
+
+function pairs(id) {
+  // Three hung pairs of app screens: a light and a dark render of the same state, under a gallery lamp each.
+  const g = document.getElementById(id), NS = "http://www.w3.org/2000/svg";
+  const add = (tag, attrs) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); g.appendChild(e); return e; };
+  const themes = {
+    light: { bg: "#f3f3f3", card: "#ffffff", line: "#d9dde3", text: "#5f5f5f", accent: "#005fb8", ok: "#0f7b0f", bad: "#c42b1c" },
+    dark: { bg: "#202020", card: "#2d2d2d", line: "#3a3a3a", text: "#c5c5c5", accent: "#60cdff", ok: "#6ccb5f", bad: "#ff99a4" },
+  };
+  const states = ["running", "stopped", "confirm"];
+  states.forEach((st, i) => {
+    const x0 = 420 + i * 250, y0 = 200;
+    add("polygon", { points: `${x0 + 100},158 ${x0 + 130},158 ${x0 + 236},372 ${x0 - 6},372`, fill: "url(#beam-g)" });
+    add("rect", { x: x0 + 104, y: 156, width: 22, height: 12, rx: 3, class: "f-amber" });
+    ["light", "dark"].forEach((th, j) => {
+      const t = themes[th], x = x0 + j * 122, w = 108, h = 170;
+      add("path", { d: `M${x + 18} ${y0}L${x + w / 2} ${y0 - 26}L${x + w - 18} ${y0}`, fill: "none", "stroke-width": 2, style: "stroke: var(--muted)", opacity: 0.6 });
+      add("rect", { x: x + 4, y: y0 + 6, width: w, height: h, rx: 10, class: "f-shadow" });
+      add("rect", { x, y: y0, width: w, height: h, rx: 10, fill: t.bg, "stroke-width": 4, style: "stroke: var(--door)" });
+      const dot = st === "running" ? t.ok : st === "stopped" ? t.text : t.ok;
+      add("circle", { cx: x + 14, cy: y0 + 16, r: 4.5, fill: dot });
+      add("rect", { x: x + 24, y: y0 + 12, width: 44, height: 8, rx: 4, fill: t.text, opacity: 0.8 });
+      add("rect", { x: x + 10, y: y0 + 30, width: w - 20, height: 54, rx: 6, fill: t.card, stroke: t.line });
+      for (let r = 0; r < 3; r++) {
+        add("rect", { x: x + 16, y: y0 + 39 + r * 14, width: 30, height: 6, rx: 3, fill: t.text, opacity: 0.55 });
+        add("rect", { x: x + w - 44, y: y0 + 39 + r * 14, width: 28, height: 6, rx: 3, fill: st === "running" ? t.ok : t.text, opacity: 0.8 });
+      }
+      if (st === "stopped") add("rect", { x: x + 10, y: y0 + 92, width: w - 34, height: 6, rx: 3, fill: t.bad });
+      const btn = st === "confirm" ? t.bad : t.accent;
+      add("rect", { x: x + 10, y: y0 + 108, width: 42, height: 26, rx: 5, fill: btn });
+      add("rect", { x: x + 56, y: y0 + 108, width: 42, height: 26, rx: 5, fill: t.card, stroke: t.line });
+      add("rect", { x: x + 10, y: y0 + 146, width: 50, height: 6, rx: 3, fill: t.text, opacity: 0.45 });
+    });
+  });
+}
+pairs("pairs");
 </script>
 </body>
 </html>

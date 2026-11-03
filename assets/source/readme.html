@@ -23,7 +23,7 @@
 #hero .chips { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
 
 /* skills-map */
-#skills-map { height: 630px; }
+#skills-map { height: 860px; }
 #skills-map .map { position: absolute; inset: 0; padding: 36px 35px 0; display: flex; flex-direction: column; }
 #skills-map .row { display: flex; align-items: stretch; height: 500px; }
 #skills-map .skill { width: 310px; flex: none; padding: 52px 28px 28px; display: flex; flex-direction: column; align-items: center; text-align: center; }
@@ -34,6 +34,11 @@
 #skills-map .io.in p { color: var(--muted); }
 #skills-map .link { width: 100px; flex: none; align-self: center; display: flex; flex-direction: column; align-items: center; gap: 12px; }
 #skills-map .link .mono { font-size: 17px; font-weight: 500; line-height: 1.2; text-align: center; color: var(--amber-ink); }
+#skills-map .wide { margin-top: 26px; height: 200px; flex: none; display: flex; align-items: center; gap: 30px; padding: 0 36px; border-radius: 20px; }
+#skills-map .wide .who { width: 360px; flex: none; display: flex; align-items: center; gap: 20px; }
+#skills-map .wide .nm { white-space: nowrap; }
+#skills-map .wide .io { margin-top: 0; flex: 1; width: auto; }
+#skills-map .wide .io.in { min-height: 0; }
 #skills-map .foot { margin-top: 30px; display: flex; align-items: center; gap: 16px; font-size: 21px; color: var(--muted); }
 #skills-map .foot::before { content: ""; flex: none; width: 36px; height: 3px; background: var(--amber); border-radius: 2px; }
 </style>
@@ -71,7 +76,7 @@
   <div class="word">
     <h1 class="display">frontdoor<i>.</i></h1>
     <p class="sub">Claude skills that raise how a repository presents itself.</p>
-    <div class="chips"><span class="chip">README</span><span class="chip">illustrations</span><span class="chip">landing page</span></div>
+    <div class="chips"><span class="chip">README</span><span class="chip">illustrations</span><span class="chip">landing page</span><span class="chip">UI gallery</span></div>
   </div>
 </div>
 
@@ -98,6 +103,14 @@
         <div class="io in"><span class="eyebrow">in</span><p>A repository with no landing page</p></div>
         <div class="io"><span class="eyebrow">out</span><p>One index.html with an Open Graph preview</p></div>
       </div>
+    </div>
+    <div class="card wide">
+      <div class="who">
+        <div class="glow"><svg viewBox="0 0 64 64"><rect x="6" y="10" width="23" height="19" rx="4"/><rect x="35" y="10" width="23" height="19" rx="4" class="al" style="fill: var(--amber-soft)"/><rect x="6" y="35" width="23" height="19" rx="4"/><rect x="35" y="35" width="23" height="19" rx="4"/><path d="M10 47h10M39 47h12"/></svg></div>
+        <div class="nm">frontdoor-ui-gallery</div>
+      </div>
+      <div class="io in"><span class="eyebrow">in</span><p>An app whose screens and states nobody has seen side by side</p></div>
+      <div class="io"><span class="eyebrow">out</span><p>Every state in light and dark from a mocked frontend, on one review page</p></div>
     </div>
     <div class="foot">Each skill carries its own scripts and references. Install one folder and it works alone.</div>
   </div>
@@ -232,6 +245,52 @@
   <div class="card step" style="left: 830px; top: 520px; width: 340px; height: 160px">
     <div class="hd"><span class="badge">8</span><span class="tt">Report</span></div>
     <p class="ds">Files written, the Pages setting to switch on, what was not observed. No commit.</p>
+  </div>
+</div>
+
+<div class="item" id="ui-gallery-flow" style="height: 720px">
+  <svg class="wires" width="1200" height="720" viewBox="0 0 1200 720" aria-hidden="true">
+    <path class="w" d="M370 120H426"/><path class="w" d="M770 120H826"/>
+    <path class="w" d="M1000 200V240H200V274"/>
+    <path class="w" d="M370 360H426"/><path class="w" d="M770 360H826"/>
+    <path class="w" d="M1000 440V480H200V514"/>
+    <path class="w" d="M370 600H426"/><path class="w" d="M770 600H826"/>
+  </svg>
+  <div class="card step" style="left: 30px; top: 40px; width: 340px; height: 160px">
+    <div class="hd"><span class="badge">1</span><span class="tt">Read the rules</span></div>
+    <p class="ds">AGENTS.md, the stack, one reference for the backend and one for the frontend.</p>
+  </div>
+  <div class="card step" style="left: 430px; top: 40px; width: 340px; height: 160px">
+    <div class="hd"><span class="badge">2</span><span class="tt">Find the seam</span></div>
+    <p class="ds">The narrowest module the UI calls the backend through.</p>
+  </div>
+  <div class="card step" style="left: 830px; top: 40px; width: 340px; height: 160px">
+    <div class="hd"><span class="badge">3</span><span class="tt">List the states</span></div>
+    <p class="ds">Every view and state, from the real types and error texts.</p>
+  </div>
+  <div class="card step" style="left: 30px; top: 280px; width: 340px; height: 160px">
+    <div class="hd"><span class="badge">4</span><span class="tt">Mock it</span></div>
+    <p class="ds">Typed mocks in a separate dev config, never in the build.</p>
+  </div>
+  <div class="card step" style="left: 430px; top: 280px; width: 340px; height: 160px">
+    <div class="hd"><span class="badge">5</span><span class="tt">Render</span></div>
+    <p class="ds">shoot.py takes every state in light and dark, as WebP.</p>
+  </div>
+  <div class="card step" style="left: 830px; top: 280px; width: 340px; height: 160px">
+    <div class="hd"><span class="badge">6</span><span class="tt">Look</span></div>
+    <p class="ds">Every image. Each observation confirmed in the DOM first.</p>
+  </div>
+  <div class="card step" style="left: 30px; top: 520px; width: 340px; height: 160px">
+    <div class="hd"><span class="badge">7</span><span class="tt">Built app</span></div>
+    <p class="ds">Screenshots of the real windows, account paths painted over.</p>
+  </div>
+  <div class="card step" style="left: 430px; top: 520px; width: 340px; height: 160px">
+    <div class="hd"><span class="badge">8</span><span class="tt">Verify</span></div>
+    <p class="ds">Type check, a build with no fixture in it, the page at 390 and 1440 px.</p>
+  </div>
+  <div class="card step" style="left: 830px; top: 520px; width: 340px; height: 160px">
+    <div class="hd"><span class="badge">9</span><span class="tt">Report</span></div>
+    <p class="ds">Files, states, observations, what was not checked. No commit.</p>
   </div>
 </div>
 

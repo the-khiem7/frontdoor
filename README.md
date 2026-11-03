@@ -1,16 +1,17 @@
-<h1 align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/hero-dark.webp"><img src="assets/hero.webp" alt="frontdoor - Claude skills that raise how a repository presents itself. An arched door stands ajar and warm light spills out of it. Labels: README, illustrations, landing page." width="100%"></picture></h1>
+<h1 align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/hero-dark.webp"><img src="assets/hero.webp" alt="frontdoor - Claude skills that raise how a repository presents itself. An arched door stands ajar and warm light spills out of it. Labels: README, illustrations, landing page, UI gallery." width="100%"></picture></h1>
 
-**Claude skills that raise how a repository presents itself: a README built around pictures, illustrations rendered from HTML into light and dark pairs, and a single-file landing page for GitHub Pages.**
+**Claude skills that raise how a repository presents itself: a README built around pictures, illustrations rendered from HTML into light and dark pairs, a single-file landing page for GitHub Pages, and a gallery of every screen and state of an app's UI.**
 
 ## Skills
 
-<picture><source media="(prefers-color-scheme: dark)" srcset="assets/skills-map-dark.webp"><img src="assets/skills-map.webp" alt="Map of the skills, each an arched card. frontdoor-readme: in, no README, or a wall of text, ASCII diagrams or Mermaid; out, a complete README with a hero banner and light and dark pictures. frontdoor-illustrate: in, pictures with a look of their own, regenerated from text; out, rounded, bordered WebP, one light and one dark per HTML block. frontdoor-landing: in, a repository with no landing page; out, one index.html with an Open Graph preview. Dashed arrows labelled optional help run from frontdoor-readme and from frontdoor-landing to frontdoor-illustrate. Each skill carries its own scripts and references; install one folder and it works alone." width="100%"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/skills-map-dark.webp"><img src="assets/skills-map.webp" alt="Map of the skills, each an arched card. frontdoor-readme: in, no README, or a wall of text, ASCII diagrams or Mermaid; out, a complete README with a hero banner and light and dark pictures. frontdoor-illustrate: in, pictures with a look of their own, regenerated from text; out, rounded, bordered WebP, one light and one dark per HTML block. frontdoor-landing: in, a repository with no landing page; out, one index.html with an Open Graph preview. Dashed arrows labelled optional help run from frontdoor-readme and from frontdoor-landing to frontdoor-illustrate. Below them, a wide card for frontdoor-ui-gallery: in, an app whose screens and states nobody has seen side by side; out, every state in light and dark from a mocked frontend, on one review page. Each skill carries its own scripts and references; install one folder and it works alone." width="100%"></picture>
 
 | Skill | Use it when | Result |
 |---|---|---|
 | `frontdoor-readme` | the README is missing, or a wall of text, ASCII diagrams or Mermaid | a complete README with a hero banner and `<picture>` light/dark image pairs, in a look drawn from your repository |
 | `frontdoor-illustrate` | you need pictures with a look of their own that regenerate from text | rounded, bordered WebP files, one light and one dark per HTML block |
 | `frontdoor-landing` | the repository has no landing page and should have one | a single `index.html` with Open Graph preview, checked at three widths in both themes |
+| `frontdoor-ui-gallery` | you want to see every screen and state of an app's UI, before a redesign or after one | every state rendered in light and dark from the real frontend with the backend mocked, on one page with a Keep, Revise or Discuss review per state |
 
 Each skill carries its own scripts and references. Install one folder and it works alone. Skills name each other only as optional help.
 
@@ -55,6 +56,19 @@ It looks for an existing landing page first and stops with its evidence when one
 
 </details>
 
+### frontdoor-ui-gallery
+
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/scene-ui-gallery-dark.webp"><img src="assets/scene-ui-gallery.webp" alt="Illustration for frontdoor-ui-gallery: every screen of an app, hung side by side in one gallery. On the left, a code window lists ?state=running, ?state=stopped, ?state=failed and ?state=confirm, labelled mocked backend. A dotted line leads to a gallery rail where three pairs of small app screens hang under lamps, each pair one light and one dark render of the same state: running, stopped with a red error line, and a confirmation with a red button. A green note reads Keep under the first pair and an amber note reads Revise under the second; a magnifying glass over the third is labelled observed. Under the pairs: light and dark, every state." width="100%"></picture>
+
+It renders the real frontend with fixed data per state, so a state that is hard to reach by hand is one click away, and the same gallery can be shot again after a redesign.
+
+<details>
+<summary>Step by step</summary>
+
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/ui-gallery-flow-dark.webp"><img src="assets/ui-gallery-flow.webp" alt="Flow of frontdoor-ui-gallery, in order. 1 Read the rules: AGENTS.md, the stack, one reference for the backend and one for the frontend. 2 Find the seam: the narrowest module the UI calls the backend through. 3 List the states: every view and state, from the real types and error texts. 4 Mock it: typed mocks in a separate dev config, never in the build. 5 Render: shoot.py takes every state in light and dark, as WebP. 6 Look: every image, each observation confirmed in the DOM first. 7 Built app: screenshots of the real windows, account paths painted over. 8 Verify: type check, a build with no fixture in it, the page at 390 and 1440 px. 9 Report: files, states, observations, what was not checked, and no commit." width="100%"></picture>
+
+</details>
+
 ## Install
 
 Install every skill, or one by name:
@@ -64,13 +78,14 @@ npx skills add https://github.com/the-khiem7/frontdoor.git
 npx skills add https://github.com/the-khiem7/frontdoor.git --skill frontdoor-landing
 ```
 
-Then ask in a plain sentence, for example "make the README nicer to read" or "add a GitHub Pages landing page".
+Then ask in a plain sentence, for example "make the README nicer to read", "add a GitHub Pages landing page" or "show me every screen of this app".
 
 ## Requirements
 
 - `uv` and `uvx` to run the scripts (`uvx --from playwright --with pillow python -I ...`).
 - Microsoft Edge or Google Chrome already installed. Nothing is downloaded and no administrator rights are needed.
-- Node.js with `npx` for the Lighthouse run in `frontdoor-landing`.
+- Node.js with `npx` for the Lighthouse run in `frontdoor-landing`, and the app's own package manager to serve its frontend for `frontdoor-ui-gallery`.
+- Windows PowerShell for the screenshots of the built app in `frontdoor-ui-gallery`; the mocked render runs anywhere Edge or Chrome does.
 
 ## Behaviour to know
 
@@ -78,6 +93,7 @@ Then ask in a plain sentence, for example "make the README nicer to read" or "ad
 - `frontdoor-landing` stops and shows its evidence when it finds an existing landing page, and asks where `index.html` should go before writing.
 - No look is shipped. Each repository gets its own signature: a vector shape language, a typeface and a way of presenting, derived from what the project is. Two repositories should not come out as one design with different text.
 - `frontdoor-readme` writes the complete README, and every sentence and command traces to the repository or to your answer. Every run ends with a hero banner.
+- `frontdoor-ui-gallery` adds a `gallery/` folder of typed mocks and a separate dev config to the app's frontend, and writes `design/ui-gallery/` for you to commit. The production build never imports the mocks, and the screenshots show what the frontend draws for the mocked data, not how the running app behaves.
 - Where nobody can answer a question, a skill takes the recommended default and writes the question and the assumed answer to `questions.md`.
 
 ## Status
@@ -85,7 +101,7 @@ Then ask in a plain sentence, for example "make the README nicer to read" or "ad
 <details>
 <summary>What was exercised and what was not</summary>
 
-Built and exercised on Windows with Edge. A trial on two real repositories, run with and without the skills, was preferred by a person for both the landing page and the README illustrations. Not yet observed: selection from a plain request, macOS or Linux, a page on its live GitHub Pages URL.
+Built and exercised on Windows with Edge. A trial on two real repositories, run with and without the skills, was preferred by a person for both the landing page and the README illustrations. `frontdoor-ui-gallery` was run end to end on three desktop apps: Wails v3 with Svelte, Wails v3 with Vue, and Tauri v2 with Vue, the last two by a fresh agent given only the skill folder. Not yet observed: selection from a plain request, macOS or Linux, a page on its live GitHub Pages URL, a gallery for a React or Electron app.
 
 </details>
 
