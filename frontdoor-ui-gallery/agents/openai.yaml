@@ -1,0 +1,6 @@
+interface:
+  display_name: "Frontdoor UI Gallery"
+  short_description: "Catalogue every screen and state of an app's UI from a mocked frontend, with a review page"
+  default_prompt: "Use $frontdoor-ui-gallery to render every screen and state of this app's UI in light and dark from a mocked frontend, and build a gallery page to review them."
+policy:
+  allow_implicit_invocation: true
