@@ -3,7 +3,7 @@ baseline_schema: "2.0"
 pack: "readme-design"
 document: "roadmap"
 status: "active"
-updated: "2026-10-11"
+updated: "2026-10-22"
 code_ref: "uncommitted"
 ---
 
@@ -20,6 +20,7 @@ Reasoning for every row below lives in `readme-design.hallucination.md` under th
 | A scene per skill, flows in `<details>` | RD-D3 | implemented | README shows each scene first and each flow under `<details>` |
 | README on github.com | RD-Q1 | unobserved | not opened on the hosting site |
 | Root `assets/` and `npx skills add` | RD-Q2 | unobserved | not re-run after the folder was added |
+| Fourth skill in the pictures | RD-D4 | implemented | see Phase 4 |
 
 ## Phase 1: the first picture set
 
@@ -69,6 +70,24 @@ Acceptance criteria:
 |---|---|
 | Redrawn | `skills-map` card text, `readme-flow` (eight steps and the approval gate), `illustrate-flow` (seven steps and the loop), two card texts in `landing-flow`; `render.py` exit 0, no WARN |
 | README | table rows, alt texts and the behaviour notes updated |
+| Not observed | the README on github.com (RD-Q1) |
+
+## Phase 4: pictures for `frontdoor-ui-gallery`
+
+Acceptance criteria:
+
+- the hero, the skills map and the README name the fourth skill
+- the skill has a scene and a flow in both themes, each statement traced to its `SKILL.md`
+
+### Checkpoint: complete
+
+| Item | Result |
+|---|---|
+| Redrawn | `hero` (a `UI gallery` chip), `skills-map` (a wide card for the new skill, the map 860 px tall) |
+| New | `scene-ui-gallery`, `ui-gallery-flow`; four files of 69 to 119 KB |
+| Render | `render.py` exit 0 with the fonts found; every new or changed image looked at in light and dark |
+| README | a table row, a section with the scene and the flow in `<details>`, alt texts for both, the hero and map alt texts, the requirements, behaviour and status notes |
+| Not computed | the contrast of the new scene's small text; the tags reuse the existing token pairs |
 | Not observed | the README on github.com (RD-Q1) |
 
 ## Risks

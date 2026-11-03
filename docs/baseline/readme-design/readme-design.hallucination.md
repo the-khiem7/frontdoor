@@ -3,7 +3,7 @@ baseline_schema: "2.0"
 pack: "readme-design"
 document: "hallucination"
 status: "active"
-updated: "2026-10-11"
+updated: "2026-10-22"
 code_ref: "uncommitted"
 ---
 
@@ -18,6 +18,7 @@ One row per entry. A row states what the entry is about and nothing more. An ans
 | RD-D1 | how the README pictures are produced and where the sources and files live | current | FD-D3 |
 | RD-D2 | the look of the pictures: an arched doorway in a paper and a night theme | current | RD-D1, FD-D5 |
 | RD-D3 | what each skill shows in the README: a scene, with its step-box flow inside `<details>` | current | RD-D1, RD-D2, FD-D16 |
+| RD-D4 | how the fourth skill enters the pictures: a wide card under the three arches, its own scene and flow | current | RD-D2, RD-D3, FD-D26 |
 | RD-Q1 | whether the README renders as designed on github.com in light, dark and on a phone | open | RD-D1, RD-D3 |
 | RD-Q2 | whether `npx skills add` skips the root `assets/` folder | open | RD-D1 |
 
@@ -56,6 +57,14 @@ What breaks if ignored: a scene restates what a skill does and nothing compares 
 Rejected: the step-box flows as the main figure of each skill - the user found them heavy and asked for vector illustration to reach the reader; the flows stay in `<details>`, so no step or gate is lost.
 
 Rejected: dropping the flows from the README once the scenes existed - the wait-for-approval gate and the stop-and-ask branch would then live only in `SKILL.md`.
+
+## RD-D4: the fourth skill enters as a wide card under the three arches, with its own scene and flow
+
+Decision: in `skills-map`, `frontdoor-ui-gallery` is one wide card below the row of three arches, with no optional-help arrow; the hero gains a `UI gallery` chip; the skill gets the scene `scene-ui-gallery` (a gallery rail of light and dark screen pairs under lamps, fed by a code window of `?state=` lines, with Keep and Revise notes and a magnifier labelled observed) and the flow `ui-gallery-flow` (nine steps), like the other skills (RD-D3) - the new skill helps no other skill and is helped by none, and four arches with arrows do not fit 1200 px with readable text.
+
+What breaks if ignored: a fourth arch squeezed into the row breaks the skill names over two lines, and an arrow would claim a dependency the skills do not have.
+
+Rejected: four narrower arches in one row - the names wrap and the in and out texts drop to unreadable sizes. A second map figure - two pictures of one set of skills.
 
 ## Open questions
 
