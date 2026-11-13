@@ -5,7 +5,9 @@
     uvx python -I board.py build  <dir> [--no-open] [--inline]
     uvx python -I board.py choose <dir> <round> <ids> [--note TEXT] [--no-open] [--inline]
 
-<dir> is the `.frontdoor` folder of the repository being worked on. It holds the rough sources and renders
+<dir> is the board folder of one purpose, `.frontdoor/<purpose>` in the repository being worked on, where
+<purpose> is `readme`, `landing-page` or `product`. Each purpose keeps its own board, so the directions for the
+README, the landing page and the product pictures never mix. The folder holds the rough sources and renders
 of each round (for example round-1/, round-2/), `directions.json` (the record of every round) and
 `directions.html` (the board, rebuilt from the record on every command).
 
@@ -35,6 +37,8 @@ import subprocess
 import sys
 import urllib.parse
 from pathlib import Path
+
+PURPOSES = ("readme", "landing-page", "product")
 
 CSS = """
 :root { --bg:#f4f4f1; --panel:#ffffff; --fg:#1d2024; --muted:#565c66; --line:#d8d9d4; --accent:#0b5cad; --chip:#e7eef7; }
@@ -82,7 +86,7 @@ def load(board_dir):
         if not isinstance(data.get("rounds"), list):
             fail(f"{path} has no rounds list.")
         return data
-    return {"project": board_dir.resolve().parent.name, "rounds": []}
+    return {"project": board_dir.resolve().parent.parent.name, "rounds": []}
 
 
 def save(board_dir, data):
@@ -207,17 +211,17 @@ def render(board_dir, data, inline):
     empty = '<p class="meta">No round has been added yet.</p>' if not rounds else ""
     return (f'<!doctype html><html lang="en"><head><meta charset="utf-8">'
             f'<meta name="viewport" content="width=device-width, initial-scale=1">'
-            f'<title>{e(project)} design directions</title><style>{CSS}</style></head><body><main>'
-            f'<header><h1>{e(project)} design directions</h1>'
+            f'<title>{e(project)} {e(board_dir.name)} design directions</title><style>{CSS}</style></head><body><main>'
+            f'<header><h1>{e(project)} {e(board_dir.name)} design directions</h1>'
             f'<p class="meta">{len(rounds)} round(s), newest first. Local file, not committed, built from directions.json.</p>'
             f'<nav aria-label="Rounds">{nav}</nav></header>{empty}{"".join(sections)}</main></body></html>')
 
 
 def ensure_ignored(board_dir):
-    root = board_dir.resolve().parent
+    root = board_dir.resolve().parent.parent
     if not ((root / ".git").exists() or (root / ".gitignore").exists()):
         return
-    entry = board_dir.name
+    entry = board_dir.resolve().parent.name
     ignore = root / ".gitignore"
     lines = ignore.read_text(encoding="utf-8").splitlines() if ignore.exists() else []
     if any(l.strip().strip("/") == entry for l in lines):
@@ -263,6 +267,9 @@ def main():
     ap.add_argument("--inline", action="store_true")
     a = ap.parse_args()
     board_dir = Path(a.dir)
+    if board_dir.resolve().parent.name != ".frontdoor" or board_dir.name not in PURPOSES:
+        fail(f"the board folder must be .frontdoor/<purpose> with <purpose> one of {', '.join(PURPOSES)}; got {board_dir}. "
+             "A board kept directly in .frontdoor/ moves into the folder of the purpose it serves.")
     data = load(board_dir)
     if a.command == "add":
         if len(a.args) != 1:
