@@ -3,7 +3,7 @@ baseline_schema: "2.0"
 pack: "frontdoor"
 document: "roadmap"
 status: "active"
-updated: "2026-10-22"
+updated: "2026-11-13"
 code_ref: "uncommitted"
 ---
 
@@ -28,7 +28,8 @@ Reasoning for every row below lives in `frontdoor.hallucination.md` under the en
 | Hero banner in every run | FD-D18 | implemented, greenfield trialled, brownfield not | see Phase 5 |
 | Complete README with traced facts | FD-D19 | implemented, trialled twice | see Phase 5 |
 | Scene first, diagram where it fits, `<details>` | FD-D20 | implemented | `frontdoor-readme` guidance rewritten; this repository's README follows it |
-| Local board for rough directions | FD-D24 | implemented, Windows only, no skill run end to end | see Phase 6 |
+| Local board for rough directions | FD-D24, FD-D31 | implemented, Windows only, no skill run end to end | see Phase 6 and Phase 7 |
+| Banner, still social preview, optional animated banner | FD-D32 | implemented, Windows only, no skill run end to end | see Phase 7 |
 | Host selection | FD-Q1 | unobserved, descriptions changed since | no run started from a plain request |
 | Automated tests | FD-Q2 | not started | none |
 | Other operating systems | FD-Q3 | unobserved | Windows and Edge only |
@@ -132,6 +133,25 @@ Acceptance criteria:
 | Text | "Show the directions" section added to `signature.md` (still three identical copies); the scratch-folder wording in the three `SKILL.md` files replaced by `.frontdoor/` and the board; `AGENTS.md` carries the rule |
 | Runs | throwaway repository: two rounds, ids continued, a choice recorded, five bad inputs stopped with exit 1, `.gitignore` written; `ghist`: two rounds of three directions, board checked at 1200 px light and 400 px dark |
 | Not run | a skill following the new text from a plain request; macOS and Linux; the board in Firefox and Safari |
+
+## Phase 7: a board per purpose, banner and banner-social, an optional animated banner
+
+Acceptance criteria:
+
+- each purpose (readme, landing-page, product) has its own board folder and `board.py` refuses any other folder
+- `frontdoor-readme` makes `banner` and `banner-social`, and `render.py` enforces GitHub's social preview rules on a `data-social` item; the social preview is always a still PNG holding only the brand name and the branding element
+- a GIF README banner is offered with a brief of the motion and built only on approval
+
+### Checkpoint: complete, no skill run end to end
+
+| Item | Result |
+|---|---|
+| Board | `board.py` takes `.frontdoor/<purpose>`; on a throwaway repository `.frontdoor/readme` added a round and wrote `.gitignore`, `.frontdoor` and `.frontdoor/other` stopped with exit 1; the three copies of `board.py` and `signature.md` compared with `cmp` |
+| Social preview | `render.py` on a test page: a `data-social` item wrote 1280x640 PNGs, and the one text element inside the 40 px border was reported by name |
+| GIF | `scripts/animate.py` on the awsketch source page: 90 frames, 1.68 MB light and 1.85 MB dark, identical in size to the hand-made files; README banner only, the social preview is a still image |
+| PNG chosen over JPG | awsketch social card at 1280x640: PNG 155 / 167 KB, JPG at quality 90 90 / 88 KB (light / dark); the user kept PNG |
+| Text | `frontdoor-readme/references/banner.md` added; `SKILL.md` steps 3, 4 and 5, `github-readme.md`, `audit-and-plan.md`, `AGENTS.md` and the board paths in the other two skills edited |
+| Not run | a skill following the new text from a plain request; the GIF and PNG on github.com; macOS and Linux |
 
 ## Risks
 

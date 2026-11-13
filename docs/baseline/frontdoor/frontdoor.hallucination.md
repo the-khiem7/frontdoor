@@ -3,7 +3,7 @@ baseline_schema: "2.0"
 pack: "frontdoor"
 document: "hallucination"
 status: "active"
-updated: "2026-10-22"
+updated: "2026-11-13"
 code_ref: "uncommitted"
 ---
 
@@ -32,19 +32,21 @@ One row per entry. A row states what the entry is about and nothing more. An ans
 | FD-D15 | the README pictures; moved to the readme-design pack as RD-D1, RD-D2, RD-D3 | moved | FD-D16, RD-D1 |
 | FD-D16 | how `frontdoor-readme` depends on `frontdoor-illustrate` | current | FD-D2, RD-D3, FD-Q1 |
 | FD-D17 | that the skills ship no reusable look and each repository gets its own signature | current | FD-D5, RD-D2 |
-| FD-D18 | that every run ends with a hero banner, in a greenfield and in a brownfield repository | current | FD-D17 |
+| FD-D18 | that every run ends with a hero banner, in a greenfield and in a brownfield repository | current, extended by FD-D32 | FD-D17, FD-D32 |
 | FD-D19 | that `frontdoor-readme` writes the complete README, with every statement traced to the repository | current | FD-D18 |
 | FD-D20 | how a README chooses between a scene, a diagram and `<details>` | current | RD-D3, FD-D17 |
 | FD-D21 | the three tiers of skill rules and what `render.py` reports about fonts and the starter | current | FD-D3, FD-D17 |
 | FD-D22 | that `signature.md` is shipped as three byte-identical copies | current | FD-D2, FD-D17 |
 | FD-D23 | examples in `signature.md` that anchored a trial agent toward a copy | current, lesson | FD-D17, FD-D22 |
-| FD-D24 | where rough design directions are shown: one local board per repository, every round on it | current | FD-D2, FD-D9, FD-D22, FD-Q3 |
+| FD-D24 | where rough design directions are shown: one local board per repository, every round on it | current, amended by FD-D31 | FD-D2, FD-D9, FD-D22, FD-D31, FD-Q3 |
 | FD-D25 | how a landing page uses motion, and what it does under reduced motion | current, lesson | FD-D7, FD-D8 |
 | FD-D26 | the UI gallery skill; moved to the ui-gallery pack as UG-D1 | moved | UG-D1 |
 | FD-D27 | the gallery page's neutral look; moved to the ui-gallery pack as UG-D2 | moved | FD-D17, UG-D2 |
 | FD-D28 | where a gallery lives; moved to the ui-gallery pack as UG-D3 | moved | UG-D3 |
 | FD-D29 | the stack references; moved to the ui-gallery pack as UG-D4 | moved | UG-D4 |
 | FD-D30 | how a state is mocked and shot; moved to the ui-gallery pack as UG-D5 | moved | UG-D5 |
+| FD-D31 | one design board per purpose: readme, landing-page, product | current | FD-D24, FD-D22 |
+| FD-D32 | the banner and social preview names, GitHub's social preview rules (still image only), and the optional animated README banner | current, lesson | FD-D18, FD-D3, FD-D31 |
 | FD-Q1 | whether the skill descriptions make a host select the skills correctly | open | none |
 | FD-Q2 | whether the skills need automated tests | open | none |
 | FD-Q3 | whether the scripts work on macOS and Linux | open | FD-D8 |
@@ -360,6 +362,46 @@ Moved to the `ui-gallery` pack as UG-D4. This number stays reserved and is not r
 ## FD-D30: how a state is mocked and shot, moved to the ui-gallery pack
 
 Moved to the `ui-gallery` pack as UG-D5. This number stays reserved and is not reused.
+
+## FD-D31: one design board per purpose
+
+Decision: keep one board per purpose in its own folder, `.frontdoor/readme/`, `.frontdoor/landing-page/` and `.frontdoor/product/`, each with its own `directions.json`, `directions.html` and `round-<N>/`; `board.py` takes that folder as `<dir>`, derives the project name from the repository folder, adds `.frontdoor/` to `.gitignore`, and exits 1 for any other folder. `frontdoor-readme` uses `readme`, `frontdoor-landing` uses `landing-page`, and `frontdoor-illustrate` uses `product` for pictures of the product itself unless a caller hands it its own purpose. Amends FD-D24.
+
+Why: one flat board mixed the directions for the README, the landing page and the product pictures, so rounds of unrelated work were compared and numbered together (an awsketch run kept hero rounds and product rounds apart by hand, in `branding/` and `product/`).
+
+What breaks if ignored: round numbers and chosen directions of one purpose appear on the board of another, and the user picks from the wrong list.
+
+Not verified: `product` is assumed to cover the product's own screens and scenes; `frontdoor-ui-gallery` does not use a board, so no skill writes to `.frontdoor/product/` except `frontdoor-illustrate` on request.
+
+Rejected: a board per skill - `frontdoor-illustrate` is called by both other skills and would have no purpose of its own.
+
+Rejected: keeping `.frontdoor/directions.html` and tagging rounds by purpose - the rounds stay in one list, which is the problem.
+
+Rejected: free folder names - skills would invent different names and the guard in `board.py` could not catch a misplaced board.
+
+## FD-D32: banner and banner-social, GitHub's social preview rules, an optional animated banner
+
+Decision: name the README banner item `banner` (`banner.webp`, `banner-dark.webp`) and the GitHub social preview item `banner-social`; an `.item` marked `data-social` is 640x320 CSS px, rendered by `render.py` to `<id>.png` and `<id>-dark.png` at 1280x640 with no rounding and no border, with warnings for a size other than 1280x640, a file over 1 MB, text inside the 40 px safe border and more than one text block (headings, paragraphs, list items outside `data-bleed`), so a tagline under the name is caught. GitHub's rules, kept in `frontdoor-readme/references/banner.md`: set by hand in Settings, Social preview; at least 640x320 and 1280x640 for best display; PNG, GIF or JPG only; under 1 MB; a 40 pt border (80 px at 1280x640) free of important content. The social preview is always a still PNG, 1280x640 (at least 640x320), under 1 MB, with the 40 pt safe border; never a GIF and never a JPG. A moving README banner is optional: `frontdoor-readme` suggests it, briefs the user on the motion and its costs, asks first, and builds it only on approval with `frontdoor-readme/scripts/animate.py` (a slow sine sway, 90 frames at 10 per second, one palette, no rounding, `banner.gif` and `banner-dark.gif`). Extends FD-D18.
+
+Why: the social preview was the one picture the skills did not produce, and a first attempt broke three GitHub rules at once; fixed names let the next run find the files.
+
+Lesson: a banner turning a full circle at about 60 degrees per second made the reader dizzy, so the motion became a sway of about 20 degrees per second at its peak; a 1280x640 GIF came out near 2 MB and the upload refused it ("Please upload a picture smaller than 1 MB"); pasting the wide banner onto a plain 1280x640 ground cut its rings at the banner's top and bottom edge and put it against the right edge, outside the safe border, so the social card is composed on its own, with the wordmark inside the border and the decoration bleeding off the edge. A first answer shrank the social GIF to 672x336 with 64 colours (0.82 and 0.98 MB) to fit the limit; the user then found that messaging services show no thumbnail for a GIF link, so the social preview became a still image and the GIF applies to the README banner only. Measured on the awsketch social card at 1280x640: PNG 155 KB light and 167 KB dark, JPG 90 and 88 KB at quality 90 (75 and 74 KB at 85), so either format is far under 1 MB; JPG is lighter for gradients and many small icons, PNG keeps thin lines and small text crisp. The user chose PNG: a saving of about 65 KB on a picture fetched once and cached is not worth a lossy format. The first awsketch card also carried the tagline under the wordmark; the user pointed out it cannot be read in a messaging thumbnail, so the card now holds only the brand name (left) and the branding element (right), with the name larger.
+
+What breaks if ignored: a social image in WebP or over 1 MB is refused by the upload; a GIF social preview shows no thumbnail when the link is pasted into a chat or mail app; a tagline on the card is unreadable at thumbnail size; a wordmark in the outer 80 px is cropped by the card; a fast or looping spin is a vestibular problem in a README that cannot honour a reduced-motion setting; a GIF made without asking adds 3 to 4 MB to every first view of the README.
+
+Not verified: the social preview in a real share card (Slack, Teams, mail); the GIF banner on github.com in dark mode and on a phone; `animate.py` and `render.py` on macOS and Linux (FD-Q3).
+
+Rejected: a GIF by default - it costs file size, colour depth and the rounded border, and the motion is a taste the user decides.
+
+Rejected: a GIF social preview (even under 1 MB at 672x336) - GitHub accepts it, but chat and mail apps show no thumbnail for it, and which frame an unfurler takes is not under our control.
+
+Rejected: a JPG social preview, or a JPG fallback when the PNG is over 1 MB - it saves about 65 KB on an illustrated card and is lossy around small text; an over-size PNG is fixed by simplifying the picture.
+
+Rejected: a social preview in WebP with the rounded border - GitHub does not accept WebP, and a rounded image shows its corners as a plain rectangle.
+
+Rejected: a continuous full-circle spin - it cannot loop with few frames when the shapes carry different icons, it needs over 150 frames, and it was too fast to read.
+
+Rejected: rotating a group of shapes and icons - the icons turn with it, which the AWS trademark guidelines forbid; the drawing places each icon at its new coordinates instead.
 
 ## Open questions
 
