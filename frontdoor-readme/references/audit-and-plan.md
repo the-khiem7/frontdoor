@@ -22,7 +22,7 @@ Use `<details><summary>` for material a reader may want but most will not need f
 
 ## The plan to show the user
 
-1. The hero: greenfield, the chosen direction; brownfield, the existing banner kept or a replacement proposed, with the reason.
+1. The hero: greenfield, the chosen direction; brownfield, the existing banner kept or a replacement proposed, with the reason. Name the files `banner` and `banner-social`, and add the labelled question about a moving banner (`references/banner.md`).
 2. Section order, each marked: new scene, new diagram, restyled text, moved to `Reference`, moved to `<details>`, unchanged.
 3. A table of images: file name, kind, what it shows, source text it replaces.
 4. The fact list: each statement or command the README will make, and where in the repo it comes from. For a README written from nothing, this is the plan for the text.

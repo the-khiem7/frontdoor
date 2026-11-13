@@ -22,7 +22,7 @@ The light file is the `<img>` fallback, so a viewer that ignores `<picture>` sti
 
 ## The hero banner
 
-The hero goes first, before the text. Wrap it in `<h1 align="center">` when it carries the project's name, and give it alt text that starts with the name and the one-line promise, so the page still has its heading with images off, then a short description of what is drawn. Follow it with one bold sentence.
+The hero goes first, before the text. Wrap it in `<h1 align="center">` when it carries the project's name, and give it alt text that starts with the name and the one-line promise, so the page still has its heading with images off, then a short description of what is drawn. Follow it with one bold sentence. The file is `assets/banner.webp` with `assets/banner-dark.webp`, or `banner.gif` and `banner-dark.gif` when the user approved a moving banner (`references/banner.md`); the `<picture>` markup is the same. The social preview `banner-social` is a still PNG, never a GIF, and is not referenced from the README: it is uploaded in the repository's Settings.
 
 ## `<details>`
 
