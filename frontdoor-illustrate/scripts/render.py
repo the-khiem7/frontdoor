@@ -14,6 +14,12 @@ A browser is taken from the machine (Edge, then Chrome) so nothing has to be dow
 The box check covers only the .item itself, not a card or node inside it, and skips anything inside an
 element marked data-bleed (a shape that is meant to run off the edge). Look at every image.
 
+An .item marked data-social is a GitHub social preview: it must be 640 CSS px wide and 320 high (1280x640 at 2x), and it is
+saved as <id>.png (light) and <id>-dark.png with no rounding and no border, because GitHub takes PNG, GIF or JPG, not WebP.
+It is always a still PNG (a GIF shows no thumbnail in chat and mail apps). It gets two extra checks: every text element must
+sit inside the 40 px safe border (outside data-bleed), the file must stay under 1 MB, and the card should hold one text block
+(the brand name; headings, paragraphs and list items are counted), because a tagline cannot be read in a chat thumbnail.
+
 Besides the images it prints the fonts and the page grounds it found, and a WARN (counted toward
 exit 1) when a requested font did not load, so a fallback face is in the images, or when the
 stylesheet still carries the starter's --starter-placeholder marker.
@@ -85,6 +91,24 @@ OVERFLOW_JS = """(item) => {
   }
   return bad.slice(0, 5);
 }"""
+
+
+SAFE_JS = """(item) => {
+  const box = item.getBoundingClientRect(), bad = [], m = 40;
+  for (const el of item.querySelectorAll('*')) {
+    if (el.closest('[data-bleed]')) continue;
+    if (!Array.from(el.childNodes).some(n => n.nodeType === 3 && n.textContent.trim())) continue;
+    const r = el.getBoundingClientRect();
+    if (r.left < box.left + m - 1 || r.top < box.top + m - 1 || r.right > box.right - m + 1 || r.bottom > box.bottom - m + 1)
+      bad.push((el.id || el.tagName).slice(0, 40));
+  }
+  return bad.slice(0, 5);
+}"""
+
+TEXT_BLOCKS_JS = """(item) => Array.from(item.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,small'))
+  .filter(el => !el.closest('[data-bleed]') && el.textContent.trim()).map(el => (el.id || el.tagName).slice(0, 40))"""
+
+SOCIAL_MAX_BYTES = 1_000_000
 
 
 FONT_JS = """() => {
@@ -198,6 +222,27 @@ def main():
                     FALLBACK_BORDER.get(theme, FALLBACK_BORDER["light"]))
                 raw = Path(tmp) / f"{item_id}-{theme}.png"
                 el.screenshot(path=str(raw), scale="css")
+                if el.get_attribute("data-social") is not None:
+                    unsafe = el.evaluate(SAFE_JS)
+                    if unsafe:
+                        problems += 1
+                        print(f"WARN {item_id} ({theme}): text inside the 40 px safe border of the social preview: {', '.join(unsafe)}")
+                    blocks = el.evaluate(TEXT_BLOCKS_JS)
+                    if len(blocks) > 1:
+                        problems += 1
+                        print(f"WARN {item_id} ({theme}): more than one text block ({', '.join(blocks[:5])}); the social card holds the brand name only, a tagline cannot be read in a chat thumbnail")
+                    dst = out / (f"{item_id}.png" if theme == "light" else f"{item_id}-{theme}.png")
+                    img = Image.open(raw).convert("RGB")
+                    img.save(dst, "PNG", optimize=True)
+                    size = dst.stat().st_size
+                    flags = ""
+                    if img.size != (1280, 640):
+                        flags += "  WARN not 1280x640 (the item must be 640x320 CSS px)"
+                    if size > SOCIAL_MAX_BYTES:
+                        flags += "  WARN over the 1 MB GitHub limit"
+                    problems += bool(flags)
+                    print(f"{dst.name}  {img.size[0]}x{img.size[1]}  {size / 1024:.0f} KB{flags}")
+                    continue
                 dst = out / (f"{item_id}.webp" if theme == "light" else f"{item_id}-{theme}.webp")
                 w, h = round_and_border(raw, dst, line)
                 kb = dst.stat().st_size / 1024

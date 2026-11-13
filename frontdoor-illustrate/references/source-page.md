@@ -8,6 +8,7 @@ Read this when building or fixing an `.item`. The page has two kinds of rules. T
 |---|---|
 | Each image is a `.item` with a unique `id`, inside `.sheet` | the id is the output file name; `render.py` stops when one is missing |
 | `.item` has `width: 1200px; zoom: 2` | 1200 CSS px becomes a 2400 px image; the README column is about 830 px, so the image still has 2x density |
+| A GitHub social preview is an `.item` with the attribute `data-social`, `width: 640px; height: 320px` | it becomes a still 1280x640 PNG with no rounding and no border; text must stay 40 px inside every edge and the file under 1 MB, and `render.py` warns when not |
 | Theming only through `html[data-theme="dark"]` | `shared.js` sets it from `?theme=`; any other mechanism renders both themes identically |
 | `--cardline` is defined in both themes | the script reads it as the border color of the finished image; without it a fallback gray-blue is used |
 | Source pages sit beside `shared.css` and `shared.js` | relative links resolve because the whole folder is served |
