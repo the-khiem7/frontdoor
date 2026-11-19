@@ -3,7 +3,7 @@ baseline_schema: "2.0"
 pack: "frontdoor"
 document: "roadmap"
 status: "active"
-updated: "2026-11-13"
+updated: "2026-11-19"
 code_ref: "uncommitted"
 ---
 
@@ -29,7 +29,7 @@ Reasoning for every row below lives in `frontdoor.hallucination.md` under the en
 | Complete README with traced facts | FD-D19 | implemented, trialled twice | see Phase 5 |
 | Scene first, diagram where it fits, `<details>` | FD-D20 | implemented | `frontdoor-readme` guidance rewritten; this repository's README follows it |
 | Local board for rough directions | FD-D24, FD-D31 | implemented, Windows only, no skill run end to end | see Phase 6 and Phase 7 |
-| Banner, still social preview, optional animated banner | FD-D32 | implemented, Windows only, no skill run end to end | see Phase 7 |
+| Banner, still social preview, optional animated banner | FD-D32, FD-D33 | implemented, animated WebP only, Windows only, no skill run end to end | see Phase 7 and Phase 8 |
 | Host selection | FD-Q1 | unobserved, descriptions changed since | no run started from a plain request |
 | Automated tests | FD-Q2 | not started | none |
 | Other operating systems | FD-Q3 | unobserved | Windows and Edge only |
@@ -152,6 +152,22 @@ Acceptance criteria:
 | PNG chosen over JPG | awsketch social card at 1280x640: PNG 155 / 167 KB, JPG at quality 90 90 / 88 KB (light / dark); the user kept PNG |
 | Text | `frontdoor-readme/references/banner.md` added; `SKILL.md` steps 3, 4 and 5, `github-readme.md`, `audit-and-plan.md`, `AGENTS.md` and the board paths in the other two skills edited |
 | Not run | a skill following the new text from a plain request; the GIF and PNG on github.com; macOS and Linux |
+
+## Phase 8: animated WebP only
+
+Acceptance criteria:
+
+- `scripts/animate.py` writes looping animated WebP, rounded and bordered, in a `sway` and a `loop` motion, and no GIF is written
+- `frontdoor-readme` and `frontdoor-illustrate` name the script, and no skill text offers a GIF or a reduced-motion source for the banner
+
+### Checkpoint: script run on a real page, no skill run end to end
+
+| Item | Result |
+|---|---|
+| Script | `animate.py --motion loop` on the Docker Zero hero page: 30 frames, 2400x840, 672 KB light and 642 KB dark, exit 0 |
+| Size comparison | same 30 frames: GIF 7.6 MB and WebP 650 KB at 2400x840; GIF 3.0 MB and WebP 306 KB at 1200x420 |
+| Text | `banner.md`, `SKILL.md` of `frontdoor-readme` and of `frontdoor-illustrate`, `github-readme.md` and `AGENTS.md` edited |
+| Not run | `--motion sway` end to end; the WebP on github.com; macOS and Linux |
 
 ## Risks
 

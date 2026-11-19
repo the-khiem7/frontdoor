@@ -3,7 +3,7 @@ baseline_schema: "2.0"
 pack: "frontdoor"
 document: "hallucination"
 status: "active"
-updated: "2026-11-13"
+updated: "2026-11-19"
 code_ref: "uncommitted"
 ---
 
@@ -46,7 +46,8 @@ One row per entry. A row states what the entry is about and nothing more. An ans
 | FD-D29 | the stack references; moved to the ui-gallery pack as UG-D4 | moved | UG-D4 |
 | FD-D30 | how a state is mocked and shot; moved to the ui-gallery pack as UG-D5 | moved | UG-D5 |
 | FD-D31 | one design board per purpose: readme, landing-page, product | current | FD-D24, FD-D22 |
-| FD-D32 | the banner and social preview names, GitHub's social preview rules (still image only), and the optional animated README banner | current, lesson | FD-D18, FD-D3, FD-D31 |
+| FD-D32 | the banner and social preview names, GitHub's social preview rules (still image only), and the optional animated README banner | current, lesson; the GIF format amended by FD-D33 | FD-D18, FD-D3, FD-D31, FD-D33 |
+| FD-D33 | animated WebP as the only animated format, and the banner shown under reduced motion | current | FD-D32 |
 | FD-Q1 | whether the skill descriptions make a host select the skills correctly | open | none |
 | FD-Q2 | whether the skills need automated tests | open | none |
 | FD-Q3 | whether the scripts work on macOS and Linux | open | FD-D8 |
@@ -402,6 +403,20 @@ Rejected: a social preview in WebP with the rounded border - GitHub does not acc
 Rejected: a continuous full-circle spin - it cannot loop with few frames when the shapes carry different icons, it needs over 150 frames, and it was too fast to read.
 
 Rejected: rotating a group of shapes and icons - the icons turn with it, which the AWS trademark guidelines forbid; the drawing places each icon at its new coordinates instead.
+
+## FD-D33: animated WebP is the only animated format; the banner shows under reduced motion
+
+Decision: decided by the user on 2026-11-19. Every moving picture is an animated WebP made by `frontdoor-readme/scripts/animate.py` (`--motion sway` for a back-and-forth, `--motion loop` for a cycle, 30 frames at 12 per second, quality 68, rounded and bordered like the stills, under 700 KB per file); no GIF is built anywhere. The animated README banner keeps the names `banner.webp` and `banner-dark.webp`, and the README `<picture>` carries no `prefers-reduced-motion` source, so it moves for every reader. `frontdoor-illustrate` names the script as the way to animate. Amends the GIF part of FD-D32; the social preview stays a still PNG.
+
+Why: the same 30 frames of a 1200x420 banner were 3.0 MB as GIF and 306 KB as WebP (7.6 MB against 650 KB at 2400x840), and WebP keeps 24-bit colour and the rounded border that a GIF loses [user]. The user wants the banner visible on every machine, including those with reduced motion enabled [user].
+
+What breaks if ignored: a GIF adds several MB to every first view of the README and loses the rounded border; a reduced-motion source in the `<picture>` shows those readers the still, which the user does not want; a second animation tool for GIF drifts from the WebP one.
+
+Not verified: the animated WebP on github.com in light and dark and on a phone; macOS and Linux (FD-Q3); mail clients and apps that do not play animated WebP. A reader who enabled reduced motion now sees movement by design, which is why the motion stays slow and small.
+
+Rejected: keeping GIF as an option beside WebP - the user chose one format, and the GIF is about ten times larger [user].
+
+Rejected: a `prefers-reduced-motion` source that serves the still banner - the user wants the banner to show on every machine [user].
 
 ## Open questions
 
