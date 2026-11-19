@@ -6,7 +6,7 @@ Two pictures end every run: the README banner and the social preview GitHub show
 
 | Picture | Item id and file name | Format |
 |---|---|---|
-| README banner | `banner` | `banner.webp` and `banner-dark.webp`; with an approved motion, `banner.gif` and `banner-dark.gif` instead |
+| README banner | `banner` | `banner.webp` and `banner-dark.webp`; with an approved motion the same two names hold an animated WebP, so the README markup does not change |
 | GitHub social preview | `banner-social` | `banner-social.png` and `banner-social-dark.png`; always a still PNG, even when the banner moves |
 
 Use these names in every repository, so the next person (or the next run) finds them without asking. A repository that already has a banner under another name keeps its file until the user approves the rename.
@@ -18,7 +18,7 @@ The user sets it by hand in the repository, Settings, Social preview; no API or 
 | Rule | Value |
 |---|---|
 | Resolution | at least 640x320 px; 1280x640 px for best display; ratio 2:1 |
-| File format | GitHub lists PNG, GIF or JPG and refuses anything else, WebP included, so the renderer's rounded WebP is not used for this picture. This skill uses PNG only: a GIF shows no thumbnail in chat and mail apps that unfurl the link, and a JPG is lossy |
+| File format | GitHub's upload lists PNG, GIF or JPG and refuses anything else, WebP included, so the renderer's rounded WebP is not used for this picture (a README may use WebP, animated too; this rule is only about the social preview upload). This skill uses PNG only: a GIF shows no thumbnail in chat and mail apps that unfurl the link, and a JPG is lossy |
 | File size | under 1 MB ("Please upload a picture smaller than 1 MB." is the refusal). A still 1280x640 PNG of an illustrated banner is a few hundred KB, so the limit is no reason to shrink the picture |
 | Safe zone | keep a 40 pt border, 80 px at 1280x640, free of anything important (name, tagline, logo); a decoration may run past it and off the edge |
 | Template | GitHub's "Download template" on the same page shows the border |
@@ -46,14 +46,18 @@ Brief the user on what the motion would be, in a sentence per option, so they ca
 | Pulse along a path | one highlight travels along the flow or line that the project is about, then restarts | small file; suits a pipeline or a flow |
 | Staged reveal | the wordmark first, then the picture, then the tagline, each fading in, then a long hold | the first frame is empty unless the loop starts on the held end |
 
-The tradeoffs to say plainly: the file is 1.5 to 2 MB for the light and the same for the dark; a GIF has 128 colours, no soft edges against the page, no rounded corners and no border; README images cannot honour a reader's reduced-motion setting, so keep the motion slow and small, a peak of about 20 degrees per second and a loop of 6 to 10 seconds; a fast spin made a first test reader dizzy; and the still WebP files stay in the repository so the README can switch back by editing one line.
+The format is always an animated WebP, never a GIF: on the same 30 frames of a 1200x420 banner a GIF was near 3 MB and the WebP near 300 KB (7.6 MB against 650 KB at 2400x840), and the WebP keeps 24-bit colour, soft edges, rounded corners and the border of the still pictures. Aim for under 700 KB per file, light and dark each.
 
-When the user approves, make the source page expose a function that redraws the banner for a value, for example `drawBanner(angle)` that clears the drawing and places everything again, then run
+The tradeoffs to say plainly: the banner moves for every reader, because the README `<picture>` carries no `prefers-reduced-motion` source and a visitor who enabled that setting still sees it move (the user chose this so the banner shows on every machine); so keep the motion slow and small, a peak of about 20 degrees per second for a sway, a loop of 2 to 10 seconds, and nothing that flashes; a fast spin made a first test reader dizzy; and the previous still WebP stays in git history, so the README can go back to a still by restoring the two files.
+
+When the user approves, make the source page expose a function that redraws the banner for a value, for example `drawBanner(angle)` that clears the drawing and places everything again, then run `scripts/animate.py` of this skill, the one tool for every moving picture:
 
 ```
 uvx --from playwright --with pillow python -I <skill-dir>/scripts/animate.py <page.html> --root <assets dir> --item banner --call "drawBanner({v})" --name banner --out <assets dir>
 ```
 
-Place things with coordinates instead of rotating them (rotate a group and the icons on it turn too). Look at a frame near each end of the sway in both themes, and check the file sizes the script prints. The still `banner-social` comes from `frontdoor-illustrate` as above; draw it at the sway's rest position so it reads as a finished picture.
+It writes `banner.webp` and `banner-dark.webp` (rounded, bordered, looping), prints each size and exits 1 when one is over `--max-kb` (default 700). `--motion sway` (the default) feeds `{v}` as `amp * sin(2 * pi * i / frames)`, a slow back-and-forth for shapes that turn a few degrees and back (`--amp`, default 30); `--motion loop` feeds `{v}` as `i / frames` from 0 to just under 1, for motion that repeats by itself, such as waves drifting one wave period, bobbing shapes or rising bubbles, so write the page's function to map 0..1 onto exactly one cycle and the loop is seamless. Defaults: 30 frames at 12 per second, quality 68, the 2x size of the still pictures; `--size`, `--frames`, `--fps` and `--quality` trade size for smoothness.
 
-The README markup is the same `<picture>` as for the still banner with `.gif` in place of `.webp`; see `github-readme.md`.
+Place things with coordinates instead of rotating them (rotate a group and the icons on it turn too). Look at a frame near each end of the loop in both themes, and check the file sizes the script prints. The still `banner-social` comes from `frontdoor-illustrate` as above; draw it at the sway's rest position so it reads as a finished picture.
+
+The README markup is the same `<picture>` as for the still banner, with no `prefers-reduced-motion` source so the banner shows everywhere; see `github-readme.md`.
