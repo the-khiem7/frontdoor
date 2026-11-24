@@ -125,7 +125,7 @@ class Board:
         }
         (folder / "round.json").write_text(json.dumps(draft, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
         rnd = {"n": n, "status": "draft", "created": today(), "title": text(title), "note": text(note), "compare": False,
-               "variants": [{"id": vid} for vid in ids], "choice": {"chosen": [], "note": ""}}
+               "variants": [{"id": vid} for vid in ids], "choice": {"chosen": [], "note": "", "notes": {}}}
         page["rounds"].append(rnd)
         return rnd, folder
 
@@ -164,7 +164,9 @@ class Board:
         rnd.update({"status": "published", "published": today(), "title": text(spec.get("title")), "note": text(spec.get("note")),
                     "compare": bool(spec.get("compare")), "variants": variants})
         known = {v["id"] for v in variants}
-        rnd["choice"]["chosen"] = [c for c in rnd["choice"]["chosen"] if c in known]
+        choice = rnd.setdefault("choice", {"chosen": [], "note": ""})
+        choice["chosen"] = [c for c in choice.get("chosen", []) if c in known]
+        choice["notes"] = {k: t for k, t in (choice.get("notes") or {}).items() if k in known}
         return rnd
 
     def _images(self, vdir, v):
@@ -192,15 +194,20 @@ class Board:
         page = vdir / "index.html"
         return [{"label": "Open the page", "file": rel(self.dir, page)}] if page.is_file() else []
 
-    def choose(self, slug, n, ids, note=""):
+    def choose(self, slug, n, ids, note="", notes=None, allow_none=False):
+        """Record the user's choice. ids is a list or a comma separated string; several ids record a mix. notes maps a
+        variant id to the user's note on it. allow_none records notes with no variant chosen (the user rejected them all)."""
         rnd = self.round(slug, n)
         if rnd["status"] != "published":
             raise FdError(f"round {rnd['n']} of {slug} is still a draft; publish it with `fd round add {slug}` first.")
         known = [v["id"] for v in rnd["variants"]]
-        picked = [i.strip().upper() for i in ids.split(",") if i.strip()]
-        if not picked or any(i not in known for i in picked):
-            raise FdError(f"round {rnd['n']} of {slug} has variants {', '.join(known)}.")
-        rnd["choice"] = {"chosen": picked, "note": text(note), "date": today()}
+        raw = ids.split(",") if isinstance(ids, str) else list(ids or [])
+        picked = list(dict.fromkeys(str(i).strip().upper() for i in raw if str(i).strip()))
+        clean_notes = {str(k).strip().upper(): text(t) for k, t in (notes or {}).items() if text(t)}
+        bad = [i for i in [*picked, *clean_notes] if i not in known]
+        if bad or (not picked and not allow_none):
+            raise FdError(f"round {rnd['n']} of {slug} has variants {', '.join(known)}" + (f"; unknown: {', '.join(bad)}." if bad else "."))
+        rnd["choice"] = {"chosen": picked, "note": text(note), "notes": clean_notes, "date": today()}
         return rnd
 
     def status(self, slug=None):
@@ -215,6 +222,7 @@ class Board:
                     "n": last["n"], "status": last["status"], "title": last["title"],
                     "variants": [v["id"] for v in last["variants"]],
                     "chosen": last["choice"]["chosen"], "choice_note": last["choice"]["note"],
+                    "variant_notes": last["choice"].get("notes") or {},
                     "folder": rel(self.dir, self.round_dir(p["slug"], last["n"])) if self.round_dir(p["slug"], last["n"]).exists() else None,
                 },
             })
@@ -236,6 +244,28 @@ class Board:
         (self.dir / "board-data.js").write_text(script, encoding="utf-8")
         shutil.copyfile(ASSETS / "board.html", self.dir / "index.html")
         return self.dir / "index.html"
+
+
+CHOICE_TAG = "fd-choice "
+
+
+def parse_choice(blob):
+    """Read the choice the board's "Copy choice" button put on the clipboard: the last line that starts with `fd-choice `
+    carries it as JSON, so the lines a person reads above it can change without breaking this."""
+    lines = [ln.strip() for ln in str(blob).splitlines() if ln.strip().startswith(CHOICE_TAG)]
+    if not lines:
+        raise FdError("no `fd-choice` line found; paste the whole text the board's Copy choice button gave.", 2)
+    try:
+        data = json.loads(lines[-1][len(CHOICE_TAG):])
+    except ValueError as e:
+        raise FdError(f"the fd-choice line is not valid JSON ({e}); copy it again from the board.", 2) from None
+    if not isinstance(data, dict) or not isinstance(data.get("page"), str) or not isinstance(data.get("round"), int):
+        raise FdError("the fd-choice line needs a page and a round number.", 2)
+    notes = data.get("notes") or {}
+    if not isinstance(data.get("chosen", []), list) or not isinstance(notes, dict):
+        raise FdError("the fd-choice line has a malformed chosen list or notes.", 2)
+    return {"page": data["page"], "round": data["round"], "chosen": data.get("chosen", []),
+            "note": text(data.get("note")), "notes": notes}
 
 
 def pair_images(files):

@@ -205,3 +205,57 @@ def test_broken_board_json_is_reported_not_overwritten(repo, fd):
     code, _, err = fd("page", "add", "icons")
     assert code == 1 and "not valid JSON" in err
     assert path.read_text(encoding="utf-8") == "{ broken"
+
+
+def published_round(repo, fd, page="readme", ids="AB"):
+    fd("page", "add", page)
+    fd("round", "new", page, "--count", str(len(ids)))
+    for v in ids:
+        write(repo / ROUND.format(page=page, n=1) / v.lower() / "out" / "hero.webp")
+    fill(repo, page, 1, ids)
+    fd("round", "add", page)
+
+
+def test_choose_records_variant_notes(repo, fd, board):
+    published_round(repo, fd)
+    code, out, _ = fd("choose", "readme", "1", "A", "--note", "mix", "--variant-note", "b=keep the rail")
+    assert code == 0 and "B: keep the rail" in out
+    choice = board()["pages"][0]["rounds"][0]["choice"]
+    assert choice["chosen"] == ["A"] and choice["notes"] == {"B": "keep the rail"}
+    assert fd("choose", "readme", "1", "A", "--variant-note", "Z=x")[0] == 1
+    assert fd("choose", "readme", "1", "A", "--variant-note", "no equals sign")[0] == 2
+
+
+def test_choose_from_the_copied_text(repo, fd, board):
+    published_round(repo, fd)
+    pasted = repo / "choice.txt"
+    pasted.write_text('Design board choice: x, page readme, round 1\nChosen: A + B\n\n'
+                      'fd-choice {"page":"readme","round":1,"chosen":["A","B"],"note":"rail of A","notes":{"B":"chữ đậm"}}\n', encoding="utf-8-sig")
+    code, out, _ = fd("choose", "--from", str(pasted))
+    assert code == 0 and "chose A, B" in out
+    choice = board()["pages"][0]["rounds"][0]["choice"]
+    assert choice["chosen"] == ["A", "B"] and choice["note"] == "rail of A" and choice["notes"] == {"B": "chữ đậm"}
+
+
+def test_choose_from_records_a_rejection_of_every_variant(repo, fd, board):
+    published_round(repo, fd)
+    pasted = write(repo / "choice.txt", b'fd-choice {"page":"readme","round":1,"chosen":[],"note":"none, try warmer colours"}')
+    assert fd("choose", "--from", str(pasted))[0] == 0
+    assert board()["pages"][0]["rounds"][0]["choice"]["chosen"] == []
+    assert fd("choose", "readme", "1", "")[0] == 2
+
+
+@pytest.mark.parametrize("blob, err", [("no tag here", "no `fd-choice` line"), ("fd-choice {broken", "not valid JSON"),
+                                       ('fd-choice {"page":"readme"}', "page and a round")])
+def test_choose_from_rejects_bad_text(repo, fd, blob, err):
+    published_round(repo, fd)
+    pasted = write(repo / "choice.txt", blob.encode())
+    code, _, stderr = fd("choose", "--from", str(pasted))
+    assert code == 2 and err in stderr
+
+
+def test_choose_needs_either_from_or_the_ids(repo, fd):
+    published_round(repo, fd)
+    assert fd("choose", "readme")[0] == 2
+    assert fd("choose", "readme", "1", "A", "--from", "x.txt")[0] == 2
+    assert fd("choose", "--from", str(repo / "missing.txt"))[0] == 2

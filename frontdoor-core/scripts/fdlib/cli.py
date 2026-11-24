@@ -21,6 +21,7 @@ EPILOG = """examples:
   fd render .frontdoor/board/icons/round-1/a/icons.html --out .frontdoor/board/icons/round-1/a/out
   fd round add icons
   fd choose icons 1 B --note "B, with the stroke of A"
+  fd choose --from choice.txt   (the text the board's Copy choice button gave)
   fd status --json
   fd daemon start            (then every fd render reuses one open browser)
   fd render assets/source/readme.html --root assets --out assets --watch
@@ -53,10 +54,13 @@ def parser():
     p.add_argument("--open", action="store_true", help="open the board in the default browser")
 
     p = sub.add_parser("choose", help="record which variants the user chose in a round")
-    p.add_argument("slug")
-    p.add_argument("n", type=int)
-    p.add_argument("ids", help="variant ids, comma separated; several ids record a mix")
+    p.add_argument("slug", nargs="?")
+    p.add_argument("n", nargs="?", type=int)
+    p.add_argument("ids", nargs="?", help="variant ids, comma separated; several ids record a mix")
     p.add_argument("--note", default="", help="what was mixed or changed")
+    p.add_argument("--variant-note", action="append", default=[], metavar="ID=TEXT", help="a note on one variant; repeat for more")
+    p.add_argument("--from", dest="from_file", metavar="FILE",
+                   help="read the text the board's Copy choice button gave, from a file or - for stdin, instead of slug, n and ids")
 
     p = sub.add_parser("status", help="summarise the board (and the daemon) in a few lines")
     p.add_argument("slug", nargs="?")
@@ -157,9 +161,32 @@ def cmd_round(a, root):
 
 def cmd_choose(a, root):
     b = boardlib.Board(board_dir(root))
-    rnd = b.choose(a.slug, a.n, a.ids, a.note)
+    if a.from_file:
+        if a.slug or a.n is not None or a.ids:
+            raise FdError("give either --from or slug, round and ids, not both.", 2)
+        try:
+            blob = sys.stdin.buffer.read().decode("utf-8-sig") if a.from_file == "-" else Path(a.from_file).read_text(encoding="utf-8-sig")
+        except (OSError, UnicodeDecodeError) as e:
+            raise FdError(f"could not read {a.from_file}: {e}", 2) from None
+        c = boardlib.parse_choice(blob)
+        rnd = b.choose(c["page"], c["round"], c["chosen"], c["note"], c["notes"], allow_none=True)
+        slug = c["page"]
+    else:
+        if not (a.slug and a.n is not None and a.ids):
+            raise FdError("choose needs a page, a round number and variant ids, or --from with the copied choice.", 2)
+        notes = {}
+        for item in a.variant_note:
+            vid, sep, note = item.partition("=")
+            if not sep:
+                raise FdError(f"--variant-note {item!r} must look like B=\"what to keep\".", 2)
+            notes[vid] = note
+        rnd = b.choose(a.slug, a.n, a.ids, a.note, notes)
+        slug = a.slug
     b.save()
-    print(f"round {rnd['n']} of {a.slug}: chose {', '.join(rnd['choice']['chosen'])}" + (f" ({rnd['choice']['note']})" if rnd["choice"]["note"] else ""))
+    ch = rnd["choice"]
+    print(f"round {rnd['n']} of {slug}: chose {', '.join(ch['chosen']) or 'none'}" + (f" ({ch['note']})" if ch["note"] else ""))
+    for vid, note in ch["notes"].items():
+        print(f"  {vid}: {note}")
     return 0
 
 

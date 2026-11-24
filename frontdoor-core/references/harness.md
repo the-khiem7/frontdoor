@@ -16,7 +16,8 @@ The browser is the Edge or Chrome already on the machine; nothing is downloaded 
 | `fd page add <slug> [--title T]` | adds a page; `fd page list` lists them |
 | `fd round new <slug> --count N [--title T] [--note T] [--seed FILE]` | starts the page's next round: a folder per variant and `round.json`; `--count` is required |
 | `fd round add <slug> [<n>]` | publishes the round (default: the latest draft) from `round.json` and the renders; again after a change |
-| `fd choose <slug> <n> <ids> [--note T]` | records the choice, several ids for a mix |
+| `fd choose <slug> <n> <ids> [--note T] [--variant-note ID=T]` | records the choice, several ids for a mix, with a note on the round and on each variant |
+| `fd choose --from <file or ->` | records the text the board's Copy choice button gave, read from its last `fd-choice` line; a choice with no variant records that every variant was rejected |
 | `fd status [<slug>] [--json]` | one line per page, and whether the daemon runs |
 | `fd board build` / `fd board open` | rebuilds the page after a hand edit of `board.json` / opens it |
 
