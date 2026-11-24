@@ -21,7 +21,7 @@
   --rule: #ffffff; --rule-edge: rgb(0 0 0 / .45);
   --bad: #a3362b; --brand: #e9a23b; --brand-soft: #fbe7c2;
   --rail: 52px; --bar: 56px; --tabs: 44px; --head: calc(var(--bar) + var(--tabs)); --dock: 74px; --cap: max(260px, calc(100vh - var(--head) - var(--dock) - 300px)); --r: 10px; --r-s: 7px;
-  --ease: cubic-bezier(.2, .8, .2, 1);
+  --ease: cubic-bezier(.2, .8, .2, 1); --t: .34s; --t-fast: .15s;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
@@ -51,7 +51,7 @@ svg.i { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor;
 kbd { font: 600 11px/1 ui-monospace, "Cascadia Mono", Consolas, monospace; padding: 3px 5px; border: 1px solid var(--line-strong); border-bottom-width: 2px; border-radius: 4px; background: var(--raise); color: var(--ink); }
 
 /* controls */
-.btn { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 1px solid var(--line-strong); border-radius: var(--r-s); background: var(--panel); cursor: pointer; white-space: nowrap; transition: background .15s, border-color .15s, color .15s; }
+.btn { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 1px solid var(--line-strong); border-radius: var(--r-s); background: var(--panel); cursor: pointer; white-space: nowrap; transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast), transform var(--t-fast); }
 .btn:hover { background: var(--raise); border-color: var(--faint); }
 .btn:active { transform: translateY(1px); }
 .btn:disabled { opacity: .45; cursor: default; transform: none; }
@@ -61,7 +61,7 @@ kbd { font: 600 11px/1 ui-monospace, "Cascadia Mono", Consolas, monospace; paddi
 .btn.quiet { border-color: transparent; background: transparent; color: var(--muted); }
 .btn.quiet:hover { background: var(--raise); color: var(--ink); }
 .seg { display: inline-flex; padding: 2px; gap: 2px; border: 1px solid var(--line-strong); border-radius: var(--r-s); background: var(--raise); }
-.seg button { display: inline-flex; align-items: center; gap: 5px; height: 26px; padding: 0 9px; border: 0; border-radius: 5px; background: transparent; color: var(--muted); cursor: pointer; transition: background .15s, color .15s; }
+.seg button { display: inline-flex; align-items: center; gap: 5px; height: 26px; padding: 0 9px; border: 0; border-radius: 5px; background: transparent; color: var(--muted); cursor: pointer; transition: background var(--t), color var(--t), box-shadow var(--t); }
 .seg button:hover { color: var(--ink); }
 .seg button[aria-pressed="true"] { background: var(--accent-soft); color: var(--ink); box-shadow: 0 0 0 1px var(--accent); }
 .seg.small button { height: 22px; padding: 0 6px; }
@@ -90,7 +90,7 @@ kbd { font: 600 11px/1 ui-monospace, "Cascadia Mono", Consolas, monospace; paddi
 .toc-page > a .count { margin-left: auto; color: var(--faint); font-size: 12px; font-variant-numeric: tabular-nums; opacity: 0; transition: opacity .2s; }
 .toc.open .toc-page > a .name, .toc.open .toc-page > a .count { opacity: 1; transition-delay: .12s; }
 .toc-rounds { display: none; flex-direction: column; gap: 2px; margin: 6px 0 2px 4px; }
-.toc.open .toc-rounds { display: flex; }
+.toc.open .toc-rounds { display: flex; animation: fade-in var(--t) var(--ease) .12s backwards; }
 .toc-rounds li { padding: 7px 8px 8px; border-radius: 8px; }
 .toc-rounds li:hover { background: var(--raise); }
 .toc-rounds li.here { background: var(--accent-soft); }
@@ -116,18 +116,25 @@ kbd { font: 600 11px/1 ui-monospace, "Cascadia Mono", Consolas, monospace; paddi
 .bar-top h1 { min-width: 0; max-width: min(56ch, 40vw); font: 700 15px/1.3 "FD Fraunces", Georgia, "Times New Roman", serif; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .tabs { position: sticky; top: var(--bar); z-index: 19; height: var(--tabs); margin-bottom: calc(-1 * var(--tabs)); display: flex; align-items: center; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 0 20px; pointer-events: none; }
 .tabs > * { pointer-events: auto; }
-.tab-group { flex: none; display: inline-flex; align-items: center; height: 32px; border: 1px solid var(--line); border-radius: var(--r-s); background: color-mix(in srgb, var(--panel) 94%, transparent); box-shadow: 0 1px 3px rgb(0 0 0 / .12); }
+.tab-group { flex: none; display: inline-flex; align-items: center; height: 32px; border: 1px solid var(--line); border-radius: var(--r-s); background: color-mix(in srgb, var(--panel) 94%, transparent); box-shadow: 0 1px 3px rgb(0 0 0 / .12); transition: background var(--t), border-color var(--t), box-shadow var(--t); }
 .tab-group.sel { border-color: var(--line-strong); background: var(--panel); box-shadow: var(--shadow); }
 .tab-group.draft { border-style: dashed; border-color: var(--line-strong); }
-.tab { flex: none; display: inline-flex; align-items: center; gap: 6px; height: 100%; padding: 0 11px; border: 0; border-radius: var(--r-s); background: transparent; color: var(--muted); cursor: pointer; font-variant-numeric: tabular-nums; transition: background .15s, color .15s; }
+.tab { flex: none; display: inline-flex; align-items: center; gap: 6px; height: 100%; padding: 0 11px; border: 0; border-radius: var(--r-s); background: transparent; color: var(--muted); cursor: pointer; font-variant-numeric: tabular-nums; transition: background var(--t-fast), color var(--t); }
 .tab:hover { color: var(--ink); background: var(--raise); }
 .tab[aria-selected="true"] { color: var(--ink); font-weight: 600; }
 .tab[aria-selected="true"]:hover { background: transparent; }
-.tab .tn { font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
+.tab .tn { display: inline-flex; font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
+/* "Round " opens in front of the number when the tab is selected, and the A B C buttons open after the title */
+.tn .rw, .tab-vars { display: inline-grid; grid-template-columns: 0fr; opacity: 0; transition: grid-template-columns var(--t) var(--ease), opacity var(--t) var(--ease); }
+.tn .rw > span { display: block; min-width: 0; overflow: hidden; white-space: pre; }
+.tab[aria-selected="true"] .rw { grid-template-columns: 1fr; opacity: 1; }
 .tab .tt { max-width: 22ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .tab .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
-.tab-vars { display: inline-flex; align-items: center; gap: 3px; height: 100%; padding: 0 4px 0 7px; border-left: 1px solid var(--line); }
-.tab-vars button { display: grid; place-items: center; min-width: 24px; height: 24px; padding: 0 5px; border: 1px solid transparent; border-radius: 5px; background: transparent; color: var(--muted); font: 700 11px/1 ui-monospace, "Cascadia Mono", Consolas, monospace; cursor: pointer; }
+.tab-vars { height: 100%; visibility: hidden; transition: grid-template-columns var(--t) var(--ease), opacity var(--t) var(--ease), visibility 0s linear var(--t); }
+.tab-group.sel .tab-vars { grid-template-columns: 1fr; opacity: 1; visibility: visible; transition-delay: 0s; }
+.tab-vars > span { display: block; min-width: 0; overflow: hidden; }
+.tab-vars > span > span { display: flex; align-items: center; gap: 3px; height: 100%; padding: 0 4px 0 7px; border-left: 1px solid var(--line); }
+.tab-vars button { display: grid; place-items: center; min-width: 24px; height: 24px; padding: 0 5px; border: 1px solid transparent; border-radius: 5px; background: transparent; color: var(--muted); font: 700 11px/1 ui-monospace, "Cascadia Mono", Consolas, monospace; cursor: pointer; transition: background var(--t), color var(--t), border-color var(--t), box-shadow var(--t); }
 .tab-vars button:hover { background: var(--raise); color: var(--ink); }
 .tab-vars button[aria-current="true"] { border-color: var(--line-strong); background: var(--raise); color: var(--ink); }
 .tab-vars button.picked { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
@@ -146,7 +153,7 @@ main { flex: 1; width: 100%; max-width: 1680px; margin: 0 auto; padding: calc(va
 .variants { --cols: 1; display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 18px; align-items: start; }
 .variants[data-cols="2"] { --cols: 2; }
 .variants[data-cols="3"] { --cols: 3; }
-.card { grid-row: span 4; display: grid; grid-template-rows: subgrid; gap: 12px; min-width: 0; padding: 14px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow); transition: border-color .15s, box-shadow .15s; scroll-margin: calc(var(--head) + 16px) 16px calc(var(--dock) + 16px); }
+.card { grid-row: span 4; display: grid; grid-template-rows: subgrid; gap: 12px; min-width: 0; padding: 14px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow); transition: border-color var(--t), box-shadow var(--t); scroll-margin: calc(var(--head) + 16px) 16px calc(var(--dock) + 16px); }
 .card-side { display: contents; }
 .card-head { grid-row: 1; }
 .pics { grid-row: 2; }
@@ -158,11 +165,16 @@ main { flex: 1; width: 100%; max-width: 1680px; margin: 0 auto; padding: calc(va
 .card.picked.current { box-shadow: var(--shadow), 0 0 0 1px var(--accent), 0 0 0 4px color-mix(in srgb, var(--accent) 30%, transparent); }
 .card-head { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .title-row { display: flex; align-items: center; gap: 10px; }
-.vid { flex: none; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 6px; background: var(--ink); color: var(--panel); font: 700 13px/1 ui-monospace, "Cascadia Mono", Consolas, monospace; }
+.vid { flex: none; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 6px; background: var(--ink); color: var(--panel); font: 700 13px/1 ui-monospace, "Cascadia Mono", Consolas, monospace; transition: background var(--t), color var(--t); }
 .card.picked .vid { background: var(--accent); color: var(--accent-ink); }
 .title-row h3 { flex: 1; min-width: 0; font-size: 15px; font-weight: 650; line-height: 1.3; }
-.pick { flex: none; }
+.pick { flex: none; gap: 0; transition: background var(--t), border-color var(--t), color var(--t), transform var(--t-fast); }
 .pick[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+/* the check and the "ed" of "Picked" sit in cells that open from 0fr to 1fr, so the button widens when picked and shrinks when not */
+.pick .chk, .pick .ed { display: inline-grid; grid-template-columns: 0fr; opacity: 0; transition: grid-template-columns var(--t) var(--ease), opacity var(--t) var(--ease); }
+.pick .chk > span, .pick .ed > span { display: flex; align-items: center; min-width: 0; overflow: hidden; white-space: pre; }
+.pick .chk svg { margin-right: 6px; }
+.pick[aria-pressed="true"] .chk, .pick[aria-pressed="true"] .ed { grid-template-columns: 1fr; opacity: 1; }
 .concept { color: var(--ink); }
 .facts { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 7px 10px; font-size: 13px; align-content: start; }
 .facts dt { position: relative; display: grid; place-items: center; width: 20px; height: 20px; color: var(--muted); cursor: help; }
@@ -202,11 +214,12 @@ main { flex: 1; width: 100%; max-width: 1680px; margin: 0 auto; padding: calc(va
 /* one picture holding both themes; in split mode the pointer draws the divider */
 .stack { position: relative; display: block; line-height: 0; max-width: 100%; touch-action: pan-y; }
 .stack img { display: block; max-width: 100%; max-height: var(--cap); width: auto; height: auto; user-select: none; -webkit-user-drag: none; }
-.stack img.over { position: absolute; inset: 0; width: 100%; height: 100%; max-height: none; visibility: hidden; }
-.stack[data-mode="dark"] img.base { visibility: hidden; }
-.stack[data-mode="dark"] img.over { visibility: visible; }
+.stack img.over { position: absolute; inset: 0; width: 100%; height: 100%; max-height: none; visibility: hidden; opacity: 0; transition: opacity var(--t) var(--ease), visibility 0s linear var(--t); }
+/* the dark picture fades in over the light one, and the light one is hidden only after the fade; split mode is never transitioned, so the divider follows the pointer directly */
+.stack[data-mode="dark"] img.base { visibility: hidden; transition: visibility 0s linear var(--t); }
+.stack[data-mode="dark"] img.over { visibility: visible; opacity: 1; transition: opacity var(--t) var(--ease); }
 .stack[data-mode="split"] img.base { clip-path: inset(0 calc(100% - var(--x, 50%)) 0 0); }
-.stack[data-mode="split"] img.over { visibility: visible; clip-path: inset(0 0 0 var(--x, 50%)); }
+.stack[data-mode="split"] img.over { visibility: visible; opacity: 1; clip-path: inset(0 0 0 var(--x, 50%)); transition: none; }
 .stack .rule { display: none; position: absolute; top: 0; bottom: 0; left: var(--x, 50%); width: 2px; margin-left: -1px; background: var(--rule); box-shadow: 0 0 0 1px var(--rule-edge); pointer-events: none; }
 .stack[data-mode="split"] .rule { display: block; }
 .stack .knob { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--rule); color: #1b1d21; box-shadow: 0 0 0 1px var(--rule-edge), 0 2px 8px rgb(0 0 0 / .3); }
@@ -229,6 +242,10 @@ main { flex: 1; width: 100%; max-width: 1680px; margin: 0 auto; padding: calc(va
 .dock .btn.primary { background: var(--accent); border-color: var(--accent); }
 .dock .status { position: absolute; bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%); padding: 5px 12px; color: var(--muted); font-size: 12px; white-space: nowrap; }
 .dock .status:empty { display: none; }
+.dock .status:not(:empty) { animation: status-in var(--t) var(--ease) backwards; }
+.dock .picked-list { overflow: hidden; }
+@keyframes status-in { from { opacity: 0; transform: translate(-50%, 6px); } }
+@keyframes fade-in { from { opacity: 0; } }
 .dock .status.ok { color: var(--accent); font-weight: 600; }
 
 /* empty and draft states */
@@ -266,6 +283,18 @@ dialog.viewer::backdrop { background: rgb(0 0 0 / .5); }
 .keys dt { display: flex; gap: 4px; justify-content: flex-end; }
 .sheet textarea { width: min(520px, 84vw); height: 220px; padding: 10px; border: 1px solid var(--line-strong); border-radius: var(--r-s); background: var(--raise); font: 12px/1.5 ui-monospace, "Cascadia Mono", Consolas, monospace; }
 .sheet .row { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
+
+/* dialogs fade in and out; browsers without @starting-style open them at once */
+dialog.viewer, dialog.sheet { opacity: 0; transition: opacity var(--t) var(--ease), transform var(--t) var(--ease), display var(--t) allow-discrete, overlay var(--t) allow-discrete; }
+dialog.sheet { transform: translateY(8px) scale(.98); }
+dialog.viewer[open], dialog.sheet[open] { opacity: 1; transform: none; }
+dialog.viewer::backdrop, dialog.sheet::backdrop { transition: background-color var(--t) var(--ease), display var(--t) allow-discrete, overlay var(--t) allow-discrete; }
+dialog.viewer:not([open])::backdrop, dialog.sheet:not([open])::backdrop { background-color: rgb(0 0 0 / 0); }
+@starting-style {
+  dialog.viewer[open], dialog.sheet[open] { opacity: 0; }
+  dialog.sheet[open] { transform: translateY(8px) scale(.98); }
+  dialog.viewer[open]::backdrop, dialog.sheet[open]::backdrop { background-color: rgb(0 0 0 / 0); }
+}
 
 @media (min-width: 861px) {
   .variants[data-cols="1"] { --cap: max(320px, calc(100vh - var(--head) - var(--dock) - 60px)); }
@@ -390,7 +419,7 @@ dialog.viewer::backdrop { background: rgb(0 0 0 / .5); }
     <button class="btn icon" id="z-out" type="button" title="Zoom out (-)"><svg class="i"><use href="#i-minus"/></svg><span class="vh">Zoom out</span></button>
     <span class="zoom-read" id="z-read"></span>
     <button class="btn icon" id="z-in" type="button" title="Zoom in (+)"><svg class="i"><use href="#i-plus"/></svg><span class="vh">Zoom in</span></button>
-    <button class="btn" id="v-pick" type="button" title="Pick this variant (P)"><svg class="i"><use href="#i-check"/></svg><span>Pick</span></button>
+    <button class="btn pick" id="v-pick" type="button" aria-pressed="false" title="Pick this variant (P)"><span class="chk"><span><svg class="i"><use href="#i-check"/></svg></span></span><span>Pick</span><span class="ed"><span>ed</span></span></button>
     <button class="btn icon" id="v-close" type="button" title="Close (Esc)"><svg class="i"><use href="#i-close"/></svg><span class="vh">Close</span></button>
   </div>
   <div class="v-body" id="v-body"></div>
@@ -440,6 +469,18 @@ dialog.viewer::backdrop { background: rgb(0 0 0 / .5); }
   };
   const icon = (name) => { const s = document.createElementNS("http://www.w3.org/2000/svg", "svg"); s.setAttribute("class", "i"); s.setAttribute("aria-hidden", "true"); const u = document.createElementNS("http://www.w3.org/2000/svg", "use"); u.setAttribute("href", "#i-" + name); s.append(u); return s; };
   const url = (p) => encodeURI(p);
+  // ---- motion: the CSS holds the transitions; these helpers run the few that CSS cannot, and stand down for reduced motion ----
+  const MOTION = 340, EASE = "cubic-bezier(.2, .8, .2, 1)";
+  const calm = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const settle = (els, step = 45) => { if (!calm()) els.forEach((e, i) => e.animate([{ opacity: 0, transform: "translateY(8px)" }, { opacity: 1, transform: "none" }], { duration: MOTION, delay: Math.min(i, 8) * step, easing: EASE, fill: "backwards" })); };
+  const pop = (els) => { if (!calm()) els.forEach((e) => e.animate([{ opacity: 0, transform: "scale(.5)" }, { opacity: 1, transform: "none" }], { duration: MOTION, easing: EASE })); };
+  const morph = (el, change) => {
+    const w0 = el.getBoundingClientRect().width; change();
+    const w1 = el.getBoundingClientRect().width;
+    if (calm() || Math.abs(w1 - w0) < 1) return;
+    el.animate([{ width: `${w0}px` }, { width: `${w1}px` }], { duration: MOTION, easing: EASE });
+  };
+  const pickInner = () => [h("span", { class: "chk" }, h("span", {}, icon("check"))), h("span", {}, "Pick"), h("span", { class: "ed" }, h("span", {}, "ed"))];
   const store = {
     key: (k) => `fd-board:${location.pathname}:${k}`,
     get(k, d) { try { const v = localStorage.getItem(this.key(k)); return v == null ? d : JSON.parse(v); } catch { return d; } },
@@ -533,22 +574,29 @@ dialog.viewer::backdrop { background: rgb(0 0 0 / .5); }
   }
 
   // ---- header ----
+  function tabGroup(r) {
+    const vs = published(r) ? shown(r) : [];
+    const t = h("button", { class: "tab", type: "button", role: "tab", id: `tab-${r.n}`, "aria-controls": "main",
+      title: `${r.title || "Round " + r.n}${r.status === "draft" ? " (draft)" : ""}`, onclick: () => go(S.page.slug, r.n, [], true) },
+      h("span", { class: "tn" }, h("span", { class: "rw" }, h("span", {}, "Round ")), String(r.n)), h("span", { class: "tt" }, r.title || `Round ${r.n}`), (r.choice && r.choice.chosen && r.choice.chosen.length) ? h("span", { class: "dot", title: "A choice is recorded" }) : null);
+    const vars = vs.length > 1 ? h("span", { class: "tab-vars", role: "group", "aria-label": `Variants of round ${r.n}` }, h("span", {}, h("span", {},
+      vs.map((v, i) => h("button", { type: "button", "data-i": String(i), title: `${v.id}: ${v.title || ""}`, "aria-label": `Go to variant ${v.id}`, onclick: () => jumpVariant(i) }, v.id))))) : null;
+    return h("div", { class: "tab-group" + (r.status === "draft" ? " draft" : ""), "data-n": String(r.n), role: "presentation" }, t, vars);
+  }
+  // the tabs of a page stay in the DOM while you move between its rounds, so the selected one can widen and the others shrink
   function renderBar() {
     $("page-title").textContent = S.page ? S.page.title : "Design board";
     const tabs = $("tabs");
-    tabs.replaceChildren(...(S.page ? S.page.rounds : []).map((r) => {
-      const sel = r === S.round;
-      const t = h("button", { class: "tab", type: "button", role: "tab", id: `tab-${r.n}`, "aria-controls": "main", "aria-selected": String(sel), tabindex: sel ? "0" : "-1",
-        title: `${r.title || "Round " + r.n}${r.status === "draft" ? " (draft)" : ""}`, onclick: () => go(S.page.slug, r.n, [], true) },
-        h("span", { class: "tn" }, sel ? `Round ${r.n}` : String(r.n)), h("span", { class: "tt" }, r.title || `Round ${r.n}`), (r.choice && r.choice.chosen && r.choice.chosen.length) ? h("span", { class: "dot", title: "A choice is recorded" }) : null);
-      const vs = sel && published(r) ? shown(r) : [];
-      const vars = vs.length > 1 ? h("span", { class: "tab-vars", id: "tab-vars", role: "group", "aria-label": `Variants of round ${r.n}` },
-        vs.map((v, i) => h("button", { type: "button", "data-i": String(i), title: `${v.id}: ${v.title || ""}`, "aria-label": `Go to variant ${v.id}`, onclick: () => jumpVariant(i) }, v.id))) : null;
-      return h("div", { class: "tab-group" + (sel ? " sel" : "") + (r.status === "draft" ? " draft" : ""), role: "presentation" }, t, vars);
-    }));
+    if (tabs._page !== S.page) { tabs._page = S.page; tabs.replaceChildren(...(S.page ? S.page.rounds : []).map(tabGroup)); }
+    for (const g of tabs.children) {
+      const sel = Number(g.dataset.n) === (S.round && S.round.n);
+      g.classList.toggle("sel", sel);
+      const t = g.querySelector(".tab"); t.setAttribute("aria-selected", String(sel)); t.tabIndex = sel ? 0 : -1;
+      const box = g.querySelector(".tab-vars"); if (box) { if (sel) box.id = "tab-vars"; else box.removeAttribute("id"); }
+    }
     const sel = tabs.querySelector('[aria-selected="true"]');
     if (sel) main.setAttribute("aria-labelledby", sel.id); else main.removeAttribute("aria-labelledby");
-    if (sel) sel.scrollIntoView({ block: "nearest", inline: "nearest" });
+    if (sel) { sel.scrollIntoView({ block: "nearest", inline: "nearest" }); clearTimeout(tabs._t); tabs._t = setTimeout(() => sel.scrollIntoView({ block: "nearest", inline: "nearest", behavior: calm() ? "auto" : "smooth" }), MOTION + 20); }
     $("compare").hidden = !canCompare();
     syncSeg($("theme-all"), S.mode);
     syncCols();
@@ -564,7 +612,7 @@ dialog.viewer::backdrop { background: rgb(0 0 0 / .5); }
   $("cols").addEventListener("click", (e) => {
     const b = e.target.closest("button"); if (!b) return;
     S.cols = Number(b.dataset.cols); store.set("cols", S.cols); syncCols();
-    const grid = main.querySelector(".variants"); if (grid) grid.dataset.cols = String(S.cols);
+    const grid = main.querySelector(".variants"); if (grid) { grid.dataset.cols = String(S.cols); settle([...grid.children]); }
     markCurrent(false);
     const c = main.querySelectorAll(".card")[S.vi]; if (c) c.scrollIntoView({ block: "nearest" });
   });
@@ -637,7 +685,8 @@ dialog.viewer::backdrop { background: rgb(0 0 0 / .5); }
     S.vi = Math.min(S.vi, vs.length - 1);
     const grid = h("div", { class: "variants", "data-cols": String(S.cols) }, vs.map((v, i) => card(v, i, p, new Set(c.chosen || []))));
     main.replaceChildren(head, grid);
-    dock.hidden = false;
+    if (dock.hidden) { dock.hidden = false; settle([dock]); }
+    settle([head, ...grid.children]);
     $("round-note").value = p.note || "";
     renderPicked(p);
     markCurrent(false);
@@ -646,7 +695,7 @@ dialog.viewer::backdrop { background: rgb(0 0 0 / .5); }
     const picked = p.chosen.includes(v.id);
     const facts = [["Strengths", "strength", "ok", v.strengths], ["Risks", "risk", "warn", v.risks], ["Known flaws", "flaw", "bad", v.flaws]].filter((f) => f[3]);
     const pick = h("button", { class: "btn pick", type: "button", "aria-pressed": String(picked), "aria-label": `Pick ${v.id}`, onclick: (e) => { e.stopPropagation(); togglePick(v.id); } },
-      icon("check"), h("span", {}, picked ? "Picked" : "Pick"));
+      pickInner());
     const note = h("textarea", { class: "vnote", rows: "1", placeholder: `Note on ${v.id} (optional)`, "aria-label": `Note on variant ${v.id}` });
     note.value = (p.notes || {})[v.id] || "";
     note.addEventListener("input", () => { const q = picks(); q.notes = { ...(q.notes || {}), [v.id]: note.value }; if (!note.value) delete q.notes[v.id]; savePicks(q); });
@@ -698,15 +747,17 @@ dialog.viewer::backdrop { background: rgb(0 0 0 / .5); }
     if (card) {
       const on = p.chosen.includes(id);
       card.classList.toggle("picked", on);
-      const b = card.querySelector(".pick"); b.setAttribute("aria-pressed", String(on)); b.lastChild.textContent = on ? "Picked" : "Pick";
+      const b = card.querySelector(".pick"); b.setAttribute("aria-pressed", String(on));
     }
-    renderPicked(p);
+    renderPicked(p, true);
     syncTabVars();
     if (S.view && !S.view.compare) S.view.syncPick();
   }
-  function renderPicked(p) {
+  function renderPicked(p, animate = false) {
     const box = $("picked");
-    box.replaceChildren(...(p.chosen.length ? ["Picked", ...p.chosen.map((id) => h("b", {}, id))] : ["Pick one variant, or several to mix"]));
+    const before = new Set([...box.querySelectorAll("b")].map((b) => b.textContent));
+    const build = () => box.replaceChildren(...(p.chosen.length ? ["Picked", ...p.chosen.map((id) => h("b", {}, id))] : ["Pick one variant, or several to mix"]));
+    if (animate) { morph(box, build); pop([...box.querySelectorAll("b")].filter((b) => !before.has(b.textContent))); } else build();
     $("copy-status").textContent = ""; $("copy-status").className = "status";
   }
   $("round-note").addEventListener("input", (e) => { const p = picks(); p.note = e.target.value; savePicks(p); });
@@ -760,7 +811,7 @@ dialog.viewer::backdrop { background: rgb(0 0 0 / .5); }
     $("v-pick").hidden = false;
     $("v-theme").querySelector('[data-mode="split"]').hidden = s.themes.length < 2;
     S.view = { ii, pane, stacks: [s], set: (m) => { const mm = m === "split" && s.themes.length < 2 ? "light" : m; s.set(mm); syncSeg($("v-theme"), mm); },
-      syncPick() { const on = picks().chosen.includes(v.id); $("v-pick").setAttribute("aria-pressed", String(on)); $("v-pick").classList.toggle("pick", true); $("v-pick").lastChild.textContent = on ? "Picked" : "Pick"; } };
+      syncPick() { const on = picks().chosen.includes(v.id); $("v-pick").setAttribute("aria-pressed", String(on)); } };
     S.view.set(S.own.get(`${v.id}:${ii}`) || S.mode);
     S.view.syncPick();
     if (!viewer.open) viewer.showModal();
