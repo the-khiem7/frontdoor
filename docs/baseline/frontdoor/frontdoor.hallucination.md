@@ -62,9 +62,27 @@ One row per entry. A row states what the entry is about and nothing more. An ans
 | FD-D45 | the board's header, branding, card layout and floating choice controls after the user's first review | current, implemented in the Phase 11 revision | FD-D38, FD-D39, FD-D46 |
 | FD-D46 | keeping the two board changes the agent made beyond the review: no chosen tag, and the per-row switch | current, implemented in the Phase 11 revision | FD-D45, FD-Q4 |
 | FD-D47 | the board's second review: floating round tabs, a larger brand, layout icons, a roomier and slower rail, picture bars in the side column | current, implemented in the Phase 11 revision | FD-D45, FD-D46 |
+| FD-D48 | soft motion on the board: a button widens and shrinks, the tabs stay in the page, content settles in, pictures crossfade, dialogs fade | current, implemented in the Phase 11 revision | FD-D47 |
 | FD-Q1 | whether the skill descriptions make a host select the skills correctly | open | none |
 | FD-Q2 | whether the skills need automated tests | open | none |
 | FD-Q3 | whether the scripts work on macOS and Linux | open | FD-D8 |
+
+## FD-D48: soft motion on the board
+
+Decision: decided by the user on 2026-11-25, who asked for transitions so the board feels smoother, for example a button that widens or shrinks when it is clicked or unclicked, and chose motion on the controls and on the content, in a soft 300 to 400 ms timing [user]. The agent chose, for the two open points, that the check icon of Pick collapses while a variant is not picked, and that the theme and per-row switches move only their highlight, so the toolbar does not change width on each click [agent].
+
+- the Pick button reads `Pick` and grows into `[check] Picked`; the check and the `ed` sit in grid cells that animate from `0fr` to `1fr`, so the width needs no measuring; the viewer's Pick button shares the markup
+- the round tabs of one page stay in the page while you move between rounds; the selected one opens `Round ` before its number and a group of variant buttons after its title, and the group of every other round is collapsed and hidden from the tab order with `visibility`; a change of page rebuilds the tabs
+- a round switch settles the header and the cards in (rise 8 px and fade, 45 ms apart), a change of the columns settles the cards again, the choice controls rise when a published round first appears, and a new picked chip pops in while the picked box animates its width
+- the dark picture fades in over the light one in 0.34 s, the light one is hidden after the fade, and split mode is not transitioned, so the divider follows the pointer without lag
+- the viewer and the two sheets fade in and out with `@starting-style` and `transition-behavior: allow-discrete`
+- hover colours stay at 0.15 s so they still feel immediate; the existing reduced-motion rule turns every CSS transition off, and the script helpers return before animating
+
+Why: the board rebuilt most of its parts on each change, so nothing could animate; keeping the tabs in place and letting CSS own the transitions gives the motion without a library and without measuring widths [agent].
+
+What breaks if ignored: a tab group rebuilt on every round change cannot widen or shrink; a `visibility` switch on the pictures cannot fade; a transition on the split `clip-path` makes the divider lag behind the pointer.
+
+Rejected: the View Transitions API for round switches, because it snapshots the page and fights the sticky bar and the scroll position [agent]; animating `grid-template-columns` for the per-row switch, because the track count changes and CSS cannot interpolate it, so the cards settle in instead [agent]; a motion library, because the board opens from `file://` with no network [agent].
 
 ## FD-D47: the board's second review: floating round tabs, a larger brand, layout icons, a roomier rail, picture bars beside the pictures
 
