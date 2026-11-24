@@ -8,12 +8,13 @@
 
 | Skill | Use it when | Result |
 |---|---|---|
+| `frontdoor-core` | you want the frontdoor method for work no other skill covers, such as one component of a web page or a set of icons | rough variants on one local design board with a page per use case, and HTML rendered to light and dark images; the other skills except `frontdoor-ui-gallery` need it installed |
 | `frontdoor-readme` | the README is missing, or a wall of text, ASCII diagrams or Mermaid | a complete README with a hero banner and `<picture>` light/dark image pairs, in a look drawn from your repository |
 | `frontdoor-illustrate` | you need pictures with a look of their own that regenerate from text | rounded, bordered WebP files, one light and one dark per HTML block |
 | `frontdoor-landing` | the repository has no landing page and should have one | a single `index.html` with Open Graph preview, checked at three widths in both themes |
 | `frontdoor-ui-gallery` | you want to see every screen and state of an app's UI, before a redesign or after one | every state rendered in light and dark from the real frontend with the backend mocked, on one page with a Keep, Revise or Discuss review per state |
 
-Each skill carries its own scripts and references. Install one folder and it works alone. Skills name each other only as optional help.
+`frontdoor-core` holds the shared method and the `fd` command, and `frontdoor-readme`, `frontdoor-illustrate` and `frontdoor-landing` stop and ask for it when it is missing. Apart from that, each skill carries its own scripts and references, and skills name each other only as optional help.
 
 ## How each skill runs
 
@@ -71,10 +72,11 @@ It renders the real frontend with fixed data per state, so a state that is hard 
 
 ## Install
 
-Install every skill, or one by name:
+Install every skill, or one by name together with `frontdoor-core`:
 
 ```bash
 npx skills add https://github.com/the-khiem7/frontdoor.git
+npx skills add https://github.com/the-khiem7/frontdoor.git --skill frontdoor-core
 npx skills add https://github.com/the-khiem7/frontdoor.git --skill frontdoor-landing
 ```
 
