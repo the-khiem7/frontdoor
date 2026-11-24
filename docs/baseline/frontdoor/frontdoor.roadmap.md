@@ -4,7 +4,7 @@ pack: "frontdoor"
 document: "roadmap"
 status: "active"
 updated: "2026-11-24"
-code_ref: "uncommitted"
+code_ref: "85f86cf"
 ---
 
 # Frontdoor Roadmap
@@ -35,6 +35,11 @@ Reasoning for every row below lives in `frontdoor.hallucination.md` under the en
 | Automated tests | FD-Q2 | not started | none |
 | Other operating systems | FD-Q3 | unobserved | Windows and Edge only |
 | UI gallery skill | UG-D1 to UG-D10, pack `ui-gallery` | implemented, run on three apps | roadmap of the `ui-gallery` pack |
+| `frontdoor-core` and the harness `fd` | FD-D36, FD-D40, FD-D41 | planned | Phase 10 |
+| Board v2 | FD-D37, FD-D38, FD-D39 | planned | Phase 11 |
+| The three skills on the core, variant count asked | FD-D36, FD-D40 | planned | Phase 12 |
+| Local board server | FD-D39 | planned | Phase 13 |
+| Project-scope skills for writing the harness | FD-D42 | installed, git-ignored | `uv`, `ruff`, `python-testing-patterns`, `create-cli` copied into `.kiro/skills/` and `.claude/skills/`; `git status` lists none of them |
 
 ## Phase 1: build the three skills
 
@@ -190,6 +195,58 @@ Acceptance criteria:
 | Text | `animate.py` docstring and `banner.md` edited |
 | Not run | macOS and Linux; a drawing that changes nearly every pixel each frame; the files on github.com |
 
+## Phase 10: `frontdoor-core` and the harness `fd`
+
+Depends on: none.
+
+Acceptance criteria:
+
+- a skill `frontdoor-core` at the repository root, invocable on its own, holds `signature.md`, the design board method, the render contract for items of any size, `animate.py` and the harness `fd` (FD-D36)
+- `fd` offers `page add`, `round new --count N` with `--count` required (FD-D40), `round add` that pairs the light and dark renders by file name, `status --json`, `render` and `animate`
+- a daemon keeps one browser open between commands, with `--watch` (FD-D41); still WebP encodes run in parallel, and the `method=4` file size is checked against `method=6` on several pages before it becomes the default
+- a first pytest suite covers `fd`, with the real-browser tests behind a marker
+- `AGENTS.md` states the new dependency rule and drops the `cmp` rule for the copies that no longer exist
+
+### Checkpoint: not started
+
+## Phase 11: board v2
+
+Depends on: Phase 10.
+
+Acceptance criteria:
+
+- one board per repository under `.frontdoor/board/`, a page per use case with a free slug, rounds numbered per page and shown as tabs (FD-D37); a fixed shell page that reads its data from a script file, because a page opened from `file://` cannot fetch JSON
+- the hover table of contents, one frame per image with the light/dark switch and the hover divider, the two-variant comparison off by default, the viewer for long images, deep links and keyboard movement between variants and rounds (FD-D38)
+- a "Copy choice" button, and a data layout that holds choices and notes for the server of Phase 13 (FD-D39)
+- the interface designed with `impeccable` and `design-taste-frontend`, then passed through their critique and audit
+- tested on a copy of the `docker-zero` product board (`C:\.repos\Personal\kai\docker-zero\.frontdoor\product`, long portrait images) and on a page with many rounds
+
+### Checkpoint: not started
+
+## Phase 12: the three skills on the core, and two trial runs
+
+Depends on: Phases 10 and 11.
+
+Acceptance criteria:
+
+- `frontdoor-readme`, `frontdoor-illustrate` and `frontdoor-landing` find the core beside them, stop when it is missing, and keep only their own steps (FD-D36)
+- no skill text says "two or three"; every round asks the number of variants, and an unattended run makes 3 and records the question (FD-D40)
+- one trial redesigns a component of a web page with `frontdoor-core` alone, and one trial runs `frontdoor-readme` end to end, each ending with its rounds on the board
+
+### Checkpoint: not started
+
+## Phase 13: local board server
+
+Depends on: Phase 11.
+
+Acceptance criteria:
+
+- `fd board serve` serves the board on `127.0.0.1` with a token in the URL, records choices and per-variant notes into the board data, and reloads the board when a round is added (FD-D39)
+- the agent reads the choice with `fd status --json` or waits for it with a command run in the background
+- with the server stopped, the board still opens from `file://` and the copy button still works
+
+### Checkpoint: not started
+
 ## Risks
 
 | Risk | Detail |
@@ -201,14 +258,23 @@ Acceptance criteria:
 | Lighthouse performance scores vary by 10 points or more between identical runs | FD-D8 |
 | A generated page breaks a repository's own writing rules | FD-D12 |
 | Examples or the typefaces of this repository's own look become the default of other repositories | FD-D17 |
-| The three copies of `signature.md` drift apart | FD-D22 |
+| The three copies of `signature.md` drift apart | FD-D22; ends when FD-D36 leaves one copy in the core |
+| A skill installed without `frontdoor-core` stops at its first step | FD-D36 |
+| The board's look becomes a template for the pictures a repository gets | FD-D38 |
 
 ## Next action
 
-1. Run the trial again on two unlike greenfield repositories and on one brownfield repository with a banner, to check the fixes of Phase 5 and whether the first trial's examples still anchor the agents (FD-D23). Record the signatures and the image hashes.
-2. Ask for a README upgrade and for a landing page in a plain sentence, in a repository that has the skills, and record whether each skill is selected (FD-Q1); the descriptions changed in Phase 5.
-3. If a skill is not selected, run the description optimizer from the skill-creator plugin on it.
-4. Decide whether the scripts need automated tests (FD-Q2) before anyone depends on them.
-5. After the new text is installed from GitHub, ask for a hero in a plain sentence in a repository that has the skills and record whether the run builds a round under `.frontdoor/`, adds it to the board and opens it (FD-D24); run `board.py` once on macOS or Linux (FD-Q3).
-6. Run `animate.py` once on a drawing that changes nearly every pixel each frame and compare its file size with the previous encoder (FD-D35); lower `--workers` and note the memory on a machine with little RAM.
-7. Commit only when asked; the `animate.py` rewrite, `banner.md` and this pack are uncommitted. The UI gallery skill's next actions are in the `ui-gallery` pack.
+Phase 10 first:
+
+1. Start Phase 10: create `frontdoor-core`, move the shared parts into it, build `fd` and its daemon, and write the first tests, using the project-scope skills of FD-D42.
+2. Before `method=4` becomes the default for still WebP, compare its file size with `method=6` on several source pages (FD-D41).
+
+Carried over from before Phase 10:
+
+3. Run the trial again on two unlike greenfield repositories and on one brownfield repository with a banner, to check the fixes of Phase 5 and whether the first trial's examples still anchor the agents (FD-D23). Record the signatures and the image hashes.
+4. Ask for a README upgrade and for a landing page in a plain sentence, in a repository that has the skills, and record whether each skill is selected (FD-Q1); the descriptions changed in Phase 5.
+5. If a skill is not selected, run the description optimizer from the skill-creator plugin on it.
+6. Decide whether the scripts need automated tests (FD-Q2) before anyone depends on them.
+7. After the new text is installed from GitHub, ask for a hero in a plain sentence in a repository that has the skills and record whether the run builds a round under `.frontdoor/`, adds it to the board and opens it (FD-D24); run `board.py` once on macOS or Linux (FD-Q3).
+8. Run `animate.py` once on a drawing that changes nearly every pixel each frame and compare its file size with the previous encoder (FD-D35); lower `--workers` and note the memory on a machine with little RAM.
+9. Commit only when asked. The `animate.py` rewrite and its record are committed (`7b9a992`, `85f86cf`); this pack's Phase 10 to 13 entries are uncommitted. The UI gallery skill's next actions are in the `ui-gallery` pack.

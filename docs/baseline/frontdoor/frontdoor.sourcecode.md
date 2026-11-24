@@ -4,7 +4,7 @@ pack: "frontdoor"
 document: "sourcecode"
 status: "active"
 updated: "2026-11-24"
-code_ref: "uncommitted"
+code_ref: "85f86cf"
 ---
 
 # Frontdoor: Topology and Execution Flow

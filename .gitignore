@@ -1,2 +1,8 @@
 __pycache__
 .frontdoor/
+
+# skills installed at project scope to help write the harness; they do not ship
+.agents/
+.kiro/skills/
+.claude/skills/
+skills-lock.json

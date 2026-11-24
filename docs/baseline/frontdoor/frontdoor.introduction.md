@@ -4,7 +4,7 @@ pack: "frontdoor"
 document: "introduction"
 status: "active"
 updated: "2026-11-24"
-code_ref: "uncommitted"
+code_ref: "85f86cf"
 ---
 
 # Frontdoor: Scope, Current Truth, Target
@@ -19,6 +19,7 @@ Claude skills that raise how a repository presents itself, and how its app's UI 
 | `frontdoor-illustrate` | turn hand-built HTML pages into rounded, bordered WebP images in a light and a dark theme |
 | `frontdoor-landing` | design and build a single-file `index.html` for GitHub Pages, after checking that no landing page exists |
 | `frontdoor-ui-gallery` | render every view and state of an app's UI from its real frontend with the backend mocked, in light and dark, on one review page (UG-D1 in the `ui-gallery` pack) |
+| `frontdoor-core` (planned, Phase 10) | the shared core the other skills require: the signature method, the design board and its harness `fd`, the render contract for items of any size; invocable on its own for design work no other skill covers (FD-D36) |
 
 Out of scope: documentation other than the README, committing or pushing, enabling GitHub Pages (a repository setting the skills only describe), and any build step on the page being produced.
 
@@ -52,12 +53,14 @@ Not observed: installing `frontdoor-readme` or `frontdoor-landing` with `npx ski
 
 A person installs a skill with `npx skills add <repository> --skill <name>` and asks for a README upgrade or a landing page. The skills read that repository's brand, rules and tooling, then produce work that fits it, with no change to the skills.
 
+After Phases 10 to 12, the person installs `frontdoor-core` beside any other frontdoor skill, and can also invoke the core alone for design work outside the README, the landing page and the product pictures, such as redesigning one component of a web page (FD-D36). Every design round of a repository lands on one board, split into a page per use case with its own round numbers (FD-D37), asks how many variants to make (FD-D40), and shows each image in one frame with a light/dark switch and divider (FD-D38). Repeated work goes through the harness `fd`, which keeps a browser open between commands (FD-D41).
+
 ## Constraints
 
 | Constraint | Why |
 |---|---|
-| Each skill is self-contained: it runs its own scripts and names the others only as optional help | a skill installed alone must not point at a folder that is not there |
-| No look is shipped: the starter carries only the renderer contract, and each repository gets its own signature of shape language, typeface and presentation (FD-D17); the gallery page of `frontdoor-ui-gallery` is the one exception (UG-D2 in the `ui-gallery` pack) | each brand has its own identity, and a shipped look would make every repository look alike with only the text changed |
+| Each skill is self-contained: it runs its own scripts and names the others only as optional help | a skill installed alone must not point at a folder that is not there; replaced in Phase 10 by a required `frontdoor-core` beside each skill (FD-D36) |
+| No look is shipped: the starter carries only the renderer contract, and each repository gets its own signature of shape language, typeface and presentation (FD-D17); the gallery page of `frontdoor-ui-gallery` is the one exception (UG-D2 in the `ui-gallery` pack), and the design board, as part of the harness, will be the second (FD-D38) | each brand has its own identity, and a shipped look would make every repository look alike with only the text changed |
 | No step needs administrator rights: scripts use the Edge or Chrome already installed and write only where told | the machine these skills run on is a standard user account |
 | The skills write files and stop; they never commit or push | a commit or a push is the user's decision |
 | ASCII hyphen only in every file | a dash check may scan the files |

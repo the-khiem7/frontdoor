@@ -4,7 +4,7 @@ pack: "frontdoor"
 document: "hallucination"
 status: "active"
 updated: "2026-11-24"
-code_ref: "uncommitted"
+code_ref: "85f86cf"
 ---
 
 # Frontdoor: Decisions and Open Questions
@@ -16,7 +16,7 @@ One row per entry. A row states what the entry is about and nothing more. An ans
 | Entry | About | Status | Related |
 |---|---|---|---|
 | FD-D1 | splitting the work into three skills | current | FD-D2 |
-| FD-D2 | how self-contained each skill is (its placement was reversed by FD-D13) | current | FD-D1, FD-D13, FD-D16 |
+| FD-D2 | how self-contained each skill is (its placement was reversed by FD-D13) | reversed by FD-D36 | FD-D1, FD-D13, FD-D16, FD-D36 |
 | FD-D3 | how an illustration is produced: HTML source, WebP pair, finishing step | current | FD-D4, FD-D5 |
 | FD-D4 | which browser takes the screenshots | current | FD-D3, FD-D8 |
 | FD-D5 | whether the skills fix a visual style | current | FD-D3 |
@@ -36,20 +36,27 @@ One row per entry. A row states what the entry is about and nothing more. An ans
 | FD-D19 | that `frontdoor-readme` writes the complete README, with every statement traced to the repository | current | FD-D18 |
 | FD-D20 | how a README chooses between a scene, a diagram and `<details>` | current | RD-D3, FD-D17 |
 | FD-D21 | the three tiers of skill rules and what `render.py` reports about fonts and the starter | current | FD-D3, FD-D17 |
-| FD-D22 | that `signature.md` is shipped as three byte-identical copies | current | FD-D2, FD-D17 |
+| FD-D22 | that `signature.md` is shipped as three byte-identical copies | reversed by FD-D36 | FD-D2, FD-D17, FD-D36 |
 | FD-D23 | examples in `signature.md` that anchored a trial agent toward a copy | current, lesson | FD-D17, FD-D22 |
-| FD-D24 | where rough design directions are shown: one local board per repository, every round on it | current, amended by FD-D31 | FD-D2, FD-D9, FD-D22, FD-D31, FD-Q3 |
+| FD-D24 | where rough design directions are shown: one local board per repository, every round on it | amended by FD-D31; location reversed by FD-D37, copies by FD-D36 | FD-D2, FD-D9, FD-D22, FD-D31, FD-D36, FD-D37, FD-Q3 |
 | FD-D25 | how a landing page uses motion, and what it does under reduced motion | current, lesson | FD-D7, FD-D8 |
 | FD-D26 | the UI gallery skill; moved to the ui-gallery pack as UG-D1 | moved | UG-D1 |
 | FD-D27 | the gallery page's neutral look; moved to the ui-gallery pack as UG-D2 | moved | FD-D17, UG-D2 |
 | FD-D28 | where a gallery lives; moved to the ui-gallery pack as UG-D3 | moved | UG-D3 |
 | FD-D29 | the stack references; moved to the ui-gallery pack as UG-D4 | moved | UG-D4 |
 | FD-D30 | how a state is mocked and shot; moved to the ui-gallery pack as UG-D5 | moved | UG-D5 |
-| FD-D31 | one design board per purpose: readme, landing-page, product | current | FD-D24, FD-D22 |
+| FD-D31 | one design board per purpose: readme, landing-page, product | reversed by FD-D37 | FD-D24, FD-D22, FD-D37 |
 | FD-D32 | the banner and social preview names, GitHub's social preview rules (still image only), and the optional animated README banner | current, lesson; the GIF format amended by FD-D33 | FD-D18, FD-D3, FD-D31, FD-D33 |
 | FD-D33 | animated WebP as the only animated format, and the banner shown under reduced motion | current | FD-D32, FD-D34 |
 | FD-D34 | how `animate.py` encodes: libwebp effort 4, worker processes, frames on disk, one run at a time | current, lesson; the encoder and the frames on disk amended by FD-D35 | FD-D33, FD-D35 |
 | FD-D35 | `animate.py` encodes frame by frame in a pool and joins the WebP container itself; parallel capture, sway dedupe, `--draft`, `--batch` | current | FD-D34, FD-D33 |
+| FD-D36 | a `frontdoor-core` skill that the other skills require | current, not implemented | FD-D2, FD-D22, FD-D24 |
+| FD-D37 | one board per repository, a page per use case, rounds numbered per page | current, not implemented | FD-D24, FD-D31, FD-D36 |
+| FD-D38 | the board's neutral look and its interface: hover table of contents, one frame per image, theme divider | current, not implemented | FD-D17, FD-D37, UG-D2 |
+| FD-D39 | how the user's choice returns from the board: copy button, later a local server | current, not implemented | FD-D37, FD-D38 |
+| FD-D40 | asking the number of variants every round | current, not implemented | FD-D9, FD-D24 |
+| FD-D41 | the harness language and its browser daemon | current, not implemented | FD-D34, FD-D35, FD-D36 |
+| FD-D42 | the skills installed at project scope to help write the harness | current | FD-D41 |
 | FD-Q1 | whether the skill descriptions make a host select the skills correctly | open | none |
 | FD-Q2 | whether the skills need automated tests | open | none |
 | FD-Q3 | whether the scripts work on macOS and Linux | open | FD-D8 |
@@ -453,6 +460,114 @@ Rejected: ffmpeg, `img2webp` or `webpmux` - a binary outside the skill folder, a
 Rejected: `--method 0` as the fast setting - on one 2400x840 frame it took 2.2 s against 0.8 s for method 4, for a file half as large again [agent].
 
 Rejected: the 3 px border and 24 px radius applied unscaled at the output size - at 1500 px wide the corners and border would read thicker than the still pictures at the same display width [agent].
+
+## FD-D36: a `frontdoor-core` skill holds the shared core, and the other skills require it
+
+Decision: decided by the user on 2026-11-24. Add a skill `frontdoor-core` that holds what the skills share: the signature method (`signature.md`), the design board method and its harness `fd` (FD-D37 to FD-D41), the render contract widened to any item size (icons, components, banners), and `animate.py`. `frontdoor-readme`, `frontdoor-illustrate` and `frontdoor-landing` keep only what is theirs (the banner and social preview stay in `frontdoor-readme`), find the core at `<skill-dir>/../frontdoor-core`, and stop with a message to install `frontdoor-core` when it is missing. The core can be invoked on its own, so a user can make an agent follow the frontdoor principles in work no frontdoor skill covers, such as redesigning one component of a web page. Reverses FD-D2 (each skill self-contained) and FD-D22 (three byte-identical copies of `signature.md`), and the three copies of `board.py` in FD-D24. Not implemented yet: Phase 10.
+
+Why: the workflow is tied to the README use case, so other work has no skill and the user has to say "apply the design board philosophy of the frontdoor skills" by hand [user]. One copy of the core replaces three copies kept equal with `cmp` [agent].
+
+What breaks if ignored: a skill installed alone stops at its first step; the `AGENTS.md` rule "A skill must run alone" and the `cmp` rule for `signature.md` and `board.py` contradict the code until they are rewritten in the same change.
+
+Rejected: a copy of the core inside each skill, synced by a repository script and compared with `cmp` (the agent's recommendation) - the user chose a required core [user].
+
+Rejected: the harness published as a package that the skills run through `uvx --from git+...` - it needs the network on every run and a pinned version [agent].
+
+Rejected: a core that is only a library and cannot be invoked - the user wants it callable for use cases outside the repository's skills [user].
+
+## FD-D37: one board per repository, a page per use case, rounds numbered per page
+
+Decision: decided by the user on 2026-11-24. Keep one design board per repository, under `.frontdoor/board/`, ignored by git. A page is one use case with a free slug (`readme`, `icons`, `navbar`), created by `fd page add <slug>`; the rounds of a page are its panes, shown as tabs, and each page numbers its own rounds from 1. Boards made before this change (`.frontdoor/readme/`, `.frontdoor/landing-page/`, `.frontdoor/product/`) are not migrated: a user who takes the new skills decides what to do with them. Reverses FD-D31 (one board folder per fixed purpose) and the board location of FD-D24. Not implemented yet: Phase 11.
+
+Why: rounds of unrelated work share one numbering; icons put on the board during README work became rounds 4, 5 and 6 instead of 1, 2 and 3, because icons had no purpose of their own [user]. A fixed list of purposes cannot hold use cases outside the README, the landing page and the product [user].
+
+What breaks if ignored: a new kind of work lands on the board of another purpose and continues its round numbers, and the user picks from the wrong list.
+
+Rejected: the fixed purpose list of FD-D31 - it is the cause of the problem above [user].
+
+Rejected: a page per use case with a pane per sub-subject (banner, scenes) and the rounds inside each pane - the user chose rounds as the panes [user].
+
+Rejected: a board folder per purpose, as now - the user wants one board split into pages and panes [user].
+
+Rejected: an `fd board migrate` command for old boards - the user leaves old boards to the user who takes the new skills [user].
+
+## FD-D38: the board is a neutral harness page with a hover table of contents, one frame per image and a theme divider
+
+Decision: decided by the user on 2026-11-24. The board ships one neutral look, the same in every repository, because it is part of the harness and not a product of frontdoor; the `AGENTS.md` rule against shipping a reusable look applies to what the skills make for a repository, not to frontdoor's own tooling. Its interface:
+
+- a floating table of contents on the left, collapsed by default to a narrow rail, expanding on hover and covering the content instead of pushing it; the tree is page, round, variant, with the chosen variants marked
+- one frame per image holding both themes, with a light/dark switch, and an interactive mode in which hovering the image draws a divider that shows the two themes on its two sides; light against dark is the default comparison
+- a comparison of two variants against each other is available but off by default; the agent asks the user whether to turn it on for a round
+- long images fit the screen inside their card and open in a viewer that zooms and scrolls
+
+The board's interface is designed with the `impeccable` and `design-taste-frontend` skills; they are used to design the board itself and are not part of the frontdoor workflow. Not implemented yet: Phase 11.
+
+Why: the current board is one 1080 px column in which each image takes the full width and the light and dark images stack; on the `docker-zero` product board (one round, three variants, images of 1040x1920, 1040x1620 and 1040x1626 px) one round is a scroll of about 11,000 px [agent]. The user finds the board hard to use with long images and hard to move through when there are many variants and rounds [user].
+
+What breaks if ignored: a board styled with a repository's signature biases the comparison toward the direction that looks like it, and has no signature to use in the first round, which is the round that chooses one [agent].
+
+Rejected: the board in each repository's signature - the board is a harness and must look the same wherever it is used [user].
+
+Rejected: the light and the dark image as two stacked pictures - it doubles the length of every round [user].
+
+Rejected: the two-variant comparison as the default view - the user wants it offered, not assumed [user].
+
+Rejected: `impeccable` and `design-taste-frontend` as steps of the frontdoor skills - they are for designing the board's interface only [user].
+
+## FD-D39: the choice returns through a copy button now, a local board server later
+
+Decision: decided by the user on 2026-11-24. The board gets a "Copy choice" button that copies the chosen and mixed variants, with the user's notes, as text the user pastes into the chat (Phase 11). A local server, `fd board serve` on `127.0.0.1`, that records clicks into the board file for the agent to read is a later phase of its own (Phase 13). The board data is laid out in Phase 11 so the server can be added without changing it.
+
+Why: the user chose the copy button first [user]. The server removes the copy and paste and mistyped variant ids, allows a note on each variant, reloads the board when a round is added and returns the choice as JSON, at the cost of a process that must be running, a token in the URL so another page cannot write to the board, a way for the agent to learn that a choice was made, and more code and tests [agent].
+
+What breaks if ignored: a board data layout that has no place for choices and notes makes the server a rewrite.
+
+Rejected: the choice told to the agent in free text, as now - variant ids are mistyped and the mix is lost [agent].
+
+Rejected: the local server in Phase 11 - the user wants it as a separate phase [user].
+
+## FD-D40: the number of variants is asked every round
+
+Decision: decided by the user on 2026-11-24. Every round starts with a question to the user on how many variants to make, with a recommended number; `fd round new` takes `--count` as a required argument and has no default. With no user to answer, make 3 variants and write the question with that answer to `questions.md` (FD-D9). The wording "two or three" leaves the three `SKILL.md` files and `signature.md`. Not implemented yet: Phases 10 and 12.
+
+Why: every round now makes two or three variants without asking, which is not the user's choice [user].
+
+What breaks if ignored: an agent makes three variants when the user wanted one refinement, or two when the user wanted a wide search, and the work of the round is spent on the wrong number.
+
+Rejected: a fixed "two or three" in the skill text - the user wants to be asked [user].
+
+Rejected: 2 variants for an unattended run (the agent's recommendation) - the user chose 3 [user].
+
+## FD-D41: the harness is Python run through uv, with a daemon that keeps the browser open
+
+Decision: decided by the user on 2026-11-24. Write the harness `fd` in Python, run through `uv` / `uvx ... python -I` with Playwright and Pillow as now, and add a daemon that keeps one browser open between commands and serves render jobs on localhost, with a `--watch` mode that renders again when a source page is saved. Not implemented yet: Phase 10.
+
+Why: measured on this machine (Windows, Edge, 8 CPUs) on 2026-11-24: starting `uvx python` took 0.20 s, the uvx environment with Playwright and Pillow 0.39 s, importing Playwright 1.03 s, launching Edge 0.52 s and opening a page 0.60 s, while encoding one 2400x960 lossless WebP took 3.39 s at `method=6` (what `render.py` uses) and 1.54 s at `method=4` for the same 74 KB file; `render.py` on one item in one theme took 7.9 s. The time is in libwebp and the browser, not in the language, so a rewrite in another language saves about the 1 s of the import, which the daemon removes as well [agent]. The user chose to keep Python and uv with a daemon [user].
+
+What breaks if ignored: every repeated render pays for a browser start and a slow encode, and a rewrite in another language costs the working scripts without removing either.
+
+Not verified: the `method=4` figure comes from one image; the daemon has not been built.
+
+Rejected: TypeScript on Bun or Node - Playwright is native there and the start is 0.08 s, but it needs `node_modules` installed or fetched per run and `sharp` for WebP, and every script is rewritten [agent].
+
+Rejected: one Rust or Go binary - no Playwright, so the browser protocol is written by hand, and each skill would carry one binary per operating system, for about 1 s saved [agent].
+
+## FD-D42: skills that help write the harness are installed at project scope and ignored by git
+
+Decision: decided by the user on 2026-11-24. Install `astral-sh/agent-plugins@uv`, `astral-sh/agent-plugins@ruff`, `wshobson/agents@python-testing-patterns` and `steipete/agent-scripts@create-cli` at project scope in this repository, for the people and agents writing the harness, and add the installed skill folders and `skills-lock.json` to `.gitignore`. They are not frontdoor skills and do not ship.
+
+Why: a survey of the skills ecosystem on 2026-11-24 (29 searches, the shortlisted `SKILL.md` files read in full) found these four as the closest fit for a Python CLI run through uv with a first pytest suite; nothing worthwhile was found for a daemon, IPC, a file watcher, or animated WebP [agent]. The user approved them and chose project scope and git-ignored folders [user].
+
+What breaks if ignored: installed skill folders appear untracked beside the repository's own skill folders and can be committed as if they shipped.
+
+Rejected: `trailofbits/skills@modern-python` - it covers the uv and ruff skills and adds a heavy setup (a Makefile, `select = ["ALL"]`, a coverage floor) [agent].
+
+Rejected: the popular Playwright skills - their examples are TypeScript only, and the one Python skill tells the agent to run `playwright install`, a download of about 200 MB [agent].
+
+Rejected: `jeffallan/claude-skills@cli-developer` - its Python reference pushes Typer, Click and Rich, against a small dependency footprint [agent].
+
+Rejected: user scope - the user chose project scope [user].
+
 ## Open questions
 
 ### FD-Q1: do the skill descriptions make a host pick the skills on a plain request?
