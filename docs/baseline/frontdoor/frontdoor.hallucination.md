@@ -61,9 +61,30 @@ One row per entry. A row states what the entry is about and nothing more. An ans
 | FD-D44 | why `fd render` warned that a web font it had drawn was not loaded, and what the trial runs found missing in the skill text | current, lesson | FD-D36, FD-D40, FD-D41 |
 | FD-D45 | the board's header, branding, card layout and floating choice controls after the user's first review | current, implemented in the Phase 11 revision | FD-D38, FD-D39, FD-D46 |
 | FD-D46 | keeping the two board changes the agent made beyond the review: no chosen tag, and the per-row switch | current, implemented in the Phase 11 revision | FD-D45, FD-Q4 |
+| FD-D47 | the board's second review: floating round tabs, a larger brand, layout icons, a roomier and slower rail, picture bars in the side column | current, implemented in the Phase 11 revision | FD-D45, FD-D46 |
 | FD-Q1 | whether the skill descriptions make a host select the skills correctly | open | none |
 | FD-Q2 | whether the skills need automated tests | open | none |
 | FD-Q3 | whether the scripts work on macOS and Linux | open | FD-D8 |
+
+## FD-D47: the board's second review: floating round tabs, a larger brand, layout icons, a roomier rail, picture bars beside the pictures
+
+Decision: decided by the user on 2026-11-25, from a second review of the board page with 10 notes:
+
+- the row of round tabs has no ground of its own; the tabs float over the page under the top bar, so the page gains the row's height
+- the brand words grow to about the logo's height without making the top bar taller, and the page title uses the brand face at its old size
+- the per-row switch shows what it does at first sight
+- the keyboard shortcuts button moves to the foot of the rail
+- the rail's rounds get more room, it opens and closes more slowly, and its head carries the logo and the brand words
+- the open round tab reads `Round n` and carries a button per variant when the round has more than one; the other tabs stay as they were
+- in the one-per-row view only, each picture's label and theme switch move to the side column, so the pictures take the full height
+
+Why: the tab row's ground and the label bars took height the pictures need; the rail was cramped and opened too fast to follow; the 1, 2 and 3 digits were learnt only by clicking them [user].
+
+Implementation notes: the brand words are 25 px in a 56 px bar beside a 30 px logo; the page title needs every letter, so the inlined Fraunces is now its Latin, Latin Extended and Vietnamese cuts, about 42 KB, chosen by unicode-range; the switch draws one, two and three columns as icons with a tooltip; the rail animates its width in 0.36 s and fades its words in after 0.12 s; in the one-per-row view the side column is sticky under the tabs and lists the pictures, a click scrolls to one, and hovering a picture marks its row; the logo is one SVG symbol used by the top bar and the rail [agent].
+
+What breaks if ignored: a returned tab ground or label bar takes height from every picture; a title in another face than the brand splits the bar into two looks.
+
+Rejected: keeping the cut of only the brand's letters for the title - a title with a letter outside it falls back to Georgia in the middle of a word [agent].
 
 ## FD-D46: keep the board without the chosen tag, and with the per-row switch
 
