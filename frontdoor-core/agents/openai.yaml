@@ -1,0 +1,6 @@
+interface:
+  display_name: "Frontdoor Core"
+  short_description: "Apply the frontdoor design method: a signature per repository, variants on one local design board, HTML rendered to light and dark images"
+  default_prompt: "Use $frontdoor-core to design this with the frontdoor method: derive a signature, put rough variants on the design board, and render them in light and dark."
+policy:
+  allow_implicit_invocation: true

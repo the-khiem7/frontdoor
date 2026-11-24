@@ -1,0 +1,27 @@
+/* Contract for illustration source pages. This file carries no look: every value below is a
+   STARTER-PLACEHOLDER. Replace the tokens and the font with the ones drawn for this repository,
+   add the shapes and components the design needs, then delete the --starter-placeholder line.
+   fd render prints a WARN while that marker is still served.
+   What must stay is the contract fd render relies on:
+     - one or more .item blocks, each with a unique id, inside .sheet
+     - every .item zoomed 2x, so the image is twice the item's CSS size (a 1200 CSS px README picture becomes 2400 px)
+     - theming through html[data-theme="dark"], set by shared.js from ?theme=dark
+     - --cardline, the border color fd render draws around the finished image (data-finish="plain" or "transparent" skips it) */
+
+/* PLACEHOLDER: the token values and the font below. */
+:root {
+  --starter-placeholder: yes;
+  --paper: #f4f4f4; --ink: #222222; --muted: #666666; --cardline: #bbbbbb;
+}
+html[data-theme="dark"] {
+  --paper: #1c1c1c; --ink: #eeeeee; --muted: #aaaaaa; --cardline: #444444;
+}
+
+/* CONTRACT: keep everything from here down except the font-family value, which is a placeholder. */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: #888; }
+.sheet { width: max-content; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+.item {
+  zoom: 2; position: relative; overflow: hidden;
+  font-family: system-ui, sans-serif; color: var(--ink); background: var(--paper);
+}

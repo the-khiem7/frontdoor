@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design board</title>
+<!-- The frontdoor design board. This file is copied unchanged into <repo>/.frontdoor/board/index.html by `fd`; the data comes
+     from board-data.js beside it. It is a working tool with one neutral look in every repository. Interim shell: the designed
+     board replaces it. -->
+<style>
+:root { --bg:#f4f4f1; --panel:#fff; --fg:#1d2024; --muted:#565c66; --line:#d8d9d4; --accent:#0b5cad; --chip:#e7eef7; color-scheme: light; }
+@media (prefers-color-scheme: dark) { :root { --bg:#14161a; --panel:#1d2025; --fg:#eceae5; --muted:#a9aeb8; --line:#33373e; --accent:#7db4f0; --chip:#25303d; color-scheme: dark; } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 1400px; margin: 0 auto; padding: 24px 16px 64px; display: flex; flex-direction: column; gap: 24px; }
+h1, h2, h3, p { margin: 0; }
+h1 { font-size: 1.5rem; }
+.meta { color: var(--muted); font-size: .88rem; }
+nav { display: flex; flex-wrap: wrap; gap: 8px; }
+a { color: var(--accent); }
+button { font: inherit; color: var(--accent); background: var(--chip); border: 1px solid transparent; border-radius: 999px; padding: 3px 12px; cursor: pointer; }
+button[aria-pressed="true"] { border-color: var(--accent); }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+section.page { border-top: 1px solid var(--line); padding-top: 16px; display: flex; flex-direction: column; gap: 14px; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; align-items: start; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.card.chosen { border: 2px solid var(--accent); }
+.head { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.id { font-weight: 700; color: var(--muted); }
+dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; font-size: .92rem; }
+dt { color: var(--muted); }
+dd { margin: 0; }
+figure { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.frame { max-height: 80vh; overflow: auto; border-radius: 6px; background: var(--bg); }
+img { display: block; width: auto; max-width: 100%; height: auto; margin: 0 auto; }
+.empty { color: var(--muted); }
+</style>
+</head>
+<body>
+<main id="app"><p class="empty">Loading the board...</p></main>
+<script src="board-data.js"></script>
+<script>
+(() => {
+  const app = document.getElementById("app");
+  const data = window.FD_BOARD;
+  const el = (tag, attrs = {}, ...kids) => {
+    const n = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) k === "class" ? (n.className = v) : n.setAttribute(k, v);
+    for (const kid of kids) if (kid != null) n.append(kid);
+    return n;
+  };
+  app.textContent = "";
+  if (!data || !data.pages || !data.pages.length) { app.append(el("p", { class: "empty" }, "No page yet. Add one with fd page add <slug>.")); return; }
+  app.append(el("header", {}, el("h1", {}, `${data.project} design board`),
+    el("p", { class: "meta" }, "Local file, not committed, rebuilt by fd from board.json.")),
+    el("nav", { "aria-label": "Pages" }, ...data.pages.map(p => el("a", { href: `#${p.slug}` }, p.title))));
+
+  const picture = (img, title) => {
+    const themes = ["light", "dark"].filter(t => img[t]);
+    let theme = themes[0];
+    const image = el("img", { src: encodeURI(img[theme]), alt: `${title}, ${img.label}`, loading: "lazy" });
+    const bar = el("div", { class: "tabs" }, el("span", { class: "meta" }, img.label));
+    for (const t of themes) {
+      const b = el("button", { type: "button", "aria-pressed": String(t === theme) }, t);
+      b.addEventListener("click", () => { theme = t; image.src = encodeURI(img[t]); bar.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b))); });
+      if (themes.length > 1) bar.append(b);
+    }
+    return el("figure", {}, bar, el("div", { class: "frame" }, image));
+  };
+
+  const card = (v, chosen) => {
+    const rows = [["Strengths", v.strengths], ["Risks", v.risks], ["Known flaws", v.flaws]].filter(r => r[1]);
+    return el("article", { class: "card" + (chosen ? " chosen" : "") },
+      el("div", { class: "head" }, el("span", { class: "id" }, v.id), el("h3", {}, v.title || "(untitled)"), chosen ? el("span", { class: "meta" }, "chosen") : null),
+      v.concept ? el("p", {}, v.concept) : null,
+      rows.length ? el("dl", {}, ...rows.flatMap(([k, t]) => [el("dt", {}, k), el("dd", {}, t)])) : null,
+      ...(v.images || []).map(i => picture(i, v.title)),
+      (v.links || []).length ? el("p", {}, ...v.links.map(l => el("a", { href: encodeURI(l.file) }, l.label))) : null);
+  };
+
+  for (const p of data.pages) {
+    const body = el("div");
+    const tabs = el("div", { class: "tabs", role: "tablist" });
+    const show = (r) => {
+      body.textContent = "";
+      tabs.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.n === String(r.n))));
+      const chosen = new Set((r.choice && r.choice.chosen) || []);
+      body.append(el("p", { class: "meta" }, [r.title, r.status === "draft" ? "draft, not published yet" : r.created, chosen.size ? `chosen: ${[...chosen].join(", ")}` : ""].filter(Boolean).join(" - ")));
+      if (r.note) body.append(el("p", {}, r.note));
+      if (r.choice && r.choice.note) body.append(el("p", { class: "meta" }, `Choice note: ${r.choice.note}`));
+      body.append(el("div", { class: "grid" }, ...r.variants.filter(v => v.title !== undefined).map(v => card(v, chosen.has(v.id)))));
+    };
+    const rounds = [...p.rounds].sort((a, b) => b.n - a.n);
+    for (const r of rounds) {
+      const b = el("button", { type: "button", "data-n": String(r.n) }, `Round ${r.n}`);
+      b.addEventListener("click", () => show(r));
+      tabs.append(b);
+    }
+    app.append(el("section", { class: "page", id: p.slug }, el("h2", {}, p.title), rounds.length ? tabs : el("p", { class: "empty" }, "No round yet."), body));
+    if (rounds.length) show(rounds[0]);
+  }
+})();
+</script>
+</body>
+</html>
