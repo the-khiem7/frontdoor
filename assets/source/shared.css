@@ -1,9 +1,9 @@
 /* Shared look for the README illustrations: a doorway with warm light, in a paper theme and a night theme.
-   Contract with render.py:
+   Contract with fd render:
      - one or more .item blocks, each with a unique id, inside .sheet
      - every .item zoomed 2x, so a 1200 CSS px item becomes a 2400 px image
      - theming through html[data-theme="dark"], set by shared.js from ?theme=dark
-     - --cardline, the border color render.py draws around the finished image
+     - --cardline, the border color fd render draws around the finished image
    Amber is for shapes and strokes. Small text on the paper theme uses --amber-ink, because --amber alone is too pale to read there.
    Fonts load from Google Fonts at render time; render online or the fallback faces end up in the images. */
 
