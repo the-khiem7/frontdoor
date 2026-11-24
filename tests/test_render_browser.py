@@ -1,8 +1,10 @@
 """Tests that drive the installed Edge or Chrome. Run with --browser-tests."""
 
+import shutil
 import subprocess
 import sys
 import time
+from pathlib import Path
 
 import pytest
 from fdlib import daemon
@@ -77,6 +79,27 @@ def test_render_warns_when_content_leaves_the_item(site, tmp_path, renderer):
     lines = []
     assert renderer.render(make_job(site / "page.html", tmp_path / "out", items="card", themes="light"), lines.append) == 1
     assert any("content leaves the item box" in line for line in lines)
+
+
+def test_render_counts_a_family_served_only_in_another_weight_as_loaded(site, tmp_path, renderer):
+    # the family is served in two weights, 600 and 800, fetched over HTTP like a web font, and the page uses only 800;
+    # a probe drawn at weight 400 matches the 600 face, which was never downloaded
+    fonts = [p for d in (Path("C:/Windows/Fonts"), Path("/usr/share/fonts"), Path("/System/Library/Fonts"), Path("/Library/Fonts"))
+             if d.is_dir() for p in sorted(d.rglob("*.ttf"))[:50]]
+    if not fonts:
+        pytest.skip("no .ttf font on this machine to serve")
+    shutil.copy(fonts[0], site / "heavy-600.ttf")
+    shutil.copy(fonts[0], site / "heavy-800.ttf")
+    face = ''.join(f'@font-face {{ font-family: "Heavy Only"; font-weight: {w}; src: url("heavy-{w}.ttf"); }}\n' for w in (600, 800))
+    (site / "s.css").write_text(face + CSS, encoding="utf-8")
+    item = ('<p style="font-family:\'Heavy Only\';font-weight:800">heavy</p>'
+            '<p style="font-family:\'No Such Family Xyz\'">missing</p>')
+    (site / "page.html").write_text(PAGE.replace("<p>card</p>", item), encoding="utf-8")
+    lines = []
+    renderer.render(make_job(site / "page.html", tmp_path / "out", items="card", themes="light"), lines.append)
+    warn = next(line for line in lines if line.startswith("WARN fonts requested but not loaded"))
+    assert "No Such Family Xyz" in warn and "Heavy Only" not in warn
+    assert "Heavy Only" in next(line for line in lines if line.startswith("fonts:"))
 
 
 def test_a_long_lived_renderer_sees_an_edited_stylesheet(site, tmp_path, renderer):

@@ -69,11 +69,17 @@ FONT_JS = """() => {
   probe.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font-size:72px';
   document.body.appendChild(probe);
   const width = (f) => { probe.style.fontFamily = f; return probe.getBoundingClientRect().width; };
+  // A web font counts when any of its faces loaded: the probe below draws at weight 400 upright, which can match a face of
+  // the family the page never uses (600 when the page uses 800) and has not been downloaded, so the probe alone reports a used font as missing.
+  const loaded = new Set();
+  for (const face of document.fonts) {
+    if (face.status === 'loaded') loaded.add(face.family.replace(/^["']|["']$/g, '').toLowerCase());
+  }
   const used = [], missing = [], plain = [];
   for (const f of wanted) {
     if (generic.has(f.toLowerCase())) { plain.push(f); continue; }
     const q = '"' + f + '"';
-    const here = width(q + ', monospace') !== width('monospace') || width(q + ', serif') !== width('serif');
+    const here = loaded.has(f.toLowerCase()) || width(q + ', monospace') !== width('monospace') || width(q + ', serif') !== width('serif');
     (here ? used : missing).push(f);
   }
   probe.remove();
