@@ -3,7 +3,7 @@ baseline_schema: "2.0"
 pack: "frontdoor"
 document: "hallucination"
 status: "active"
-updated: "2026-11-24"
+updated: "2026-11-25"
 code_ref: "uncommitted"
 ---
 
@@ -52,16 +52,51 @@ One row per entry. A row states what the entry is about and nothing more. An ans
 | FD-D35 | `animate.py` encodes frame by frame in a pool and joins the WebP container itself; parallel capture, sway dedupe, `--draft`, `--batch` | current | FD-D34, FD-D33 |
 | FD-D36 | a `frontdoor-core` skill that the other skills require | current, implemented in Phases 10 and 12 | FD-D2, FD-D22, FD-D24 |
 | FD-D37 | one board per repository, a page per use case, rounds numbered per page | current, implemented in Phases 10 and 11 | FD-D24, FD-D31, FD-D36 |
-| FD-D38 | the board's neutral look and its interface: hover table of contents, one frame per image, theme divider | current, implemented in Phase 11 | FD-D17, FD-D37, UG-D2 |
+| FD-D38 | the board's neutral look and its interface: hover table of contents, one frame per image, theme divider | current, implemented in Phase 11; layout and header amended by FD-D45 | FD-D17, FD-D37, UG-D2 |
 | FD-D39 | how the user's choice returns from the board: copy button, later a local server | current, copy button implemented in Phase 11, server not built | FD-D37, FD-D38 |
 | FD-D40 | asking the number of variants every round | current, implemented in Phases 10 and 12 | FD-D9, FD-D24 |
 | FD-D41 | the harness language and its browser daemon | current, implemented in Phase 10 | FD-D34, FD-D35, FD-D36 |
 | FD-D42 | the skills installed at project scope to help write the harness | current | FD-D41 |
 | FD-D43 | why `board.html` hides with `!important`, and why a pasted choice goes to `fd choose` through a file | current, lesson | FD-D38, FD-D39 |
 | FD-D44 | why `fd render` warned that a web font it had drawn was not loaded, and what the trial runs found missing in the skill text | current, lesson | FD-D36, FD-D40, FD-D41 |
+| FD-D45 | the board's header, branding, card layout and floating choice controls after the user's first review | current, implemented in the Phase 11 revision | FD-D38, FD-D39, FD-D46 |
+| FD-D46 | keeping the two board changes the agent made beyond the review: no chosen tag, and the per-row switch | current, implemented in the Phase 11 revision | FD-D45, FD-Q4 |
 | FD-Q1 | whether the skill descriptions make a host select the skills correctly | open | none |
 | FD-Q2 | whether the skills need automated tests | open | none |
 | FD-Q3 | whether the scripts work on macOS and Linux | open | FD-D8 |
+
+## FD-D46: keep the board without the chosen tag, and with the per-row switch
+
+Decision: decided by the user on 2026-11-25. Closes FD-Q4.
+
+- a card carries no "Chosen in the record" tag; a picked card shows its coloured border, its letter filled and its button reading Picked, and the record stays in the card's accessible name
+- a 1, 2 and 3 switch in the top bar sets how many variants share a row; one is the default, the choice is remembered in the browser, and a phone always shows one
+
+Why: the tag repeated what the border, the letter and the button already show, without the state resting on colour alone [user]. The switch keeps a side-by-side look one click away, because the Compare viewer appears only on a round whose `round.json` allows it [agent].
+
+What breaks if ignored: a returned tag crowds the card head; without the switch, seeing every variant at once needs a round marked for comparison.
+
+## FD-D45: the board's header, branding, card layout and floating choice controls
+
+Decision: decided by the user on 2026-11-25, from a review of the board page with 16 notes. The board changes as follows, and stays the same in every repository:
+
+- the top bar holds the Frontdoor brand on the left, the page title centred, and the tools on the right; the rounds of the page move to a row of their own under it
+- the brand is a drafting-table logo drawn straight on the bar, with no square or round shape around it, and the words `Frontdoor Design Board` in Fraunces 700, the face of the frontdoor banner
+- the repository line above the page title, the round count, the round date and the recorded-choice pill are removed; the floating picked box already shows the choice
+- the picked box, the round note and the Copy choice button float on their own, and the dock behind them has no background
+- one variant per row, so a picture is shown large without opening the viewer
+- Strengths, Risks and Known flaws become icons with a tooltip on hover
+- more room between a picture's label bar and the picture
+
+Why: three variants in one row made each picture too small to judge, so every picture needed the viewer; the header, the meta line and the recorded pill repeated what the board shows elsewhere [user].
+
+Implementation notes: the font is a Fraunces subset of the letters in `Frontdoor Design Board`, about 2.8 KB, inlined as a data URL so the board names itself offline; optical size 18, because the optical size 144 the banner draws at 112 px made the 18 px words cramped on screen. Fraunces is under the SIL Open Font License 1.1, which allows embedding. In the one-per-row card the text sits in a 220 to 300 px column beside the pictures, and the picture height cap rises to the screen height less the header and the floating controls. The facts keep their words for screen readers in a visually hidden span [agent].
+
+What breaks if ignored: a board that returns to three cards a row makes the user open every picture; a brand set in a fallback face reads as another product; the board's own look must not become the look of a repository it serves (FD-D38), so the brand stays the board's and never moves into a starter.
+
+Rejected: loading Fraunces from Google Fonts - the board opens from `file://` and often offline, and the words would fall back to Georgia [agent].
+
+Rejected: the banner's optical size 144 at 18 px - its thin strokes and tight spacing made the words hard to read [agent].
 
 ## FD-D44: defects found by the trial runs of the skills moved onto the core
 

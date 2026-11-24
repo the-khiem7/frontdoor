@@ -3,7 +3,7 @@ baseline_schema: "2.0"
 pack: "frontdoor"
 document: "roadmap"
 status: "active"
-updated: "2026-11-24"
+updated: "2026-11-25"
 code_ref: "uncommitted"
 ---
 
@@ -246,6 +246,15 @@ Acceptance criteria:
 | Defects found | `[hidden]` overridden by the page's display rules, and a pipe from Windows PowerShell 5.1 turning letters outside ASCII into `?`: FD-D43 |
 | Not run | a screen reader; real touch and pinch; Firefox and Safari; text zoom at 200 percent; macOS and Linux (FD-Q3); the board opened from a run of `frontdoor-readme`, which still uses its own `board.py` until Phase 12 |
 
+### Revision summary
+
+| Item | Result |
+|---|---|
+| Review 1, 2026-11-25 | the user's 16 notes on the board page applied (FD-D45): the Frontdoor brand on the left of the top bar with a drafting-table logo and `Frontdoor Design Board` in an inlined Fraunces subset, the page title centred, the rounds in a row of their own, the repository line, round count, date, recorded pill and chosen tag removed, the picked box, round note and Copy choice floating with no dock background, one variant per row with the text beside the pictures, Strengths, Risks and Known flaws as icons with a tooltip, more room above each picture; a 1, 2 and 3 per-row switch added by the agent and kept with the removed chosen tag (FD-D46); `references/board.md` describes the new layout |
+| Tests | `tests/test_board_browser.py` adds a layout test (one per row, text beside pictures, rounds row, centred title, brand words, transparent dock, no meta line, fact icons with their words, three per row on request and remembered) and checks the recorded choice through the picked box and the card's accessible name; 55 pass with `--browser-tests`; `ruff check` clean on `tests` |
+| Looked at | the 9-round README fixture in Edge at 1440x900 in light and dark, the tooltip, three per row, a copied choice, and 390x844: no console error, no sideways scroll at 390, the brand font reported loaded |
+| Not run | the design skills' critique and audit on the revised page; a screen reader; Firefox and Safari |
+
 ## Phase 12: the three skills on the core, and two trial runs
 
 Depends on: Phases 10 and 11.
@@ -299,10 +308,7 @@ Acceptance criteria:
 
 ## Next action
 
-Phase 12 or Phase 13 next, the user's choice:
-
-1. Phase 12: move `frontdoor-readme`, `frontdoor-illustrate` and `frontdoor-landing` onto the core, delete their copies of `signature.md`, `board.py`, `render.py` and `animate.py` and the `cmp` rule, remove "two or three" from their text, and run the two trial runs.
-2. Phase 13: the local board server; the board data already holds the picks, the notes per variant and the choice date it will write.
+1. Phase 13: the local board server; the board data already holds the picks, the notes per variant and the choice date it will write. Before starting, ask both run policies again.
 
 Carried over from before Phase 10:
 
