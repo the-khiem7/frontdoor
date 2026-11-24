@@ -3,7 +3,7 @@ baseline_schema: "2.0"
 pack: "frontdoor"
 document: "roadmap"
 status: "active"
-updated: "2026-11-19"
+updated: "2026-11-24"
 code_ref: "uncommitted"
 ---
 
@@ -30,6 +30,7 @@ Reasoning for every row below lives in `frontdoor.hallucination.md` under the en
 | Scene first, diagram where it fits, `<details>` | FD-D20 | implemented | `frontdoor-readme` guidance rewritten; this repository's README follows it |
 | Local board for rough directions | FD-D24, FD-D31 | implemented, Windows only, no skill run end to end | see Phase 6 and Phase 7 |
 | Banner, still social preview, optional animated banner | FD-D32, FD-D33 | implemented, animated WebP only, Windows only, no skill run end to end | see Phase 7 and Phase 8 |
+| Animation render speed | FD-D34, FD-D35 | implemented, script run on two real pages, uncommitted | see Phase 9 |
 | Host selection | FD-Q1 | unobserved, descriptions changed since | no run started from a plain request |
 | Automated tests | FD-Q2 | not started | none |
 | Other operating systems | FD-Q3 | unobserved | Windows and Edge only |
@@ -169,6 +170,26 @@ Acceptance criteria:
 | Text | `banner.md`, `SKILL.md` of `frontdoor-readme` and of `frontdoor-illustrate`, `github-readme.md` and `AGENTS.md` edited |
 | Not run | `--motion sway` end to end; the WebP on github.com; macOS and Linux |
 
+## Phase 9: a faster `animate.py`
+
+Acceptance criteria:
+
+- every frame is encoded in a worker pool as soon as it is captured, and the script joins the animated WebP itself (FD-D35)
+- the themes are captured in parallel, a repeated sway value is drawn once, and `--draft` and `--batch` exist
+- the files are no larger and score the same PSNR as FD-D34's files on the same pages
+
+### Checkpoint: script run on two real pages, no skill run end to end
+
+| Item | Result |
+|---|---|
+| Loop | Skillmesh banner, 2400x880, 40 frames: 111 s and 706 / 728 KB before, 22 s and 311 / 324 KB after; PSNR 37.3 / 37.2 dB mean |
+| Sway | Homeware hero, 2400x800, 30 frames, 15 drawn: 46 s and 321 / 255 KB before, 18 s and 188 / 143 KB after; PSNR 37.8 dB both |
+| Batch | both banners in one run, one of them at `--size 1500x500`, and a job with a missing id: 25 s for the two pictures, the bad job reported by name, exit 1 |
+| Draft | the Skillmesh banner: 600x220, 12 frames, loop 3333 ms like the real file, 12 s |
+| Errors | a missing id stops in seconds with its name; a `--call` without `{v}` and a missing source exit with a message; no `.part` file left behind |
+| Text | `animate.py` docstring and `banner.md` edited |
+| Not run | macOS and Linux; a drawing that changes nearly every pixel each frame; the files on github.com |
+
 ## Risks
 
 | Risk | Detail |
@@ -189,4 +210,5 @@ Acceptance criteria:
 3. If a skill is not selected, run the description optimizer from the skill-creator plugin on it.
 4. Decide whether the scripts need automated tests (FD-Q2) before anyone depends on them.
 5. After the new text is installed from GitHub, ask for a hero in a plain sentence in a repository that has the skills and record whether the run builds a round under `.frontdoor/`, adds it to the board and opens it (FD-D24); run `board.py` once on macOS or Linux (FD-Q3).
-6. Commit only when asked. The UI gallery skill's next actions are in the `ui-gallery` pack.
+6. Run `animate.py` once on a drawing that changes nearly every pixel each frame and compare its file size with the previous encoder (FD-D35); lower `--workers` and note the memory on a machine with little RAM.
+7. Commit only when asked; the `animate.py` rewrite, `banner.md` and this pack are uncommitted. The UI gallery skill's next actions are in the `ui-gallery` pack.

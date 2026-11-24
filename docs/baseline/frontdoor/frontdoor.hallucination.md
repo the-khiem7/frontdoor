@@ -3,7 +3,7 @@ baseline_schema: "2.0"
 pack: "frontdoor"
 document: "hallucination"
 status: "active"
-updated: "2026-11-19"
+updated: "2026-11-24"
 code_ref: "uncommitted"
 ---
 
@@ -47,7 +47,9 @@ One row per entry. A row states what the entry is about and nothing more. An ans
 | FD-D30 | how a state is mocked and shot; moved to the ui-gallery pack as UG-D5 | moved | UG-D5 |
 | FD-D31 | one design board per purpose: readme, landing-page, product | current | FD-D24, FD-D22 |
 | FD-D32 | the banner and social preview names, GitHub's social preview rules (still image only), and the optional animated README banner | current, lesson; the GIF format amended by FD-D33 | FD-D18, FD-D3, FD-D31, FD-D33 |
-| FD-D33 | animated WebP as the only animated format, and the banner shown under reduced motion | current | FD-D32 |
+| FD-D33 | animated WebP as the only animated format, and the banner shown under reduced motion | current | FD-D32, FD-D34 |
+| FD-D34 | how `animate.py` encodes: libwebp effort 4, worker processes, frames on disk, one run at a time | current, lesson; the encoder and the frames on disk amended by FD-D35 | FD-D33, FD-D35 |
+| FD-D35 | `animate.py` encodes frame by frame in a pool and joins the WebP container itself; parallel capture, sway dedupe, `--draft`, `--batch` | current | FD-D34, FD-D33 |
 | FD-Q1 | whether the skill descriptions make a host select the skills correctly | open | none |
 | FD-Q2 | whether the skills need automated tests | open | none |
 | FD-Q3 | whether the scripts work on macOS and Linux | open | FD-D8 |
@@ -418,6 +420,39 @@ Rejected: keeping GIF as an option beside WebP - the user chose one format, and 
 
 Rejected: a `prefers-reduced-motion` source that serves the still banner - the user wants the banner to show on every machine [user].
 
+## FD-D34: `animate.py` encodes at libwebp effort 4 in worker processes, and animations run one at a time
+
+Decision: decided by the user on 2026-11-24. `frontdoor-readme/scripts/animate.py` takes `--method` (default 4) instead of the fixed `method=6`, writes each finished frame to a temporary PNG and encodes each theme in a worker process (two at most) while the next theme is captured, and prints the seconds each encode took; `banner.md` tells the agent to run one animation at a time and gives the settings that kept a ripple banner under 700 KB (about 1500 px wide, `--frames 20`, `--quality 55`).
+
+Why: with `method=6` one 2400x840, 30-frame banner took about 11 minutes to encode and came out at 1.0 MB, over the 700 KB limit of FD-D33, while capturing the frames took well under a minute [agent]. With the new defaults, one banner and three diagrams at 1500 px wide and 20 frames took 7 to 22 seconds per file, 411 to 604 KB, 4 minutes for all four pictures in both themes [agent]. The user chose to fix the script before rendering the rest [user].
+
+What breaks if ignored: an agent follows the documented defaults on a line-heavy banner, waits many minutes per file, and still gets a file over the limit. Four animations run at once exhausted the memory of the machine; the system stopped them and left the light-theme files and one dark file at 0 bytes, which broke the README until the stills were rendered again.
+
+Not verified: how much of the speed-up comes from `--method 4` and how much from the smaller size, fewer frames and lower quality, because no run changed only the method; the file-size cost of `--method 4` against 6 on the same frames; macOS and Linux (FD-Q3), where worker processes start by fork and not by spawn.
+
+Rejected: keeping the script and only lowering `--size`, `--frames` and `--quality` for the banner - the user ruled for the script fix first [user].
+
+Rejected: rendering several animations in parallel - memory ran out and the runs were stopped [agent].
+
+Rejected: dropping the animations and keeping the stills - the user asked for the animation [user].
+
+## FD-D35: `animate.py` encodes each frame in its own worker and joins the animated WebP itself
+
+Decision: decided by the user on 2026-11-24 ("apply every option, as long as it speeds up the render"): `frontdoor-readme/scripts/animate.py` encodes every frame as a still WebP in a pool of `--workers` processes and writes the animated WebP container itself, captures the themes in parallel, captures a repeated sway value once, and offers `--draft` and `--batch`; the pipeline is in `sourcecode` under `Scripts`.
+
+Why: Pillow's animated save runs libwebp's `WebPAnimEncoder` on one core per file. On this machine (8 CPUs) the Skillmesh loop banner (2400x880, 40 frames) went from 111 s at 706 / 728 KB to 22 s at 311 / 324 KB, and the Homeware sway banner (2400x800, 30 frames, 15 drawn) from 46 s at 321 / 255 KB to 18 s at 188 / 143 KB, at the same PSNR against freshly captured frames (old / new: 37.3 / 37.2 dB and 37.8 / 37.8 dB mean) [agent]. Before the change, per frame, the border finish cost 0.6 s (two 32 MP masks), a still frame at method 4 0.8 s and an animated frame about 1.5 s on one core [agent]. The two banners in one `--batch` run took 25 s against 40 s as two runs; a draft took 12 s [agent].
+
+What breaks if ignored: going back to `WebPAnimEncoder` puts the encode on one core per file again, and a long or line-heavy banner takes minutes per run.
+
+Not verified: macOS and Linux (FD-Q3), where workers start by fork; a page whose drawing changes nearly every pixel each frame, where the rectangle and block savings are small and the file may grow against `WebPAnimEncoder`; memory on a machine with many CPUs and little RAM, where `--workers` must be lowered by hand; the files on github.com.
+
+Rejected: libwebp's own `thread_level` - Pillow does not expose it [agent].
+
+Rejected: ffmpeg, `img2webp` or `webpmux` - a binary outside the skill folder, against the rule that a skill runs alone [agent].
+
+Rejected: `--method 0` as the fast setting - on one 2400x840 frame it took 2.2 s against 0.8 s for method 4, for a file half as large again [agent].
+
+Rejected: the 3 px border and 24 px radius applied unscaled at the output size - at 1500 px wide the corners and border would read thicker than the still pictures at the same display width [agent].
 ## Open questions
 
 ### FD-Q1: do the skill descriptions make a host pick the skills on a plain request?

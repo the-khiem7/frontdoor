@@ -3,7 +3,7 @@ baseline_schema: "2.0"
 pack: "frontdoor"
 document: "introduction"
 status: "active"
-updated: "2026-10-22"
+updated: "2026-11-24"
 code_ref: "uncommitted"
 ---
 
@@ -28,7 +28,7 @@ Every skill sits at the repository root as `<name>/` (FD-D13); `frontdoor-ui-gal
 
 | Skill | Files |
 |---|---|
-| `frontdoor-readme` | `SKILL.md`; `agents/openai.yaml`; `scripts/board.py`; `references/github-readme.md`, `references/audit-and-plan.md`, `references/readme-content.md`, `references/signature.md` |
+| `frontdoor-readme` | `SKILL.md`; `agents/openai.yaml`; `scripts/animate.py`, `scripts/board.py`; `references/github-readme.md`, `references/audit-and-plan.md`, `references/readme-content.md`, `references/banner.md`, `references/signature.md` |
 | `frontdoor-illustrate` | `SKILL.md`; `agents/openai.yaml`; `scripts/render.py`, `scripts/contrast.py`, `scripts/board.py`; `assets/starter.css`, `assets/starter.html`, `assets/shared.js`; `references/source-page.md`, `references/scene-craft.md`, `references/signature.md` |
 | `frontdoor-landing` | `SKILL.md`; `agents/openai.yaml`; `scripts/shoot.py`, `scripts/lighthouse.py`, `scripts/board.py`; `references/existing-landing.md`, `references/pages-setup.md`, `references/page-craft.md`, `references/verify.md`, `references/signature.md` |
 | `frontdoor-ui-gallery` | `SKILL.md`; `agents/openai.yaml`; `scripts/shoot.py`, `scripts/real.ps1`; `assets/gallery.html`, `assets/mock-kit.ts`, `assets/fixtures.ts`, `assets/vite.gallery.ts`; `references/states.md`, `references/manifest.md`, `references/real-capture.md`, `references/stacks/index.md`, `wails3.md`, `tauri2.md`, `svelte.md`, `vue.md` |
@@ -44,6 +44,7 @@ Observed running, 2026-10-10, on Windows with Edge:
 - 2026-10-12: two agents followed `frontdoor-readme` and `frontdoor-illustrate` on two invented greenfield repositories with unlike subjects; each produced a hero, a scene or flow, a README with a fact trace, and a different signature (roadmap Phase 5).
 - 2026-10-12: `board.py` put two rounds of rough directions for `ghist` on one local board, `.frontdoor/directions.html`, replacing the scratch folder outside the repository (FD-D24).
 - 2026-10-22: `frontdoor-ui-gallery` built galleries for three desktop apps, two of them by a fresh agent given only the skill folder (pack `ui-gallery`).
+- 2026-11-24: `animate.py` rendered two real banners, a `loop` and a `sway`, in 22 s and 18 s, at the same PSNR as the previous encoder and about half its file size; `--draft` and `--batch` ran on the same pages (roadmap Phase 9, FD-D35).
 
 Not observed: installing `frontdoor-readme` or `frontdoor-landing` with `npx skills add`, the skills selected by a host from a plain request, any run on macOS or Linux, any page on its live GitHub Pages URL.
 
