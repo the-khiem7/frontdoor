@@ -132,7 +132,14 @@ def test_layout_one_variant_per_row_floating_dock_and_fact_icons(built, page):
     assert tabs["y"] >= top["y"] + top["height"] - 1 and tabs["x"] < 80, "the rounds sit in a row of their own"
     title = page.locator("#page-title").bounding_box()
     assert abs(title["x"] + title["width"] / 2 - (top["x"] + top["width"] / 2)) < 4, "the page title is centred"
-    assert page.inner_text(".brand").strip() == "Frontdoor Design Board"
+    assert page.inner_text(".bar-top .brand").strip() == "Frontdoor Design Board"
+    assert "FD Fraunces" in page.evaluate("getComputedStyle(document.getElementById('page-title')).fontFamily")
+    assert page.evaluate("getComputedStyle(document.getElementById('tabs')).backgroundColor") == "rgba(0, 0, 0, 0)"
+    assert page.inner_text("#tab-1 .tn") == "Round 1" and page.locator("#tab-vars button").count() == 3
+    page.click("#tab-vars button >> nth=2")
+    assert page.locator(".card.current").get_attribute("data-id") == "C" and page.locator("#tab-vars button").nth(2).get_attribute("aria-current") == "true"
+    assert page.locator(".card .pic-index").first.is_visible() and page.locator(".card .pic-bar").first.is_hidden(), "picture bars sit in the side column"
+    assert page.locator("#toc #help").count() == 1, "the shortcuts button sits in the rail"
     assert page.evaluate("getComputedStyle(document.getElementById('dock')).backgroundColor") == "rgba(0, 0, 0, 0)"
     assert page.locator(".round-head .meta").count() == 0 and page.locator(".chosen-tag").count() == 0
     dt = cards.nth(0).locator(".facts dt").first
@@ -140,6 +147,7 @@ def test_layout_one_variant_per_row_floating_dock_and_fact_icons(built, page):
     page.click('#cols button[data-cols="3"]')
     a, b = cards.nth(0).bounding_box(), cards.nth(1).bounding_box()
     assert abs(a["y"] - b["y"]) < 2, "three per row on request"
+    assert page.locator(".card .pic-bar").first.is_visible() and page.locator(".card .pic-index").first.is_hidden()
     page.reload()
     page.wait_for_load_state("networkidle")
     assert page.locator(".variants").get_attribute("data-cols") == "3", "the choice of columns is remembered"
