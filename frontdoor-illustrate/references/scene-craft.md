@@ -1,6 +1,6 @@
 # Scene craft
 
-Techniques for pictures that tell a story. Shapes, colors and typefaces come from the signature (`signature.md`); this file says how to build them, not how they look.
+Techniques for pictures that tell a story. Shapes, colors and typefaces come from the signature (`references/signature.md` of `frontdoor-core`); this file says how to build them, not how they look.
 
 ## Choosing a scene or a diagram
 
@@ -26,6 +26,6 @@ Techniques for pictures that tell a story. Shapes, colors and typefaces come fro
 
 ## Checking
 
-- `render.py` warns when content leaves the item box. Look at every image in both themes, at full size.
+- `fd render` warns when content leaves the item box. Look at every image in both themes, at full size.
 - A glyph drawn with a dark token vanishes on a dark ground. Give each kind of mark its own token and set it in both themes.
 - Compute the contrast of the smallest text pairs instead of judging them by eye.

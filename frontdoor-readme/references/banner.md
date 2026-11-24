@@ -27,7 +27,7 @@ The user sets it by hand in the repository, Settings, Social preview; no API or 
 
 Why PNG and not JPG: a 1280x640 illustrated banner measured 155 KB as PNG and 90 KB as JPG at quality 90, so JPG saves only about 65 KB, and both are far under 1 MB. PNG keeps thin lines and small text crisp and is not lossy, so the saving is not worth it. Size to aim for: a few hundred KB; when the PNG is over 1 MB, simplify gradients and lines first.
 
-Build it as an `.item` in the source page with the attribute `data-social`, 640 px wide and 320 px high (`style="width:640px; height:320px"`, the renderer's zoom makes it 1280x640). Keep the wordmark and tagline 40 CSS px inside every edge; a decoration that bleeds sits inside an element marked `data-bleed`. `render.py` writes the file, checks the size and the 1 MB limit, and warns when text is inside the 40 px border.
+Build it as an `.item` in the source page with the attribute `data-social`, 640 px wide and 320 px high (`style="width:640px; height:320px"`, the renderer's zoom makes it 1280x640). Keep the wordmark and tagline 40 CSS px inside every edge; a decoration that bleeds sits inside an element marked `data-bleed`. `fd render` writes the file, checks the size and the 1 MB limit, and warns when text is inside the 40 px border.
 
 The social picture is its own composition, not the banner scaled: the banner is wide and short (about 1200x420), the social card is 2:1. Reuse the same drawing, centred vertically and larger, rather than pasting the banner onto a plain ground.
 
@@ -50,18 +50,18 @@ The format is always an animated WebP, never a GIF: on the same 30 frames of a 1
 
 The tradeoffs to say plainly: the banner moves for every reader, because the README `<picture>` carries no `prefers-reduced-motion` source and a visitor who enabled that setting still sees it move (the user chose this so the banner shows on every machine); so keep the motion slow and small, a peak of about 20 degrees per second for a sway, a loop of 2 to 10 seconds, and nothing that flashes; a fast spin made a first test reader dizzy; and the previous still WebP stays in git history, so the README can go back to a still by restoring the two files.
 
-When the user approves, make the source page expose a function that redraws the banner for a value, for example `drawBanner(angle)` that clears the drawing and places everything again, then run `scripts/animate.py` of this skill, the one tool for every moving picture:
+When the user approves, make the source page expose a function that redraws the banner for a value, for example `drawBanner(angle)` that clears the drawing and places everything again, then run `fd animate`, the one tool for every moving picture (`<core>` is the `frontdoor-core` folder named in `SKILL.md`; every option below is that of `<core>/scripts/animate.py`):
 
 ```
-uvx --from playwright --with pillow python -I <skill-dir>/scripts/animate.py <page.html> --root <assets dir> --item banner --call "drawBanner({v})" --name banner --out <assets dir>
+uvx --from playwright --with pillow python -I <core>/scripts/fd.py animate <page.html> --root <assets dir> --item banner --call "drawBanner({v})" --name banner --out <assets dir>
 ```
 
 It writes `banner.webp` and `banner-dark.webp` (rounded, bordered, looping), prints each size and exits 1 when one is over `--max-kb` (default 700). `--motion sway` (the default) feeds `{v}` as `amp * sin(2 * pi * i / frames)`, a slow back-and-forth for shapes that turn a few degrees and back (`--amp`, default 30); `--motion loop` feeds `{v}` as `i / frames` from 0 to just under 1, for motion that repeats by itself, such as waves drifting one wave period, bobbing shapes or rising bubbles, so write the page's function to map 0..1 onto exactly one cycle and the loop is seamless. Defaults: 30 frames at 12 per second, quality 68, the 2x size of the still pictures, libwebp effort `--method 4`; `--size`, `--frames`, `--fps`, `--quality` and `--method` trade size, smoothness and encode time. A picture of many thin lines (rippling rings, a grid) can go over the limit at the defaults: use `--size` about 1500 px wide (keep the aspect ratio), `--frames 20` and `--quality 55`.
 
-Check the motion with `--draft` before the real render: it writes `banner.draft.webp` and `banner-dark.draft.webp`, 600 px wide, 12 frames over the same loop length, in a few seconds. Send it to a scratch folder such as `.frontdoor/readme/draft/` so a draft never sits beside the real pictures, and render the real files once the motion is right.
+Check the motion with `--draft` before the real render: it writes `banner.draft.webp` and `banner-dark.draft.webp`, 600 px wide, 12 frames over the same loop length, in a few seconds. Send it to a scratch folder such as `.frontdoor/drafts/readme/` so a draft never sits beside the real pictures, and render the real files once the motion is right.
 
 When more than one picture moves (the banner and some diagrams), render them in one run with `--batch jobs.json`, a JSON list with one object per picture whose keys are the long option names, for example `{"source": "assets/source/readme.html", "root": "assets", "item": "flow", "call": "drawFlow({v})", "out": "assets", "motion": "loop"}`. One run shares one browser and one pool of workers and is faster than one run per picture; never start several runs at once, because each starts its own pool and together they can exhaust the memory of a modest machine.
 
-Place things with coordinates instead of rotating them (rotate a group and the icons on it turn too). Look at a frame near each end of the loop in both themes, and check the file sizes the script prints. The still `banner-social` comes from `frontdoor-illustrate` as above; draw it at the sway's rest position so it reads as a finished picture.
+Place things with coordinates instead of rotating them (rotate a group and the icons on it turn too). Look at a frame near each end of the loop in both themes, and check the file sizes the script prints. The still `banner-social` comes from `fd render` as above; draw it at the sway's rest position so it reads as a finished picture.
 
 The README markup is the same `<picture>` as for the still banner, with no `prefers-reduced-motion` source so the banner shows everywhere; see `github-readme.md`.
