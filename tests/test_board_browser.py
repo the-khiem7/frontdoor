@@ -115,5 +115,32 @@ def test_copy_choice_gives_text_fd_choose_reads(built, page, repo, fd, board):
     choice = board()["pages"][0]["rounds"][0]["choice"]
     assert choice["chosen"] == ["B"] and choice["note"] == "B with the bands of C" and choice["notes"] == {"C": "keep the gauge"}
     page.reload()
-    assert page.locator(".recorded").count() == 1 and page.locator(".card.picked").get_attribute("data-id") == "B"
+    assert page.locator(".card.picked").get_attribute("data-id") == "B" and page.inner_text("#picked").split() == ["Picked", "B"]
+    assert "chosen in the record" in page.locator(".card.picked").get_attribute("aria-label")
+    assert page.errors == []
+
+
+def test_layout_one_variant_per_row_floating_dock_and_fact_icons(built, page):
+    page.goto(built + "#/settings/1")
+    page.wait_for_load_state("networkidle")
+    cards = page.locator(".card")
+    a, b = cards.nth(0).bounding_box(), cards.nth(1).bounding_box()
+    assert b["y"] > a["y"] + a["height"] - 1, "one variant per row by default"
+    head, pics = cards.nth(0).locator(".card-head").bounding_box(), cards.nth(0).locator(".pics").bounding_box()
+    assert pics["x"] > head["x"] + head["width"], "the text stands beside the pictures"
+    tabs, top = page.locator("#tabs").bounding_box(), page.locator(".bar-top").bounding_box()
+    assert tabs["y"] >= top["y"] + top["height"] - 1 and tabs["x"] < 80, "the rounds sit in a row of their own"
+    title = page.locator("#page-title").bounding_box()
+    assert abs(title["x"] + title["width"] / 2 - (top["x"] + top["width"] / 2)) < 4, "the page title is centred"
+    assert page.inner_text(".brand").strip() == "Frontdoor Design Board"
+    assert page.evaluate("getComputedStyle(document.getElementById('dock')).backgroundColor") == "rgba(0, 0, 0, 0)"
+    assert page.locator(".round-head .meta").count() == 0 and page.locator(".chosen-tag").count() == 0
+    dt = cards.nth(0).locator(".facts dt").first
+    assert dt.locator("svg").count() == 1 and dt.get_attribute("data-tip") == "Risks" and dt.inner_text().strip() == "Risks"
+    page.click('#cols button[data-cols="3"]')
+    a, b = cards.nth(0).bounding_box(), cards.nth(1).bounding_box()
+    assert abs(a["y"] - b["y"]) < 2, "three per row on request"
+    page.reload()
+    page.wait_for_load_state("networkidle")
+    assert page.locator(".variants").get_attribute("data-cols") == "3", "the choice of columns is remembered"
     assert page.errors == []

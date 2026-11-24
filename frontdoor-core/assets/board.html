@@ -10,18 +10,22 @@
      with one neutral look in every repository, never the look of the repository it serves. Picks and notes stay in this
      browser (localStorage) until the user copies them into the chat; `fd choose --from` records them in board.json. -->
 <style>
+/* Fraunces 700 at optical size 18, SIL Open Font License 1.1, cut to the letters of "Frontdoor Design Board": the face of the frontdoor banner, inlined so the board names itself offline. */
+@font-face { font-family: "FD Fraunces"; font-weight: 700; font-display: swap; src: url(data:font/woff2;base64,d09GMgABAAAAAAsgAA8AAAAAEzQAAArEAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG4MAHEwGYD9TVEFUgRQAgQYRCAqVeJF4CyQAATYCJANEBCAFhWQHIAwHGw4QUVSTfkimkbJw/n4+/3Tm3zczq5msWOX0B9XCDgotsnWyQZli0jpTAOsKCj7sGZ6/+X9G3HhrvI0Km6slzETbk1n7Uk/qffv0a626JbOTyJVKpCX2rd1fwU1ChWQmkZCZTqPSK6VHVGRzQfXmw/pRuMpbQACwkCEBVFFJlQp+05sseviBgcM9FUpM05n08J7ScSwDKtD1Fn4sVYoMxN/wk6KGzb/iv3+f+DuScYgiHiQ+Ef8U74gvxLPi36BAQCGg57kU/EFSHAt/2HuCJpRNPCB7yT0kAHwhE32OGPHS9NkB4I69b6ZZhiSWwFM5qB7jB4a5S12BB+ARwpwAsHU8B3UFCVSBrrPfZFGdUWWMulC1QV0Ki1fH/1SSj4xqghnZ5EDf8ZgTKwWtRPCmDkUIt5JZoAzt5nlukcbaEhWh8MHZkyZbCAGlra2pJDToKZam6SQcDIoQh/5XSw4DikSQEl5PXSSK4tGaAhIW6fA4mlkgEuoKSlJ2gJZindIiSXARMXKI61Ck+YAdw4uY7I+EIQA0PCFFAYpQgiboMAlTYIDlfDfZpt9qo4fpQvEj8YZ4XbwmdogHxQPifvKeyQUhep6J6iwk8IUfAqxcIorw3y4GDnUH1x8E0KcB5t0agQzXQCrlrhxuSYd8bYaRRwz0TwwbHvXGwOHRwQF+QyQKmUIWEBA2tKxsqM8oa+Bcvb/Vz8p/KPGzXyK21NLuw8TL1qcoOUdslzl/4SMneIeDrRWcTr2EcILbTWwuF8t68y850au2xhFvgX/zQ9bPfsng0ObVTzmr8PgyJ1wdMGrHEVnHpahtdXvl6s5e8BfYFhim6qfUneIrvNbuOqw8X+Ezzw079uwRKzEQhYftFWt/AvAO1u4iNrebE5yg+F5OOBy+bRsn7Gh3it2lt23dJVnVdY+1O8A7hb17uPpUa5iPbWdYSlcfsR1Wai/fFyWvwpvfESpnEtLDNimZzJJqlcvF2h1VYZpr6326rLyD9SO+AiehjDqFh7s5YQ8cu9lWpToNLtc+wqIcBGXVTudT8Dd4x99OjaINWfPJkTp0ntp9mxMuHr3ICW5MV+lsyn/mNrmdaqdDdcbl0rjcbivT5lCJfS8zKrt3EY+uiZqjBCOcd5QfCbxlpNA7HzeyIbP3maP27JCTBxObFXt44Gg+A5hF4ico3nkXoW1hgvNqY49a0Nz70GpwhKvojsOhdjqd004xc76PIzv7WPsVB0arqeunbV3XfRxy1HAoQ465yJhDcPFDTjh8mBN6I9V79ss6Lg1zdSYG/NFzw7H4zUes/UIPa++L0uzdp+y+ONTptMoZw7DH4BBOUFM1rGl42WC3ZGW2P8cJh4drD1/mhF54Xj/lLh8/rhR6jX97IB62Pi3xFXrBP2FbPoWXQwovx+WWkfCSjMSol3VbyUWv72XRkdEfSFasCf8vfPUKyQfRUSNkZdf929adn6ez7Ppw1KHBB37QLN25fj89/sN6Q1aqdWxL2fpVNc1ZKakfZ9WX6dKSplWa1y7HhJTo55IVq8P/i1i9QvI8Oqq/LPdCzPS37luCOq+ekBd3f7RHNuC8dkaPafx3lzblfD73wBHVjLKhSfpkpHbOGdZ+I1ypfqqKnvf6UOP+d5OmjtfrhuQfLA43dFRKOub3ixwgS5EPiIz+4N8Vq8P/D1+94t8PoqP6yzP3yfOagium3Mn78XhV8oxA7aSF4Y/8X8YXYO/iUFt7yoL44YoBzWVNNaMqKwuz8vQL3mnouHt92+JfwytCgxvnan54Xc/kEmRPiyzyD89qiImf7lAuPglKQZsQeadTrBkCIZsbyqM6CexKcExv/tGwvJ6tXcDzh50HSeaqD9G2mhAmZuO+SCYm2MUhGzZvPitpjhBeibz0j5D6P6TI2t9+3zlUdzA/KDc6xJ2XzQzwj+N7rbbVeE3Hcmj0Qql7dFNY272JjtoTdYWPAT0iKpBJD86Ii/Tx7BQ10r0Ewc7NSad3HZmQ1pG35bQYQe9gtZjK6Rvx3VN/1HY9HVtuevWya+volYzs3eDXmj7TOvh3QyN23o9V2t00WoQXOYC36jONbjAdQJoQ+0/FxNStnZlRyLWF0+ew46UCemKagnLOPfDEeHhk8clQvUt6Qm1E8CsJCbkxakelSxj8WAk3br7Su4Ysza5Ye5a8IHuR0by/OqtiXZ48v6rMaNlPqmXqJHSh+zE97sMMncNsqledUYJRgkGDNxNYV/Y+tHnzWc51hPBKZCcix0OONKXWdySUmepjtK0mhI5V3BefF6Md8y+vpZYlSSVlCalpZYliaVkSsK7sfWjz+svNN1ZkugyR4yGYq9T6joQyU2mwyZoQOldxX7xPAtvHW+tS3DvrTudGtAzuMOr3Vvrs1brBhSG8HNnMIFv9p9C29HY9piPwFwTYiknlwLqy96HN6y8331iR6TJEjodgrlLrOxLKTKXBJmtC6FzFffE+CWwfb61Lce9qupIZ3bGyfUhp+0brBheG8HJExiBb/afQ/s7mmIgrCHaIRjqAfeijtQ8tvT/PjAz9qOrcvPahrefnqbGhH1XtxoeqeIFpuvsJ7fgW4Xoap54fmKa7D+6Am4XraRzwIzwdfqkrXZxVUF1RHJfP5fGETEeDIaL5v+YZYZgMzDefrISfw42m6nDwn9b/IXI85EhTan1HMjFXfYwia5lichW3BDOBJnA70JaE0ANczYo59hyjbVaHM5jdETMPd9/kxuJisPiZbTB0bMXvvHzTjvkMZ1d+dlKJc6BIGOBj9V+CQyyqjyhLYnXFJ6cP7hSVscNhXwIe/opF9aeSjjWequ+vkTByRmOBFbqAzvR3Myvm2HGMt1keygztjJx5sOcWNwYXg8U9fYrDcJf9L9w82L+jwsCdn5VY4hIgEgZ6W/2f4BAL9RJlSezu+OSMgd3iMn40nEeAYRUW1S91ONqwu3+gVszIX4gC2h8Fw7k0U/grMQD7njYkW9zAwecsgnhkgadd68C4F0Q1B5yo6kl22rhseEyX6PtBvTqR+CvW6iYbAAAAUAMAqAHw2sxWmmoS+FlXQ+c+AABsnD4UBAAAG6cP5f2/+u9Zg2DdI0ANaAN1AHgAQACvjv8pgDOL+8RgLgcEyV0C6S/RSg4BHvcxwXM8JjLfuppLUMz8g0wmd/cuxFPbkeMhR7aHUjyIuYIs+kdk03+igP4NFXQa+n27lQ7EZnjjybdyMx3f6pAIr74cgxkfO34vscwVBFFktIKCN2lQ0Egh/RUMZPhT4YEE3FN4YjA6vP2QAr2WID4CGhACuQL4o5AzoKDBIq6LRGU5EgwWCuDLVg6DIhwSsCTCOgtogAEz0AQ9ymGxDp6OKWhBDQzQQ2t9fxrmohGT0QQT2tfPMqANFuihgxlmaMPsKZiEyYiuRXsAEpDVlqIRUzAPuu26lr3NyEAsYmFGC0wCJYubEQMzpth3j4EBJkxCLGpRgiqUwIQmzIQeUBMbj7TS2dEogMHKboUGOqAmmJWWIh4xiEtrZ2IMmpGKlOH649CEJMRjHF2g1DaWNiNYWjUKoUImD27cRnJSaMW2Y26vmWOVK0UC4vKNSaHCZOggrXtQHUwwYCp0aCmfnY+ZsABHCjJxyJ8J1rJnohkxOs6rGFtfbD06OBeaZuhgwVy09xyrQBz6d0S5s/3vQAKSkheIuOwEswYAAA==) format("woff2"); }
 :root {
   --ground: #f2f2ef; --panel: #ffffff; --raise: #fafaf8; --well: #e6e6e1; --ink: #1b1d21; --muted: #575d66; --faint: #6b717a;
   --line: #dadad5; --line-strong: #c3c4be; --accent: #0d6b63; --accent-ink: #ffffff; --accent-soft: #dcefec; --warn: #8a5a00;
   --shadow: 0 1px 2px rgb(20 22 26 / .06), 0 8px 24px rgb(20 22 26 / .08); --shadow-pop: 0 12px 40px rgb(20 22 26 / .18);
   --rule: #ffffff; --rule-edge: rgb(0 0 0 / .45);
-  --rail: 52px; --bar: 56px; --dock: 64px; --cap: max(260px, calc(100vh - var(--bar) - var(--dock) - 330px)); --r: 10px; --r-s: 7px;
+  --bad: #a3362b; --brand: #e9a23b; --brand-soft: #fbe7c2;
+  --rail: 52px; --bar: 56px; --tabs: 44px; --head: calc(var(--bar) + var(--tabs)); --dock: 74px; --cap: max(260px, calc(100vh - var(--head) - var(--dock) - 300px)); --r: 10px; --r-s: 7px;
   --ease: cubic-bezier(.2, .8, .2, 1);
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
   :root {
     --ground: #141619; --panel: #1c1f23; --raise: #22262b; --well: #0f1113; --ink: #e9e8e4; --muted: #a5abb4; --faint: #8e949d;
+    --bad: #f08a7e; --brand: #f4b95a; --brand-soft: #3a2c16;
     --line: #2e3238; --line-strong: #3d424a; --accent: #5fc6b9; --accent-ink: #0b1f1d; --accent-soft: #173431; --warn: #e2b25a;
     --shadow: 0 1px 2px rgb(0 0 0 / .3), 0 8px 24px rgb(0 0 0 / .25); --shadow-pop: 0 12px 40px rgb(0 0 0 / .5);
     color-scheme: dark;
@@ -92,31 +96,41 @@ kbd { font: 600 11px/1 ui-monospace, "Cascadia Mono", Consolas, monospace; paddi
 
 /* the shell */
 .shell { margin-left: var(--rail); min-height: 100vh; display: flex; flex-direction: column; }
-.bar { position: sticky; top: 0; z-index: 20; height: var(--bar); display: flex; align-items: center; gap: 16px; padding: 0 20px; background: color-mix(in srgb, var(--ground) 88%, transparent); backdrop-filter: saturate(1.4) blur(10px); border-bottom: 1px solid var(--line); }
-.where { min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
-.where small { color: var(--muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.where h1 { font-size: 15px; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 32ch; }
-.tabs { flex: 1; min-width: 0; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: thin; padding: 4px 2px; }
+.bar { position: sticky; top: 0; z-index: 20; display: flex; flex-direction: column; background: color-mix(in srgb, var(--ground) 88%, transparent); backdrop-filter: saturate(1.4) blur(10px); border-bottom: 1px solid var(--line); }
+.bar-top { height: var(--bar); display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 16px; padding: 0 20px; }
+.brand { justify-self: start; min-width: 0; display: inline-flex; align-items: center; gap: 9px; color: var(--ink); white-space: nowrap; }
+.brand svg { width: 30px; height: 30px; flex: none; overflow: visible; }
+.brand .word { font: 700 18px/1 "FD Fraunces", Georgia, "Times New Roman", serif; letter-spacing: -.005em; overflow: hidden; text-overflow: ellipsis; }
+.bar-top h1 { min-width: 0; max-width: min(56ch, 40vw); font-size: 15px; font-weight: 650; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tabs { height: var(--tabs); display: flex; align-items: center; gap: 4px; overflow-x: auto; scrollbar-width: thin; padding: 0 18px; border-top: 1px solid var(--line); }
 .tab { flex: none; display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 11px; border: 1px solid transparent; border-radius: var(--r-s); background: transparent; color: var(--muted); cursor: pointer; font-variant-numeric: tabular-nums; transition: background .15s, color .15s; }
 .tab:hover { background: var(--panel); color: var(--ink); }
 .tab[aria-selected="true"] { background: var(--panel); border-color: var(--line-strong); color: var(--ink); font-weight: 600; box-shadow: 0 1px 2px rgb(0 0 0 / .06); }
 .tab .tn { font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
-.tab .tt { max-width: 16ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tab .tt { max-width: 22ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .tab .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 .tab.draft { border-style: dashed; border-color: var(--line-strong); }
-.tools { flex: none; display: flex; align-items: center; gap: 8px; }
+.tools { justify-self: end; flex: none; display: flex; align-items: center; gap: 8px; }
+.seg.cols button { min-width: 28px; justify-content: center; font-variant-numeric: tabular-nums; }
 
 main { flex: 1; width: 100%; max-width: 1680px; margin: 0 auto; padding: 22px 24px calc(var(--dock) + 32px); display: flex; flex-direction: column; gap: 18px; }
 .round-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 24px; align-items: end; }
 .round-head h2 { font-size: 20px; font-weight: 650; letter-spacing: -.01em; text-wrap: balance; }
 .round-head .meta { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; gap: 4px 14px; }
 .round-head .note { grid-column: 1 / -1; max-width: 90ch; color: var(--ink); }
-.recorded { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--ink); font-size: 12px; }
 .badge-draft { color: var(--warn); font-weight: 600; }
 
-/* variants: one column per variant, rows aligned across cards with subgrid */
-.variants { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 18px; align-items: start; }
-.card { grid-row: span 4; display: grid; grid-template-rows: subgrid; gap: 12px; min-width: 0; padding: 14px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow); transition: border-color .15s, box-shadow .15s; scroll-margin: calc(var(--bar) + 16px) 16px calc(var(--dock) + 16px); }
+/* variants: one per row by default, with the text beside the pictures; with 2 or 3 per row, rows align across cards with subgrid */
+.variants { --cols: 1; display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 18px; align-items: start; }
+.variants[data-cols="2"] { --cols: 2; }
+.variants[data-cols="3"] { --cols: 3; }
+.card { grid-row: span 4; display: grid; grid-template-rows: subgrid; gap: 12px; min-width: 0; padding: 14px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow); transition: border-color .15s, box-shadow .15s; scroll-margin: calc(var(--head) + 16px) 16px calc(var(--dock) + 16px); }
+.variants[data-cols="1"] { --cap: max(320px, calc(100vh - var(--head) - var(--dock) - 120px)); }
+.variants[data-cols="1"] .card { grid-row: auto; grid-template-columns: minmax(220px, 300px) minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr); grid-template-areas: "head pics" "facts pics" "foot pics"; gap: 14px 24px; padding: 18px; align-items: start; }
+.variants[data-cols="1"] .card-head { grid-area: head; }
+.variants[data-cols="1"] .pics { grid-area: pics; }
+.variants[data-cols="1"] .facts { grid-area: facts; }
+.variants[data-cols="1"] .foot { grid-area: foot; align-self: start; }
 .card.current { border-color: var(--line-strong); box-shadow: var(--shadow), 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent); }
 .card.picked { border-color: var(--accent); box-shadow: var(--shadow), 0 0 0 1px var(--accent); }
 .card.picked.current { box-shadow: var(--shadow), 0 0 0 1px var(--accent), 0 0 0 4px color-mix(in srgb, var(--accent) 30%, transparent); }
@@ -127,14 +141,18 @@ main { flex: 1; width: 100%; max-width: 1680px; margin: 0 auto; padding: 22px 24
 .title-row h3 { flex: 1; min-width: 0; font-size: 15px; font-weight: 650; line-height: 1.3; }
 .pick { flex: none; }
 .pick[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
-.chosen-tag { font-size: 12px; color: var(--accent); font-weight: 600; }
 .concept { color: var(--ink); }
-.facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 12px; font-size: 13px; align-content: start; }
-.facts dt { color: var(--muted); }
-.facts dd { color: var(--ink); }
-.pics { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
-.pic { min-width: 0; }
-.pic-bar { display: flex; align-items: center; gap: 8px; min-height: 28px; }
+.facts { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 7px 10px; font-size: 13px; align-content: start; }
+.facts dt { position: relative; display: grid; place-items: center; width: 20px; height: 20px; color: var(--muted); cursor: help; }
+.facts dt.ok { color: var(--accent); }
+.facts dt.warn { color: var(--warn); }
+.facts dt.bad { color: var(--bad); }
+.facts dt::after { content: attr(data-tip); position: absolute; z-index: 5; left: -4px; bottom: calc(100% + 6px); padding: 4px 8px; border-radius: 5px; background: var(--ink); color: var(--panel); font-size: 12px; font-weight: 600; line-height: 1.4; white-space: nowrap; opacity: 0; transform: translateY(3px); pointer-events: none; transition: opacity .12s, transform .12s; }
+.facts dt:hover::after { opacity: 1; transform: none; }
+.facts dd { color: var(--ink); line-height: 20px; }
+.pics { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.pic { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.pic-bar { display: flex; align-items: center; gap: 10px; min-height: 30px; }
 .pic-bar .label { flex: 1; min-width: 0; color: var(--muted); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .frame { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; min-width: 0; padding: 10px; background: var(--well); border-radius: var(--r-s); border: 0; width: 100%; cursor: zoom-in; }
 .frame:hover .expand { opacity: 1; }
@@ -167,14 +185,18 @@ main { flex: 1; width: 100%; max-width: 1680px; margin: 0 auto; padding: 22px 24
 .stack .side.d { right: 8px; background: #16181b; color: #f0efeb; box-shadow: 0 0 0 1px rgb(255 255 255 / .2); }
 .stack.missing { display: grid; place-items: center; min-height: 140px; min-width: 220px; line-height: 1.4; color: var(--muted); font-size: 13px; }
 
-/* the dock: the choice that goes back to the chat */
-.dock { position: fixed; z-index: 20; left: var(--rail); right: 0; bottom: 0; min-height: var(--dock); display: flex; align-items: center; gap: 14px; padding: 12px 24px; background: color-mix(in srgb, var(--panel) 94%, transparent); backdrop-filter: saturate(1.4) blur(10px); border-top: 1px solid var(--line); }
-.dock .picked-list { flex: none; display: flex; align-items: center; gap: 6px; min-width: 150px; color: var(--muted); }
-.dock .picked-list b { display: inline-grid; place-items: center; min-width: 24px; height: 24px; padding: 0 6px; border-radius: 5px; background: var(--accent); color: var(--accent-ink); font: 700 12px/1 ui-monospace, "Cascadia Mono", Consolas, monospace; }
-.dock input { flex: 1; min-width: 0; height: 36px; padding: 0 12px; border: 1px solid var(--line-strong); border-radius: var(--r-s); background: var(--panel); }
-.dock input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); }
-.dock .btn { height: 36px; }
-.dock .status { flex: none; min-width: 0; color: var(--muted); font-size: 12px; }
+/* the dock: three floating controls for the choice that goes back to the chat, on no bar of their own */
+.dock { position: fixed; z-index: 20; left: var(--rail); right: 0; bottom: 16px; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 0 24px; pointer-events: none; }
+.dock > * { pointer-events: auto; }
+.dock .picked-list, .dock input, .dock .btn, .dock .status { background: var(--panel); border: 1px solid var(--line-strong); border-radius: 999px; box-shadow: var(--shadow-pop); }
+.dock .picked-list { flex: none; height: 42px; display: flex; align-items: center; gap: 6px; padding: 0 9px 0 15px; color: var(--muted); white-space: nowrap; }
+.dock .picked-list b { display: inline-grid; place-items: center; min-width: 26px; height: 26px; padding: 0 7px; border-radius: 999px; background: var(--accent); color: var(--accent-ink); font: 700 12px/1 ui-monospace, "Cascadia Mono", Consolas, monospace; }
+.dock input { flex: 0 1 480px; min-width: 0; height: 42px; padding: 0 18px; }
+.dock input:focus { border-color: var(--accent); outline: none; box-shadow: var(--shadow-pop), 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); }
+.dock .btn { height: 42px; padding: 0 18px; }
+.dock .btn.primary { background: var(--accent); border-color: var(--accent); }
+.dock .status { position: absolute; bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%); padding: 5px 12px; color: var(--muted); font-size: 12px; white-space: nowrap; }
+.dock .status:empty { display: none; }
 .dock .status.ok { color: var(--accent); font-weight: 600; }
 
 /* empty and draft states */
@@ -213,18 +235,22 @@ dialog.viewer::backdrop { background: rgb(0 0 0 / .5); }
 .sheet textarea { width: min(520px, 84vw); height: 220px; padding: 10px; border: 1px solid var(--line-strong); border-radius: var(--r-s); background: var(--raise); font: 12px/1.5 ui-monospace, "Cascadia Mono", Consolas, monospace; }
 .sheet .row { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
 
+@media (max-width: 1180px) {
+  .variants[data-cols="3"] { --cols: 2; }
+}
 @media (max-width: 860px) {
-  :root { --bar: 52px; }
-  .bar { gap: 4px 10px; padding: 6px 12px 2px; flex-wrap: wrap; height: auto; }
-  .bar .where { flex: 1; }
-  .tabs { order: 3; flex-basis: 100%; }
-  .where h1 { max-width: 18ch; }
-  .tools .seg span, .tools .hide-s { display: none; }
+  :root { --bar: 52px; --cap: 70vh; }
+  .bar-top { gap: 10px; padding: 0 12px; }
+  .brand .word { display: none; }
+  .bar-top h1 { max-width: none; }
+  .tabs { padding: 0 10px; }
+  .tools .seg span, .tools .hide-s, .tools .cols { display: none; }
   main { padding: 16px 14px calc(var(--dock) + 72px); }
   .round-head { grid-template-columns: minmax(0, 1fr); }
-  :root { --cap: 70vh; }
-  .dock { flex-wrap: wrap; padding: 10px 14px; gap: 8px; }
-  .dock input { order: 3; flex-basis: 100%; }
+  .variants[data-cols] { --cols: 1; --cap: 70vh; }
+  .variants[data-cols="1"] .card { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "pics" "facts" "foot"; grid-template-rows: none; padding: 14px; }
+  .dock { flex-wrap: wrap; bottom: 10px; padding: 0 12px; gap: 8px; }
+  .dock input { order: 3; flex: 1 1 100%; }
   .v-bar { height: auto; flex-wrap: wrap; gap: 6px 8px; padding: 8px 10px; }
   .v-title { flex-basis: calc(100% - 44px); order: -2; }
   #v-close { order: -1; margin-left: auto; }
@@ -255,6 +281,9 @@ dialog.viewer::backdrop { background: rgb(0 0 0 / .5); }
   <symbol id="i-keys" viewBox="0 0 16 16"><rect x="1.5" y="4" width="13" height="8.5" rx="1.5"/><path d="M4 6.8h.01M6.5 6.8h.01M9 6.8h.01M11.5 6.8h.01M5 9.6h6"/></symbol>
   <symbol id="i-open" viewBox="0 0 16 16"><path d="M9 2.5h4.5V7M13.5 2.5 7.5 8.5M11.5 9.5v3a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h3"/></symbol>
   <symbol id="i-grip" viewBox="0 0 16 16"><path d="M5.5 4.5 2.5 8l3 3.5M10.5 4.5l3 3.5-3 3.5"/></symbol>
+  <symbol id="i-strength" viewBox="0 0 16 16"><path d="M2 11.5 6 7.5l2.8 2.8L14 5"/><path d="M10.2 5H14v3.8"/></symbol>
+  <symbol id="i-risk" viewBox="0 0 16 16"><path d="M8 2.2 14.5 13.5h-13z"/><path d="M8 6.5v3.2M8 11.6h.01"/></symbol>
+  <symbol id="i-flaw" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M5.8 5.8l4.4 4.4M10.2 5.8l-4.4 4.4"/></symbol>
 </svg>
 
 <a class="skip" href="#main">Skip to the variants</a>
@@ -268,17 +297,32 @@ dialog.viewer::backdrop { background: rgb(0 0 0 / .5); }
 
 <div class="shell">
   <header class="bar">
-    <div class="where"><small id="project"></small><h1 id="page-title">Design board</h1></div>
-    <div class="tabs" id="tabs" role="tablist" aria-label="Rounds"></div>
-    <div class="tools">
-      <div class="seg" id="theme-all" role="group" aria-label="Show every picture in">
-        <button type="button" data-mode="light" title="Light (L)"><svg class="i"><use href="#i-sun"/></svg><span>Light</span></button>
-        <button type="button" data-mode="dark" title="Dark (D)"><svg class="i"><use href="#i-moon"/></svg><span>Dark</span></button>
-        <button type="button" data-mode="split" title="Split: move the pointer over a picture (S)"><svg class="i"><use href="#i-split"/></svg><span>Split</span></button>
+    <div class="bar-top">
+      <div class="brand" title="Frontdoor Design Board">
+        <svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3.5 8.2 27.2 4.6 28.6 18.6 5 21.4Z" fill="var(--brand-soft)" stroke="var(--ink)" stroke-width="1.9"/>
+          <path d="M7.6 17.6 25.4 15.4" stroke="var(--brand)" stroke-width="2.4"/>
+          <path d="M11 21 7.2 29M22.6 19.7 26.6 29M9 25.2h15.6" stroke="var(--ink)" stroke-width="1.9"/>
+        </svg>
+        <span class="word">Frontdoor Design Board</span>
       </div>
-      <button class="btn hide-s" id="compare" type="button" hidden title="Compare two variants side by side (C)"><svg class="i"><use href="#i-columns"/></svg>Compare</button>
-      <button class="btn icon quiet" id="help" type="button" title="Keyboard shortcuts (?)"><svg class="i"><use href="#i-keys"/></svg><span class="vh">Keyboard shortcuts</span></button>
+      <h1 id="page-title">Design board</h1>
+      <div class="tools">
+        <div class="seg cols" id="cols" role="group" aria-label="Variants per row">
+          <button type="button" data-cols="1" title="One variant per row">1</button>
+          <button type="button" data-cols="2" title="Two variants per row">2</button>
+          <button type="button" data-cols="3" title="Three variants per row">3</button>
+        </div>
+        <div class="seg" id="theme-all" role="group" aria-label="Show every picture in">
+          <button type="button" data-mode="light" title="Light (L)"><svg class="i"><use href="#i-sun"/></svg><span>Light</span></button>
+          <button type="button" data-mode="dark" title="Dark (D)"><svg class="i"><use href="#i-moon"/></svg><span>Dark</span></button>
+          <button type="button" data-mode="split" title="Split: move the pointer over a picture (S)"><svg class="i"><use href="#i-split"/></svg><span>Split</span></button>
+        </div>
+        <button class="btn hide-s" id="compare" type="button" hidden title="Compare two variants side by side (C)"><svg class="i"><use href="#i-columns"/></svg>Compare</button>
+        <button class="btn icon quiet" id="help" type="button" title="Keyboard shortcuts (?)"><svg class="i"><use href="#i-keys"/></svg><span class="vh">Keyboard shortcuts</span></button>
+      </div>
     </div>
+    <div class="tabs" id="tabs" role="tablist" aria-label="Rounds"></div>
   </header>
   <main id="main" role="tabpanel" tabindex="-1"><p class="empty">Loading the board...</p></main>
   <footer class="dock" id="dock" hidden>
@@ -364,11 +408,10 @@ dialog.viewer::backdrop { background: rgb(0 0 0 / .5); }
   if (!D || !Array.isArray(D.pages)) { main.replaceChildren(empty("The board data is missing", "board-data.js did not load. Rebuild it with", "fd board build")); return; }
   const pages = D.pages;
   document.title = `${D.project || "Design"} board`;
-  $("project").textContent = `${D.project || "This repository"} design board`;
   $("toc-project").textContent = D.project || "Design board";
 
   // ---- state ----
-  const S = { page: null, round: null, vi: 0, mode: store.get("mode", "light"), own: new Map(), view: null };
+  const S = { page: null, round: null, vi: 0, mode: store.get("mode", "light"), cols: [1, 2, 3].includes(store.get("cols", 1)) ? store.get("cols", 1) : 1, own: new Map(), view: null };
   const published = (r) => r && r.status === "published";
   const shown = (r) => (r.variants || []).filter((v) => v.title !== undefined);
   const canCompare = () => !!(S.round && published(S.round) && S.round.compare && shown(S.round).length > 1);
@@ -465,7 +508,16 @@ dialog.viewer::backdrop { background: rgb(0 0 0 / .5); }
     if (sel) sel.scrollIntoView({ block: "nearest", inline: "nearest" });
     $("compare").hidden = !canCompare();
     syncSeg($("theme-all"), S.mode);
+    syncCols();
   }
+  const syncCols = () => $("cols").querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(Number(b.dataset.cols) === S.cols)));
+  $("cols").addEventListener("click", (e) => {
+    const b = e.target.closest("button"); if (!b) return;
+    S.cols = Number(b.dataset.cols); store.set("cols", S.cols); syncCols();
+    const grid = main.querySelector(".variants"); if (grid) grid.dataset.cols = String(S.cols);
+    markCurrent(false);
+    const c = main.querySelectorAll(".card")[S.vi]; if (c) c.scrollIntoView({ block: "nearest" });
+  });
   $("tabs").addEventListener("keydown", (e) => {
     const rs = S.page ? S.page.rounds : [];
     const moves = { ArrowLeft: -1, ArrowRight: 1, Home: -rs.length, End: rs.length };
@@ -523,10 +575,7 @@ dialog.viewer::backdrop { background: rgb(0 0 0 / .5); }
     const c = r.choice || {};
     const head = h("header", { class: "round-head" },
       h("div", {}, h("h2", {}, r.title || `Round ${r.n}`)),
-      h("div", { class: "meta" },
-        h("span", {}, `Round ${r.n} of ${S.page.rounds.length}`),
-        r.status === "draft" ? h("span", { class: "badge-draft" }, "Draft") : h("span", {}, r.published || r.created || ""),
-        c.chosen && c.chosen.length ? h("span", { class: "recorded" }, icon("check"), `Recorded: ${c.chosen.join(" + ")}${c.date ? ", " + c.date : ""}`) : null),
+      r.status === "draft" ? h("div", { class: "meta" }, h("span", { class: "badge-draft" }, "Draft")) : null,
       r.note ? h("p", { class: "note" }, r.note) : null,
       c.note ? h("p", { class: "note" }, h("b", {}, "Choice note: "), c.note) : null);
     if (!published(r)) {
@@ -536,7 +585,7 @@ dialog.viewer::backdrop { background: rgb(0 0 0 / .5); }
     const p = picks();
     const vs = shown(r);
     S.vi = Math.min(S.vi, vs.length - 1);
-    const grid = h("div", { class: "variants" }, vs.map((v, i) => card(v, i, p, new Set(c.chosen || []))));
+    const grid = h("div", { class: "variants", "data-cols": String(S.cols) }, vs.map((v, i) => card(v, i, p, new Set(c.chosen || []))));
     main.replaceChildren(head, grid);
     dock.hidden = false;
     $("round-note").value = p.note || "";
@@ -545,7 +594,7 @@ dialog.viewer::backdrop { background: rgb(0 0 0 / .5); }
   }
   function card(v, i, p, recorded) {
     const picked = p.chosen.includes(v.id);
-    const facts = [["Strengths", v.strengths], ["Risks", v.risks], ["Known flaws", v.flaws]].filter((f) => f[1]);
+    const facts = [["Strengths", "strength", "ok", v.strengths], ["Risks", "risk", "warn", v.risks], ["Known flaws", "flaw", "bad", v.flaws]].filter((f) => f[3]);
     const pick = h("button", { class: "btn pick", type: "button", "aria-pressed": String(picked), "aria-label": `Pick ${v.id}`, onclick: (e) => { e.stopPropagation(); togglePick(v.id); } },
       icon("check"), h("span", {}, picked ? "Picked" : "Pick"));
     const note = h("textarea", { class: "vnote", rows: "1", placeholder: `Note on ${v.id} (optional)`, "aria-label": `Note on variant ${v.id}` });
@@ -566,13 +615,12 @@ dialog.viewer::backdrop { background: rgb(0 0 0 / .5); }
       return wrap;
     });
     const links = (v.links || []).length ? h("p", { class: "links" }, v.links.map((l) => h("a", { href: url(l.file), target: "_blank", rel: "noopener" }, icon("open"), l.label))) : null;
-    const el = h("article", { class: "card" + (picked ? " picked" : ""), id: `v-${v.id}`, "data-id": v.id, "aria-label": `Variant ${v.id}: ${v.title}`, onpointerdown: () => { if (S.vi !== i) { S.vi = i; markCurrent(false); writeHash(); } } },
+    const el = h("article", { class: "card" + (picked ? " picked" : ""), id: `v-${v.id}`, "data-id": v.id, "aria-label": `Variant ${v.id}: ${v.title}${recorded.has(v.id) ? ", chosen in the record" : ""}`, onpointerdown: () => { if (S.vi !== i) { S.vi = i; markCurrent(false); writeHash(); } } },
       h("div", { class: "card-head" },
         h("div", { class: "title-row" }, h("span", { class: "vid", "aria-hidden": "true" }, v.id), h("h3", {}, v.title || "Untitled"), pick),
-        recorded.has(v.id) ? h("span", { class: "chosen-tag" }, "Chosen in the record") : null,
         v.concept ? h("p", { class: "concept" }, v.concept) : null),
       h("div", { class: "pics" }, pics.length ? pics : h("p", { class: "empty-pic" }, "No picture; see the link below.")),
-      facts.length ? h("dl", { class: "facts" }, facts.map(([k, t]) => [h("dt", {}, k), h("dd", {}, t)])) : h("div"),
+      facts.length ? h("dl", { class: "facts" }, facts.map(([k, ic, tone, t]) => [h("dt", { class: tone, "data-tip": k }, icon(ic), h("span", { class: "vh" }, k)), h("dd", {}, t)])) : h("div"),
       h("div", { class: "foot" }, links, v.notes ? h("p", { class: "concept" }, v.notes) : null, note));
     return el;
   }
