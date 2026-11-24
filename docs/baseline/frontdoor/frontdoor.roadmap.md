@@ -4,7 +4,7 @@ pack: "frontdoor"
 document: "roadmap"
 status: "active"
 updated: "2026-11-24"
-code_ref: "85f86cf"
+code_ref: "uncommitted"
 ---
 
 # Frontdoor Roadmap
@@ -32,10 +32,10 @@ Reasoning for every row below lives in `frontdoor.hallucination.md` under the en
 | Banner, still social preview, optional animated banner | FD-D32, FD-D33 | implemented, animated WebP only, Windows only, no skill run end to end | see Phase 7 and Phase 8 |
 | Animation render speed | FD-D34, FD-D35 | implemented, script run on two real pages, uncommitted | see Phase 9 |
 | Host selection | FD-Q1 | unobserved, descriptions changed since | no run started from a plain request |
-| Automated tests | FD-Q2 | not started | none |
+| Automated tests | FD-Q2 | started for `fd` only | `tests/`, 43 pass; the other scripts have none |
 | Other operating systems | FD-Q3 | unobserved | Windows and Edge only |
 | UI gallery skill | UG-D1 to UG-D10, pack `ui-gallery` | implemented, run on three apps | roadmap of the `ui-gallery` pack |
-| `frontdoor-core` and the harness `fd` | FD-D36, FD-D40, FD-D41 | planned | Phase 10 |
+| `frontdoor-core` and the harness `fd` | FD-D36, FD-D40, FD-D41 | implemented, uncommitted, Windows only | see Phase 10 |
 | Board v2 | FD-D37, FD-D38, FD-D39 | planned | Phase 11 |
 | The three skills on the core, variant count asked | FD-D36, FD-D40 | planned | Phase 12 |
 | Local board server | FD-D39 | planned | Phase 13 |
@@ -207,7 +207,19 @@ Acceptance criteria:
 - a first pytest suite covers `fd`, with the real-browser tests behind a marker
 - `AGENTS.md` states the new dependency rule and drops the `cmp` rule for the copies that no longer exist
 
-### Checkpoint: not started
+### Checkpoint: complete, uncommitted, the three skills not yet on the core
+
+| Item | Result |
+|---|---|
+| Skill | `frontdoor-core` added at the repository root: `SKILL.md`, `agents/openai.yaml`, references `signature.md` (its board section now points to `board.md`), `board.md`, `harness.md`, `source-page.md` (items of any size, `data-finish`), assets `board.html`, `starter.css`, `starter.html`, `shared.js`, scripts `fd.py` with the package `fdlib`, `animate.py`, `contrast.py`; `quick_validate` reports it valid |
+| `fd` | `page add`/`list`, `round new` (`--count` required, 1 to 12), `round add`, `choose`, `status [--json]`, `board build`/`open`, `render [--watch]`, `animate`, `contrast`, `daemon start`/`stop`/`status`/`run` |
+| Speed, same machine | `fd render` on `assets/source/readme.html` (10 items, 2 themes): 12.5 s against 40.7 s for `render.py`; on `scenes.html` 14.8 s against 48.3 s; with the daemon running a full page took 9.6 s and one item 3.6 s, against 5.7 s for one item without it |
+| `method=4` | on the 20 pictures of the two pages: 1837 KB against 1839 KB at method 6, the largest file 1.7 percent larger, every file pixel-identical to the `render.py` output; 4 is the default |
+| Tests | `tests/`: 43 pass with `--browser-tests` (board model, finishes, real renders, an id used twice, an unknown item, an overflow warning, an edited stylesheet seen by a long-lived browser, the daemon with a wrong token refused, `--watch`); no Edge process left after the run; `ruff check` clean |
+| End to end | a throwaway repository: a page, a round of 2 variants, two renders, `round add` paired 4 pictures in both themes, `choose`, `status --json`; the board opened from `file://` loaded all 4 images, switched to dark and showed no console error |
+| `AGENTS.md` | the core rule, the neutral look of frontdoor's own tooling, the board of `fd`, the `cmp` rule kept only until the move, and the test command |
+| Not done here | the three skills still carry and use their own `signature.md`, `board.py`, `render.py` and `animate.py` (Phase 12), so no copy was deleted and the `cmp` rule stays; `board.html` is an interim shell (Phase 11) |
+| Not run | macOS and Linux (FD-Q3); the daemon started from a host whose shell kills detached processes; a skill following the core's text from a plain request (FD-Q1) |
 
 ## Phase 11: board v2
 
@@ -264,10 +276,10 @@ Acceptance criteria:
 
 ## Next action
 
-Phase 10 first:
+Phase 11 next:
 
-1. Start Phase 10: create `frontdoor-core`, move the shared parts into it, build `fd` and its daemon, and write the first tests, using the project-scope skills of FD-D42.
-2. Before `method=4` becomes the default for still WebP, compare its file size with `method=6` on several source pages (FD-D41).
+1. Start Phase 11: design board v2 with `impeccable` and `design-taste-frontend`, replacing the interim `frontdoor-core/assets/board.html` while keeping the data `fd` writes (pages, rounds, variants with paired light and dark pictures, choices, `compare`), and test it on a copy of the `docker-zero` product board.
+2. Phase 10 left the three skills on their own copies; moving them onto the core is Phase 12.
 
 Carried over from before Phase 10:
 
@@ -277,4 +289,4 @@ Carried over from before Phase 10:
 6. Decide whether the scripts need automated tests (FD-Q2) before anyone depends on them.
 7. After the new text is installed from GitHub, ask for a hero in a plain sentence in a repository that has the skills and record whether the run builds a round under `.frontdoor/`, adds it to the board and opens it (FD-D24); run `board.py` once on macOS or Linux (FD-Q3).
 8. Run `animate.py` once on a drawing that changes nearly every pixel each frame and compare its file size with the previous encoder (FD-D35); lower `--workers` and note the memory on a machine with little RAM.
-9. Commit only when asked. The `animate.py` rewrite and its record are committed (`7b9a992`, `85f86cf`); this pack's Phase 10 to 13 entries are uncommitted. The UI gallery skill's next actions are in the `ui-gallery` pack.
+9. Commit only when asked. The `animate.py` rewrite and its record are committed (`7b9a992`, `85f86cf`), and the plan for these phases is committed (`641ca53`); the Phase 10 work (`frontdoor-core/`, `tests/`, `AGENTS.md`) and its record here are uncommitted. The UI gallery skill's next actions are in the `ui-gallery` pack.

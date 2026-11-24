@@ -4,7 +4,7 @@ pack: "frontdoor"
 document: "sourcecode"
 status: "active"
 updated: "2026-11-24"
-code_ref: "85f86cf"
+code_ref: "uncommitted"
 ---
 
 # Frontdoor: Topology and Execution Flow
@@ -34,6 +34,13 @@ frontdoor-ui-gallery/
   scripts/     shoot.py  real.ps1
   assets/      gallery.html  mock-kit.ts  fixtures.ts  vite.gallery.ts
   references/  states.md  manifest.md  real-capture.md  stacks/ (index.md  wails3.md  tauri2.md  svelte.md  vue.md)
+frontdoor-core/
+  SKILL.md
+  agents/      openai.yaml
+  scripts/     fd.py  fdlib/ (cli.py  board.py  render.py  daemon.py  paths.py)  animate.py  contrast.py
+  assets/      board.html  starter.css  starter.html  shared.js
+  references/  signature.md  board.md  harness.md  source-page.md
+tests/          the pytest suite of fd (not shipped)
 assets/         the README pictures and their HTML sources (pack readme-design)
 docs/baseline/frontdoor/
 docs/baseline/readme-design/
@@ -71,6 +78,17 @@ docs/baseline/readme-design/
 | `frontdoor-readme/scripts/animate.py` | a source page with a global drawing function, an item id, a `--call` holding `{v}`, an output folder; or `--batch` with a JSON list of such jobs | `<name>.webp` and `<name>-dark.webp` as looping animated WebP, or `<name>.draft.webp` with `--draft`; each file size and the seconds since start; exit 1 on a file over `--max-kb`, a missing item id or a failed job |
 | `real.ps1` | an open window's title, an output path, a pattern to hide | a PNG of the window with matching text painted over (Windows) |
 | `board.py add` / `build` / `choose` | the `.frontdoor` folder of the repository, a round file, or a round and direction ids | `directions.json` (every round) and `directions.html` (the board, newest round first); `.frontdoor/` added to `.gitignore`; the board opened in the default browser; exit 1 on a missing file, a path outside the folder, an unknown or repeated direction id |
+| `frontdoor-core/scripts/fd.py` (`fd`) | a command: `page`, `round`, `choose`, `status`, `board`, `render`, `animate`, `contrast`, `daemon` | the board in `.frontdoor/board/` (`board.json`, `board-data.js`, `index.html`, a folder per page, round and variant), renders as `render.py` writes them plus the `data-finish` modes, the daemon state in `.frontdoor/fd-daemon.json`; exit 1 on a failure or a render WARN, 2 on a wrong argument |
+
+`fd` (FD-D41):
+
+| Part | What |
+|---|---|
+| `fdlib/board.py` | the board record: pages with free slugs, rounds numbered per page, a draft per `round new` and a published round per `round add`, pictures paired by file name (`<name>`, `<name>-light`, `<name>-dark`, `.draft`), images taken from `<variant>/out/` when it exists, `index.html` linked unless `links` is given, every path checked to stay inside the board |
+| `fdlib/render.py` | `Renderer`: one browser, one static server per served root (`Cache-Control: no-store`, so a long-lived browser sees edits), the item checks of `render.py`, an encode submitted to a process pool as each item is captured (no pool for a single picture), lossless WebP at method 4 |
+| `fdlib/daemon.py` | a single-threaded HTTP server on 127.0.0.1 holding a `Renderer` with a warm pool; a random token in `.frontdoor/fd-daemon.json`; started detached (breaking away from the caller's job object on Windows when allowed); stops after `--idle` seconds; `fd render` falls back to its own process when it does not answer |
+| `fdlib/cli.py` | argparse commands; `animate` and `contrast` are routed before parsing and run the imported `animate.py` and `contrast.py`, so their own options pass through and their worker processes can import their functions |
+| `--watch` | polls the served root every 0.4 s for changed HTML, CSS, JS, SVG, JSON and font files and renders again with the same browser |
 
 `animate.py` pipeline (FD-D35):
 

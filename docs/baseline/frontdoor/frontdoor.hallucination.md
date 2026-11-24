@@ -4,7 +4,7 @@ pack: "frontdoor"
 document: "hallucination"
 status: "active"
 updated: "2026-11-24"
-code_ref: "85f86cf"
+code_ref: "uncommitted"
 ---
 
 # Frontdoor: Decisions and Open Questions
@@ -50,12 +50,12 @@ One row per entry. A row states what the entry is about and nothing more. An ans
 | FD-D33 | animated WebP as the only animated format, and the banner shown under reduced motion | current | FD-D32, FD-D34 |
 | FD-D34 | how `animate.py` encodes: libwebp effort 4, worker processes, frames on disk, one run at a time | current, lesson; the encoder and the frames on disk amended by FD-D35 | FD-D33, FD-D35 |
 | FD-D35 | `animate.py` encodes frame by frame in a pool and joins the WebP container itself; parallel capture, sway dedupe, `--draft`, `--batch` | current | FD-D34, FD-D33 |
-| FD-D36 | a `frontdoor-core` skill that the other skills require | current, not implemented | FD-D2, FD-D22, FD-D24 |
+| FD-D36 | a `frontdoor-core` skill that the other skills require | current, core built in Phase 10, skills not moved | FD-D2, FD-D22, FD-D24 |
 | FD-D37 | one board per repository, a page per use case, rounds numbered per page | current, not implemented | FD-D24, FD-D31, FD-D36 |
 | FD-D38 | the board's neutral look and its interface: hover table of contents, one frame per image, theme divider | current, not implemented | FD-D17, FD-D37, UG-D2 |
 | FD-D39 | how the user's choice returns from the board: copy button, later a local server | current, not implemented | FD-D37, FD-D38 |
 | FD-D40 | asking the number of variants every round | current, not implemented | FD-D9, FD-D24 |
-| FD-D41 | the harness language and its browser daemon | current, not implemented | FD-D34, FD-D35, FD-D36 |
+| FD-D41 | the harness language and its browser daemon | current, implemented in Phase 10 | FD-D34, FD-D35, FD-D36 |
 | FD-D42 | the skills installed at project scope to help write the harness | current | FD-D41 |
 | FD-Q1 | whether the skill descriptions make a host select the skills correctly | open | none |
 | FD-Q2 | whether the skills need automated tests | open | none |
@@ -546,7 +546,9 @@ Why: measured on this machine (Windows, Edge, 8 CPUs) on 2026-11-24: starting `u
 
 What breaks if ignored: every repeated render pays for a browser start and a slow encode, and a rewrite in another language costs the working scripts without removing either.
 
-Not verified: the `method=4` figure comes from one image; the daemon has not been built.
+Not verified: the daemon from a host whose shell ends detached processes; macOS and Linux (FD-Q3).
+
+Observed 2026-11-24 on the 20 pictures of `assets/source/readme.html` and `scenes.html`: method 4 wrote 1837 KB against 1839 KB at method 6, the largest single file 1.7 percent larger, and every file pixel-identical to the `render.py` output, so 4 became the default [agent]. With capture and encode overlapped in a process pool the two pages took 12.5 s and 14.8 s against 40.7 s and 48.3 s for `render.py`; with the daemon running one item took 3.6 s against 5.7 s [agent].
 
 Rejected: TypeScript on Bun or Node - Playwright is native there and the start is 0.08 s, but it needs `node_modules` installed or fetched per run and `sharp` for WebP, and every script is rewritten [agent].
 

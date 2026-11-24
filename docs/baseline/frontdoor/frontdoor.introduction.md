@@ -4,7 +4,7 @@ pack: "frontdoor"
 document: "introduction"
 status: "active"
 updated: "2026-11-24"
-code_ref: "85f86cf"
+code_ref: "uncommitted"
 ---
 
 # Frontdoor: Scope, Current Truth, Target
@@ -19,7 +19,7 @@ Claude skills that raise how a repository presents itself, and how its app's UI 
 | `frontdoor-illustrate` | turn hand-built HTML pages into rounded, bordered WebP images in a light and a dark theme |
 | `frontdoor-landing` | design and build a single-file `index.html` for GitHub Pages, after checking that no landing page exists |
 | `frontdoor-ui-gallery` | render every view and state of an app's UI from its real frontend with the backend mocked, in light and dark, on one review page (UG-D1 in the `ui-gallery` pack) |
-| `frontdoor-core` (planned, Phase 10) | the shared core the other skills require: the signature method, the design board and its harness `fd`, the render contract for items of any size; invocable on its own for design work no other skill covers (FD-D36) |
+| `frontdoor-core` (Phase 10, uncommitted; the other skills not yet moved onto it) | the shared core the other skills will require: the signature method, the design board and its harness `fd`, the render contract for items of any size; invocable on its own for design work no other skill covers (FD-D36) |
 
 Out of scope: documentation other than the README, committing or pushing, enabling GitHub Pages (a repository setting the skills only describe), and any build step on the page being produced.
 
@@ -33,6 +33,9 @@ Every skill sits at the repository root as `<name>/` (FD-D13); `frontdoor-ui-gal
 | `frontdoor-illustrate` | `SKILL.md`; `agents/openai.yaml`; `scripts/render.py`, `scripts/contrast.py`, `scripts/board.py`; `assets/starter.css`, `assets/starter.html`, `assets/shared.js`; `references/source-page.md`, `references/scene-craft.md`, `references/signature.md` |
 | `frontdoor-landing` | `SKILL.md`; `agents/openai.yaml`; `scripts/shoot.py`, `scripts/lighthouse.py`, `scripts/board.py`; `references/existing-landing.md`, `references/pages-setup.md`, `references/page-craft.md`, `references/verify.md`, `references/signature.md` |
 | `frontdoor-ui-gallery` | `SKILL.md`; `agents/openai.yaml`; `scripts/shoot.py`, `scripts/real.ps1`; `assets/gallery.html`, `assets/mock-kit.ts`, `assets/fixtures.ts`, `assets/vite.gallery.ts`; `references/states.md`, `references/manifest.md`, `references/real-capture.md`, `references/stacks/index.md`, `wails3.md`, `tauri2.md`, `svelte.md`, `vue.md` |
+| `frontdoor-core` | `SKILL.md`; `agents/openai.yaml`; `scripts/fd.py` with the package `scripts/fdlib/`, `scripts/animate.py`, `scripts/contrast.py`; `assets/board.html`, `assets/starter.css`, `assets/starter.html`, `assets/shared.js`; `references/signature.md`, `references/board.md`, `references/harness.md`, `references/source-page.md` |
+
+`tests/` at the repository root holds the pytest suite of `fd`; it does not ship.
 
 The pictures in this repository's own README are tracked in the `readme-design` pack (FD-D15 moved there).
 
@@ -46,6 +49,7 @@ Observed running, 2026-10-10, on Windows with Edge:
 - 2026-10-12: `board.py` put two rounds of rough directions for `ghist` on one local board, `.frontdoor/directions.html`, replacing the scratch folder outside the repository (FD-D24).
 - 2026-10-22: `frontdoor-ui-gallery` built galleries for three desktop apps, two of them by a fresh agent given only the skill folder (pack `ui-gallery`).
 - 2026-11-24: `animate.py` rendered two real banners, a `loop` and a `sway`, in 22 s and 18 s, at the same PSNR as the previous encoder and about half its file size; `--draft` and `--batch` ran on the same pages (roadmap Phase 9, FD-D35).
+- 2026-11-24: `fd render` from `frontdoor-core` rendered this repository's two source pages pixel-identical to `render.py` in about a third of the time; the `fd` test suite passed, 43 tests with a real browser (roadmap Phase 10).
 
 Not observed: installing `frontdoor-readme` or `frontdoor-landing` with `npx skills add`, the skills selected by a host from a plain request, any run on macOS or Linux, any page on its live GitHub Pages URL.
 
