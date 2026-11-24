@@ -35,8 +35,8 @@ Reasoning for every row below lives in `frontdoor.hallucination.md` under the en
 | Automated tests | FD-Q2 | started for `fd` only | `tests/`, 43 pass; the other scripts have none |
 | Other operating systems | FD-Q3 | unobserved | Windows and Edge only |
 | UI gallery skill | UG-D1 to UG-D10, pack `ui-gallery` | implemented, run on three apps | roadmap of the `ui-gallery` pack |
-| `frontdoor-core` and the harness `fd` | FD-D36, FD-D40, FD-D41 | implemented, uncommitted, Windows only | see Phase 10 |
-| Board v2 | FD-D37, FD-D38, FD-D39 | planned | Phase 11 |
+| `frontdoor-core` and the harness `fd` | FD-D36, FD-D40, FD-D41 | implemented, Windows only | see Phase 10 |
+| Board v2 | FD-D37, FD-D38, FD-D39 | complete | Phase 11 |
 | The three skills on the core, variant count asked | FD-D36, FD-D40 | planned | Phase 12 |
 | Local board server | FD-D39 | planned | Phase 13 |
 | Project-scope skills for writing the harness | FD-D42 | installed, git-ignored | `uv`, `ruff`, `python-testing-patterns`, `create-cli` copied into `.kiro/skills/` and `.claude/skills/`; `git status` lists none of them |
@@ -207,7 +207,7 @@ Acceptance criteria:
 - a first pytest suite covers `fd`, with the real-browser tests behind a marker
 - `AGENTS.md` states the new dependency rule and drops the `cmp` rule for the copies that no longer exist
 
-### Checkpoint: complete, uncommitted, the three skills not yet on the core
+### Checkpoint: complete, committed (`a0a5d51`, `b4f816f`, `d38b024`), the three skills not yet on the core
 
 | Item | Result |
 |---|---|
@@ -233,7 +233,18 @@ Acceptance criteria:
 - the interface designed with `impeccable` and `design-taste-frontend`, then passed through their critique and audit
 - tested on a copy of the `docker-zero` product board (`C:\.repos\Personal\kai\docker-zero\.frontdoor\product`, long portrait images) and on a page with many rounds
 
-### Checkpoint: not started
+### Checkpoint: complete
+
+| Item | Result |
+|---|---|
+| Board page | `frontdoor-core/assets/board.html` replaced: a rail of pages that opens on hover over the content and lists every round with its variants and recorded choices; the rounds of a page as tabs with number and title; one card per variant, rows aligned across cards; one frame per picture holding both themes with a light, dark and split switch per picture and for the whole board, the split divider following the pointer; a viewer with fit, full width and zoom that keeps the scroll position when moving to the next variant; a two-variant comparison with joined scrolling shown only when `round.json` has `"compare": true`; deep links `#/<page>/<round>/<variant>`, `/view/<n>` and `/compare/<a>/<b>`; keys for variants, rounds, pages, theme, zoom, pick, note and help; a Pick button and a note per variant, a note per round, and a Copy choice button whose text ends with an `fd-choice {json}` line; empty, draft and missing-picture states; light and dark from the system |
+| Data | `board.json` keeps its layout; each round's `choice` gains `notes` (one per variant id) for the server of Phase 13; `fd choose` gains `--variant-note ID=TEXT` and `--from <file or ->`, which reads the copied text, and a choice of no variant is recorded only through `--from` |
+| Fixture | a throwaway repository with the three `docker-zero` variants (1040x1920, 1040x1620, 1040x1626) on a page with comparison on, a README page of 9 rounds with up to 4 variants and 3 pictures each, an icons page with a light-only round and a draft, and an empty page; driven in Edge at 1440x900 in light and dark and at 390x844: no console error; split, viewer, comparison, copy, deep links, Back, a malformed hash and the phone viewer checked on screenshots |
+| Design skills | `impeccable`: the Operate-mode references and the craft floor read before the build; its detector reports 5 cramped-padding warnings on the segmented controls and bars (2 px insets by design) and a flat type scale of 13, 15 and 15 px, kept because its Operate guidance asks for a 1.125 to 1.2 ratio; its critique and audit run by a sub-agent found no P0 and 22 findings, all acted on, two only in part: a skip link was added and the rail no longer opens when its toggle takes focus, but an opened rail still puts every round in the tab order; the picture height now leaves 330 px for the text above it, so a long round note still pushes a long picture under the dock; `design-taste-frontend`: its hover, press and focus rules applied by hand, its page gate not run, because it checks a company website (hero, sections per screen, copy) |
+| Tests | `tests/test_board.py` adds 7 tests of the choice record and `--from`; `tests/test_board_browser.py` adds 3 browser tests (pictures load and fit, the draft state, keys, viewer, comparison only when allowed, Back, the copied text recorded by `fd choose --from`); 53 pass with `--browser-tests`; `ruff check` clean |
+| Docs | `references/board.md`: how the user answers, `fd choose --from`, and what the user sees; `references/harness.md`: the new `choose` options |
+| Defects found | `[hidden]` overridden by the page's display rules, and a pipe from Windows PowerShell 5.1 turning letters outside ASCII into `?`: FD-D43 |
+| Not run | a screen reader; real touch and pinch; Firefox and Safari; text zoom at 200 percent; macOS and Linux (FD-Q3); the board opened from a run of `frontdoor-readme`, which still uses its own `board.py` until Phase 12 |
 
 ## Phase 12: the three skills on the core, and two trial runs
 
@@ -276,10 +287,10 @@ Acceptance criteria:
 
 ## Next action
 
-Phase 11 next:
+Phase 12 or Phase 13 next, the user's choice:
 
-1. Start Phase 11: design board v2 with `impeccable` and `design-taste-frontend`, replacing the interim `frontdoor-core/assets/board.html` while keeping the data `fd` writes (pages, rounds, variants with paired light and dark pictures, choices, `compare`), and test it on a copy of the `docker-zero` product board.
-2. Phase 10 left the three skills on their own copies; moving them onto the core is Phase 12.
+1. Phase 12: move `frontdoor-readme`, `frontdoor-illustrate` and `frontdoor-landing` onto the core, delete their copies of `signature.md`, `board.py`, `render.py` and `animate.py` and the `cmp` rule, remove "two or three" from their text, and run the two trial runs.
+2. Phase 13: the local board server; the board data already holds the picks, the notes per variant and the choice date it will write.
 
 Carried over from before Phase 10:
 
@@ -289,4 +300,4 @@ Carried over from before Phase 10:
 6. Decide whether the scripts need automated tests (FD-Q2) before anyone depends on them.
 7. After the new text is installed from GitHub, ask for a hero in a plain sentence in a repository that has the skills and record whether the run builds a round under `.frontdoor/`, adds it to the board and opens it (FD-D24); run `board.py` once on macOS or Linux (FD-Q3).
 8. Run `animate.py` once on a drawing that changes nearly every pixel each frame and compare its file size with the previous encoder (FD-D35); lower `--workers` and note the memory on a machine with little RAM.
-9. Commit only when asked. The `animate.py` rewrite and its record are committed (`7b9a992`, `85f86cf`), and the plan for these phases is committed (`641ca53`); the Phase 10 work (`frontdoor-core/`, `tests/`, `AGENTS.md`) and its record here are uncommitted. The UI gallery skill's next actions are in the `ui-gallery` pack.
+9. Commit only when asked. The `animate.py` rewrite and its record are committed (`7b9a992`, `85f86cf`), the plan for these phases (`641ca53`), and Phase 10 (`a0a5d51`, `b4f816f`, `d38b024`). The UI gallery skill's next actions are in the `ui-gallery` pack.

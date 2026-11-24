@@ -19,7 +19,7 @@ Claude skills that raise how a repository presents itself, and how its app's UI 
 | `frontdoor-illustrate` | turn hand-built HTML pages into rounded, bordered WebP images in a light and a dark theme |
 | `frontdoor-landing` | design and build a single-file `index.html` for GitHub Pages, after checking that no landing page exists |
 | `frontdoor-ui-gallery` | render every view and state of an app's UI from its real frontend with the backend mocked, in light and dark, on one review page (UG-D1 in the `ui-gallery` pack) |
-| `frontdoor-core` (Phase 10, uncommitted; the other skills not yet moved onto it) | the shared core the other skills will require: the signature method, the design board and its harness `fd`, the render contract for items of any size; invocable on its own for design work no other skill covers (FD-D36) |
+| `frontdoor-core` (Phases 10 and 11; the other skills not yet moved onto it) | the shared core the other skills will require: the signature method, the design board and its harness `fd`, the render contract for items of any size; invocable on its own for design work no other skill covers (FD-D36) |
 
 Out of scope: documentation other than the README, committing or pushing, enabling GitHub Pages (a repository setting the skills only describe), and any build step on the page being produced.
 
@@ -64,7 +64,7 @@ After Phases 10 to 12, the person installs `frontdoor-core` beside any other fro
 | Constraint | Why |
 |---|---|
 | Each skill is self-contained: it runs its own scripts and names the others only as optional help | a skill installed alone must not point at a folder that is not there; replaced in Phase 10 by a required `frontdoor-core` beside each skill (FD-D36) |
-| No look is shipped: the starter carries only the renderer contract, and each repository gets its own signature of shape language, typeface and presentation (FD-D17); the gallery page of `frontdoor-ui-gallery` is the one exception (UG-D2 in the `ui-gallery` pack), and the design board, as part of the harness, will be the second (FD-D38) | each brand has its own identity, and a shipped look would make every repository look alike with only the text changed |
+| No look is shipped: the starter carries only the renderer contract, and each repository gets its own signature of shape language, typeface and presentation (FD-D17); the gallery page of `frontdoor-ui-gallery` is the one exception (UG-D2 in the `ui-gallery` pack), and the design board, as part of the harness, is the second (FD-D38) | each brand has its own identity, and a shipped look would make every repository look alike with only the text changed |
 | No step needs administrator rights: scripts use the Edge or Chrome already installed and write only where told | the machine these skills run on is a standard user account |
 | The skills write files and stop; they never commit or push | a commit or a push is the user's decision |
 | ASCII hyphen only in every file | a dash check may scan the files |

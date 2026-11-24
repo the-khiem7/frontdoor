@@ -51,15 +51,28 @@ One row per entry. A row states what the entry is about and nothing more. An ans
 | FD-D34 | how `animate.py` encodes: libwebp effort 4, worker processes, frames on disk, one run at a time | current, lesson; the encoder and the frames on disk amended by FD-D35 | FD-D33, FD-D35 |
 | FD-D35 | `animate.py` encodes frame by frame in a pool and joins the WebP container itself; parallel capture, sway dedupe, `--draft`, `--batch` | current | FD-D34, FD-D33 |
 | FD-D36 | a `frontdoor-core` skill that the other skills require | current, core built in Phase 10, skills not moved | FD-D2, FD-D22, FD-D24 |
-| FD-D37 | one board per repository, a page per use case, rounds numbered per page | current, not implemented | FD-D24, FD-D31, FD-D36 |
-| FD-D38 | the board's neutral look and its interface: hover table of contents, one frame per image, theme divider | current, not implemented | FD-D17, FD-D37, UG-D2 |
-| FD-D39 | how the user's choice returns from the board: copy button, later a local server | current, not implemented | FD-D37, FD-D38 |
+| FD-D37 | one board per repository, a page per use case, rounds numbered per page | current, implemented in Phases 10 and 11 | FD-D24, FD-D31, FD-D36 |
+| FD-D38 | the board's neutral look and its interface: hover table of contents, one frame per image, theme divider | current, implemented in Phase 11 | FD-D17, FD-D37, UG-D2 |
+| FD-D39 | how the user's choice returns from the board: copy button, later a local server | current, copy button implemented in Phase 11, server not built | FD-D37, FD-D38 |
 | FD-D40 | asking the number of variants every round | current, not implemented | FD-D9, FD-D24 |
 | FD-D41 | the harness language and its browser daemon | current, implemented in Phase 10 | FD-D34, FD-D35, FD-D36 |
 | FD-D42 | the skills installed at project scope to help write the harness | current | FD-D41 |
+| FD-D43 | why `board.html` hides with `!important`, and why a pasted choice goes to `fd choose` through a file | current, lesson | FD-D38, FD-D39 |
 | FD-Q1 | whether the skill descriptions make a host select the skills correctly | open | none |
 | FD-Q2 | whether the skills need automated tests | open | none |
 | FD-Q3 | whether the scripts work on macOS and Linux | open | FD-D8 |
+
+## FD-D43: two defects found while building board v2
+
+Decision: lesson, recorded by the agent on 2026-11-24 during Phase 11.
+
+Lesson 1, `[hidden]` lost to the page's own display rules: the Pick button of the viewer, the Compare button and the dock were hidden with the `hidden` attribute, but `.btn { display: inline-flex }` and `.dock { display: flex }` override the browser's `[hidden] { display: none }`, so the Pick button still showed in the comparison view and the dock would have shown on a draft round. It looked safe because `hidden` works on an element with no display rule. Seen in the first comparison screenshot; fixed by `[hidden] { display: none !important; }` in the page [agent].
+
+Lesson 2, a pipe from Windows PowerShell 5.1 corrupts the copied choice: `"..." | fd choose --from -` recorded the note `giữ thanh bên` with every Vietnamese letter as `?`, because PowerShell 5.1 encodes what it pipes to a native program in the console code page, before `fd` can decode UTF-8. A file written by the agent keeps the text, so `board.md` tells the agent to save the pasted text to a file and run `fd choose --from <file>`, and names the pipe as working elsewhere [agent].
+
+What breaks if ignored: a control that must not be used in a view is shown and works there; a user's note in any language outside ASCII is stored as question marks in `board.json` with no error.
+
+Rejected: decoding stdin in `fd` with another code page - the characters are already lost before `fd` reads them [agent].
 
 ## FD-D1: three skills, not one
 
