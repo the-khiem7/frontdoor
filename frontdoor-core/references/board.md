@@ -20,6 +20,10 @@ Below, `fd` stands for `uvx python -I <frontdoor-core>/scripts/fd.py` for the bo
 
 `fd status` prints one line per page: its rounds, the latest round's variants, the choice and any draft. `fd status --json` gives the same as data. Read it instead of `board.json` when you need to know where a design stands.
 
+## What the user sees
+
+The board opens on the newest round of the page last looked at. Each variant is a card with its picture fitted to the screen. One frame holds both themes, with a light, dark and split switch; in split mode the pointer draws the divider between the two. A click opens the picture in a viewer that fits it, fills the width or zooms, and scrolls a long picture. The rail on the left lists every page and round with the recorded choices and opens on hover. The rounds of a page are tabs. Every place has a link (`index.html#/<page>/<round>/<variant>`), so you can send the user straight to one variant. The Compare button, which shows two variants side by side with their scrolling joined, appears only on a round whose `round.json` has `"compare": true`. Picks and notes stay in the user's browser until they copy them; the record is `board.json`, written only by `fd`.
+
 ## Rules
 
 - One board per repository, never one per skill or per purpose, and never a hosted page (a published artifact, a gist, a preview link): those leave one page per round behind in the user's account, and unreleased work may be on them.
