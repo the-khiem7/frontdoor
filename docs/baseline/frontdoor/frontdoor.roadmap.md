@@ -37,7 +37,7 @@ Reasoning for every row below lives in `frontdoor.hallucination.md` under the en
 | UI gallery skill | UG-D1 to UG-D10, pack `ui-gallery` | implemented, run on three apps | roadmap of the `ui-gallery` pack |
 | `frontdoor-core` and the harness `fd` | FD-D36, FD-D40, FD-D41 | implemented, Windows only | see Phase 10 |
 | Board v2 | FD-D37, FD-D38, FD-D39 | complete | Phase 11 |
-| The three skills on the core, variant count asked | FD-D36, FD-D40 | planned | Phase 12 |
+| The three skills on the core, variant count asked | FD-D36, FD-D40 | complete, Windows only | Phase 12 |
 | Local board server | FD-D39 | planned | Phase 13 |
 | Project-scope skills for writing the harness | FD-D42 | installed, git-ignored | `uv`, `ruff`, `python-testing-patterns`, `create-cli` copied into `.kiro/skills/` and `.claude/skills/`; `git status` lists none of them |
 
@@ -256,7 +256,19 @@ Acceptance criteria:
 - no skill text says "two or three"; every round asks the number of variants, and an unattended run makes 3 and records the question (FD-D40)
 - one trial redesigns a component of a web page with `frontdoor-core` alone, and one trial runs `frontdoor-readme` end to end, each ending with its rounds on the board
 
-### Checkpoint: not started
+### Checkpoint: complete
+
+| Item | Result |
+|---|---|
+| Skills moved | `frontdoor-readme`, `frontdoor-illustrate` and `frontdoor-landing` each open with a section that finds `<skill-dir>/../frontdoor-core`, stops with the `npx skills add ... --skill frontdoor-core` command when it is missing, and names the `fd` forms to run; their copies of `signature.md`, `source-page.md`, `board.py`, `render.py`, `contrast.py`, `animate.py` and the starter assets are deleted, and their steps point at the core's references, `fd render`, `fd contrast`, `fd animate` and the board pages `readme` and `landing-page` (`frontdoor-illustrate` takes the caller's page or a slug of its own); `frontdoor-readme` without `frontdoor-illustrate` now builds its pictures with `fd render` instead of asking the user how |
+| Variant count | no skill text says "two or three"; each round asks how many with a recommendation, and an unattended run makes 3, writes the question to `questions.md`, picks the strongest and records it with `fd choose` |
+| Repository docs | `AGENTS.md`: the core rule states the three skills require it, and the `cmp` rule and the legacy board folders are gone; `README.md`: a `frontdoor-core` row, the install line for it, and the sentence that each skill works alone replaced; the render command in the header comments of `assets/source/readme.html` and `scenes.html` and in `assets/source/shared.css` now names `fd render` |
+| Trial 1, core alone | a fresh agent given only a copy of the `frontdoor-core` folder redesigned the navigation bar of a throwaway static shop page, unattended: 3 variants rendered as 960 CSS px plain-finish component pictures in light and dark, published on page `navbar`, A chosen with `fd choose`, the design applied to `index.html` and `css/site.css`, 5 questions in `questions.md`; about 5 minutes |
+| Trial 2, `frontdoor-readme` | a fresh agent given copies of `frontdoor-readme`, `frontdoor-illustrate` and `frontdoor-core` rewrote the README of a throwaway Python CLI end to end, unattended: 3 hero directions on page `readme`, A chosen, a signature in six lines, `banner`, `banner-social` (1280x640 PNG) and one flow figure in both themes, the README traced to a fact list, the plan and questions in `questions.md`; about 9 minutes |
+| Found by the trials, fixed | a false font WARN in `fd render`, and five gaps in the skill text (variant folders without `shared.css` and `shared.js`, the `shared.css` rename, `fd page add`, the unattended choice, a site with no dark theme), plus the `questions.md` place in `frontdoor-illustrate`, the PNG of a social item in its commit rule and `fd daemon` in the `fd` forms: FD-D44; the two variant pages that gave the false WARN render with exit 0 after the fix |
+| Tests | `tests/test_render_browser.py` adds a test that serves one font in two weights and uses one; it fails on the old check and passes on the new; 54 pass with `--browser-tests`; `ruff check` clean on `fd.py`, `fdlib` and `tests` (2 findings in the unchanged `animate.py` remain); `fd render` on `assets/source/readme.html` wrote every picture with exit 0 |
+| Not fixed | an SVG child clipped by its own `<svg>` still counts as leaving the item box (the documented `data-bleed` works); the core has no step for screenshotting a real page after a component is applied (the trial wrote its own); a type specimen has no set place; the README pictures `scene-illustrate`, `illustrate-flow` and `landing-flow` and their alt texts still say `render.py` and "two or three" rough pages (pack `readme-design`); `banner.md` lists a dark social PNG but tells the user to upload one image |
+| Not run | `frontdoor-landing` on the core (no trial); a skill installed without the core, to see the stop; `npx skills add` of the core; macOS and Linux (FD-Q3) |
 
 ## Phase 13: local board server
 

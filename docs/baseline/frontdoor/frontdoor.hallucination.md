@@ -50,17 +50,32 @@ One row per entry. A row states what the entry is about and nothing more. An ans
 | FD-D33 | animated WebP as the only animated format, and the banner shown under reduced motion | current | FD-D32, FD-D34 |
 | FD-D34 | how `animate.py` encodes: libwebp effort 4, worker processes, frames on disk, one run at a time | current, lesson; the encoder and the frames on disk amended by FD-D35 | FD-D33, FD-D35 |
 | FD-D35 | `animate.py` encodes frame by frame in a pool and joins the WebP container itself; parallel capture, sway dedupe, `--draft`, `--batch` | current | FD-D34, FD-D33 |
-| FD-D36 | a `frontdoor-core` skill that the other skills require | current, core built in Phase 10, skills not moved | FD-D2, FD-D22, FD-D24 |
+| FD-D36 | a `frontdoor-core` skill that the other skills require | current, implemented in Phases 10 and 12 | FD-D2, FD-D22, FD-D24 |
 | FD-D37 | one board per repository, a page per use case, rounds numbered per page | current, implemented in Phases 10 and 11 | FD-D24, FD-D31, FD-D36 |
 | FD-D38 | the board's neutral look and its interface: hover table of contents, one frame per image, theme divider | current, implemented in Phase 11 | FD-D17, FD-D37, UG-D2 |
 | FD-D39 | how the user's choice returns from the board: copy button, later a local server | current, copy button implemented in Phase 11, server not built | FD-D37, FD-D38 |
-| FD-D40 | asking the number of variants every round | current, not implemented | FD-D9, FD-D24 |
+| FD-D40 | asking the number of variants every round | current, implemented in Phases 10 and 12 | FD-D9, FD-D24 |
 | FD-D41 | the harness language and its browser daemon | current, implemented in Phase 10 | FD-D34, FD-D35, FD-D36 |
 | FD-D42 | the skills installed at project scope to help write the harness | current | FD-D41 |
 | FD-D43 | why `board.html` hides with `!important`, and why a pasted choice goes to `fd choose` through a file | current, lesson | FD-D38, FD-D39 |
+| FD-D44 | why `fd render` warned that a web font it had drawn was not loaded, and what the trial runs found missing in the skill text | current, lesson | FD-D36, FD-D40, FD-D41 |
 | FD-Q1 | whether the skill descriptions make a host select the skills correctly | open | none |
 | FD-Q2 | whether the skills need automated tests | open | none |
 | FD-Q3 | whether the scripts work on macOS and Linux | open | FD-D8 |
+
+## FD-D44: defects found by the trial runs of the skills moved onto the core
+
+Decision: lesson, recorded by the agent on 2026-11-24 during Phase 12.
+
+Lesson 1, a false font WARN: in both trial runs `fd render` printed "fonts requested but not loaded" and exited 1 for Saira Extra Condensed, Libre Caslon Text and Old Standard TT, which were in the images. The check drew a hidden probe at weight 400 upright and compared its width with a fallback. A page that loads a family in weights 600 and 800 and uses only 800 never downloads the 600 face, and the probe at 400 matches that 600 face, so it measured the fallback while the font was on screen. It looked right because a family served in one face, or loaded from `local()`, passes: a first test built that way passed on the old code too. Fixed by counting a family as loaded when any of its faces in `document.fonts` has loaded, with the probe kept for system fonts; `tests/test_render_browser.py` serves one font file as weights 600 and 800 and fails on the old check [agent].
+
+Lesson 2, gaps in the skill text that only a run showed: a variant folder seeded with `starter.html` had no `shared.css` or `shared.js`, so the page had no stylesheet and both themes rendered the same; `frontdoor-readme` building its own pictures was not told to copy `starter.css` as `shared.css`; the skills went to `fd round new` without `fd page add`; nothing said what an unattended run does at "show the board and wait"; nothing said how to show a design for a site with no dark theme. `board.md` and the three `SKILL.md` files now say each [agent].
+
+What breaks if ignored: a render that exits 1 for a font that loaded teaches the agent to ignore the WARN, and then a font that really failed ships; a variant built from the seed alone shows one theme twice on the board.
+
+Rejected: waiting for `document.fonts.ready` before the probe - the 600 face is never requested by the page, so nothing waits for it, and the probe itself would start the download only after it measured [agent].
+
+Rejected: probing each family at the weight and style the page uses it at - it needs every weight and style collected per element, and `document.fonts` already says which faces loaded [agent].
 
 ## FD-D43: two defects found while building board v2
 

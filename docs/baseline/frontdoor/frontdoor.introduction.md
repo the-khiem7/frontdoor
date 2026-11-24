@@ -19,7 +19,7 @@ Claude skills that raise how a repository presents itself, and how its app's UI 
 | `frontdoor-illustrate` | turn hand-built HTML pages into rounded, bordered WebP images in a light and a dark theme |
 | `frontdoor-landing` | design and build a single-file `index.html` for GitHub Pages, after checking that no landing page exists |
 | `frontdoor-ui-gallery` | render every view and state of an app's UI from its real frontend with the backend mocked, in light and dark, on one review page (UG-D1 in the `ui-gallery` pack) |
-| `frontdoor-core` (Phases 10 and 11; the other skills not yet moved onto it) | the shared core the other skills will require: the signature method, the design board and its harness `fd`, the render contract for items of any size; invocable on its own for design work no other skill covers (FD-D36) |
+| `frontdoor-core` (Phases 10 to 12) | the shared core that `frontdoor-readme`, `frontdoor-illustrate` and `frontdoor-landing` require: the signature method, the design board and its harness `fd`, the render contract for items of any size; invocable on its own for design work no other skill covers (FD-D36) |
 
 Out of scope: documentation other than the README, committing or pushing, enabling GitHub Pages (a repository setting the skills only describe), and any build step on the page being produced.
 
@@ -29,13 +29,13 @@ Every skill sits at the repository root as `<name>/` (FD-D13); `frontdoor-ui-gal
 
 | Skill | Files |
 |---|---|
-| `frontdoor-readme` | `SKILL.md`; `agents/openai.yaml`; `scripts/animate.py`, `scripts/board.py`; `references/github-readme.md`, `references/audit-and-plan.md`, `references/readme-content.md`, `references/banner.md`, `references/signature.md` |
-| `frontdoor-illustrate` | `SKILL.md`; `agents/openai.yaml`; `scripts/render.py`, `scripts/contrast.py`, `scripts/board.py`; `assets/starter.css`, `assets/starter.html`, `assets/shared.js`; `references/source-page.md`, `references/scene-craft.md`, `references/signature.md` |
-| `frontdoor-landing` | `SKILL.md`; `agents/openai.yaml`; `scripts/shoot.py`, `scripts/lighthouse.py`, `scripts/board.py`; `references/existing-landing.md`, `references/pages-setup.md`, `references/page-craft.md`, `references/verify.md`, `references/signature.md` |
+| `frontdoor-readme` | `SKILL.md`; `agents/openai.yaml`; `references/github-readme.md`, `references/audit-and-plan.md`, `references/readme-content.md`, `references/banner.md` |
+| `frontdoor-illustrate` | `SKILL.md`; `agents/openai.yaml`; `references/scene-craft.md` |
+| `frontdoor-landing` | `SKILL.md`; `agents/openai.yaml`; `scripts/shoot.py`, `scripts/lighthouse.py`; `references/existing-landing.md`, `references/pages-setup.md`, `references/page-craft.md`, `references/motion.md`, `references/verify.md` |
 | `frontdoor-ui-gallery` | `SKILL.md`; `agents/openai.yaml`; `scripts/shoot.py`, `scripts/real.ps1`; `assets/gallery.html`, `assets/mock-kit.ts`, `assets/fixtures.ts`, `assets/vite.gallery.ts`; `references/states.md`, `references/manifest.md`, `references/real-capture.md`, `references/stacks/index.md`, `wails3.md`, `tauri2.md`, `svelte.md`, `vue.md` |
 | `frontdoor-core` | `SKILL.md`; `agents/openai.yaml`; `scripts/fd.py` with the package `scripts/fdlib/`, `scripts/animate.py`, `scripts/contrast.py`; `assets/board.html`, `assets/starter.css`, `assets/starter.html`, `assets/shared.js`; `references/signature.md`, `references/board.md`, `references/harness.md`, `references/source-page.md` |
 
-`tests/` at the repository root holds the pytest suite of `fd`; it does not ship.
+`frontdoor-readme`, `frontdoor-illustrate` and `frontdoor-landing` find `frontdoor-core` beside them and stop with an install message when it is missing; they carry no copy of its signature method, board, render contract, starter files or scripts (FD-D36). `tests/` at the repository root holds the pytest suite of `fd`; it does not ship.
 
 The pictures in this repository's own README are tracked in the `readme-design` pack (FD-D15 moved there).
 
@@ -50,6 +50,7 @@ Observed running, 2026-10-10, on Windows with Edge:
 - 2026-10-22: `frontdoor-ui-gallery` built galleries for three desktop apps, two of them by a fresh agent given only the skill folder (pack `ui-gallery`).
 - 2026-11-24: `animate.py` rendered two real banners, a `loop` and a `sway`, in 22 s and 18 s, at the same PSNR as the previous encoder and about half its file size; `--draft` and `--batch` ran on the same pages (roadmap Phase 9, FD-D35).
 - 2026-11-24: `fd render` from `frontdoor-core` rendered this repository's two source pages pixel-identical to `render.py` in about a third of the time; the `fd` test suite passed, 43 tests with a real browser (roadmap Phase 10).
+- 2026-11-24: two fresh agents, unattended, ran `frontdoor-core` alone on a navigation bar of a static shop page and `frontdoor-readme` end to end on a small Python CLI, each from a copy of the installed skill folders; each asked nothing, made 3 variants, and ended with its round published and a choice recorded on the board (roadmap Phase 12).
 
 Not observed: installing `frontdoor-readme` or `frontdoor-landing` with `npx skills add`, the skills selected by a host from a plain request, any run on macOS or Linux, any page on its live GitHub Pages URL.
 
@@ -63,7 +64,7 @@ After Phases 10 to 12, the person installs `frontdoor-core` beside any other fro
 
 | Constraint | Why |
 |---|---|
-| Each skill is self-contained: it runs its own scripts and names the others only as optional help | a skill installed alone must not point at a folder that is not there; replaced in Phase 10 by a required `frontdoor-core` beside each skill (FD-D36) |
+| A skill relies only on its own folder and on `frontdoor-core` beside it, and names the others only as optional help; `frontdoor-ui-gallery` does not use the core | a skill must not point at a folder that is not there, so a missing core stops it with an install message (FD-D36, reversing FD-D2) |
 | No look is shipped: the starter carries only the renderer contract, and each repository gets its own signature of shape language, typeface and presentation (FD-D17); the gallery page of `frontdoor-ui-gallery` is the one exception (UG-D2 in the `ui-gallery` pack), and the design board, as part of the harness, is the second (FD-D38) | each brand has its own identity, and a shipped look would make every repository look alike with only the text changed |
 | No step needs administrator rights: scripts use the Edge or Chrome already installed and write only where told | the machine these skills run on is a standard user account |
 | The skills write files and stop; they never commit or push | a commit or a push is the user's decision |
